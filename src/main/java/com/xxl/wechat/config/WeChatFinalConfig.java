@@ -34,6 +34,8 @@ public class WeChatFinalConfig extends  JFinalConfig {
 
     @Override
     public void configRoute(Routes routes) {
+
+
         routes.setBaseViewPath("WEB-INF/front");
         routes.add("/fix", FixAssetsController.class);
         routes.add("/repair", RepairAssetsController.class);
@@ -41,8 +43,11 @@ public class WeChatFinalConfig extends  JFinalConfig {
         routes.add("/index", IndexController.class);
         routes.add("/login", LoginController.class);
         routes.add("/user", UserController.class);
-
         routes.add("/attachment", AttachmentController.class);
+
+
+        
+
 
     }
 
@@ -104,10 +109,6 @@ public class WeChatFinalConfig extends  JFinalConfig {
 
     }
 
-    public static void main(String[] args) {
-
-
-    }
 
 
 }

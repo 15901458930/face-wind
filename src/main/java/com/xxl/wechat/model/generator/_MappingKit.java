@@ -19,7 +19,9 @@ public class _MappingKit {
 		arp.addMapping("BOOK_ROOM_TASK", "ID", BookRoomTask.class);
 		arp.addMapping("FIX_ASSET_TASK", "ID", FixAssetTask.class);
 		arp.addMapping("SY_ATTACHMENT", "ID", SyAttachment.class);
+		arp.addMapping("SY_MAIN_CATEGORY", "ID", SyMainCategory.class);
 		arp.addMapping("SY_ROOM", "ID", SyRoom.class);
+		arp.addMapping("SY_SUB_CATEGORY", "ID", SySubCategory.class);
 		arp.addMapping("SY_USER", "ID", SyUser.class);
 	}
 }
