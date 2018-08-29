@@ -1,0 +1,63 @@
+#define repair_add_page()
+<div id="repair-add" class="weui-popup__container" style="z-index:502">
+    <script id="repair-add-template" type="text/x-handlebars-template">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal just-for-d"  style="font-size:13px">
+        <div class="weui-form-preview">
+            <div class="weui-form-preview__bd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">申请人</label>
+                    <span class="weui-form-preview__value">{{applyUserName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">申请时间</label>
+                    <span class="weui-form-preview__value">{{applyDate}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品分类</label>
+                    <span class="weui-form-preview__value">{{assetTypeName}}</span>
+                </div>
+
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品子分类</label>
+                    <span class="weui-form-preview__value">{{assetSubTypeName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">其它维修物品</label>
+                    <span class="weui-form-preview__value">{{assetName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品位置</label>
+                    <span class="weui-form-preview__value">{{assetLocation}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">报修原因</label>
+                    <span class="weui-form-preview__value">{{fixReason}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">状态</label>
+                    <span class="weui-form-preview__value">
+                        {{statusName}}
+                    </span>
+                </div>
+
+                <div class="weui-form-preview__item">
+
+                    <span class="weui-form-preview__value">
+                        {{#each attachmentIds}}
+                                    <img src="/upload/img/{{this}}.jpeg" width="120" height="80"/>
+                        {{/each}}
+                    </span>
+                </div>
+            </div>
+            <div class="weui-form-preview__ft">
+                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary change-status" data-id="{{id}}" href="javascript:">更改状态</button>
+                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" href="javascript:">返回</button>
+            </div>
+        </div>
+    </div>
+
+    </script>
+</div>
+
+#end

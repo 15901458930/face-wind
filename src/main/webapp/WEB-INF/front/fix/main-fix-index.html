@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>报修管理</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+    <link rel="stylesheet" href="/weui/css/weui.min.css">
+    <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/css/front/front-style.css">
+
+</head>
+
+
+<body ontouchstart>
+
+<div class="weui-pull-to-refresh__layer">
+    <div class='weui-pull-to-refresh__arrow'></div>
+    <div class='weui-pull-to-refresh__preloader'></div>
+
+    <div class="down">下拉刷新</div>
+    <div class="up">释放刷新</div>
+    <div class="refresh">正在刷新</div>
+</div>
+
+<div class="weui-tab">
+
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+
+            <a class="weui-btn weui-btn_primary open-popup add-popup"
+               style="position: fixed;bottom:70px;right:20px;z-index:501"><i class="sstfont sst-bianji"></i></a>
+
+            <div class="weui-panel__bd" id="fix-asset-list">
+
+                <div class="weui-loadmore hide loadding">
+                    <i class="weui-loading"></i>
+                    <span class="weui-loadmore__tips">正在加载</span>
+                </div>
+                <div class="weui-loadmore weui-loadmore_line hide no-data">
+                    <span class="weui-loadmore__tips">暂无数据</span>
+                </div>
+
+                <!--模板开始-->
+                <script id="fix-list-template" type="text/x-handlebars-template">
+                    {{#each this}}
+                    <div class="weui-cell weui-cell_swiped record-{{id}}">
+                    <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
+                        <div class="weui-cell__bd weui-media-box  weui-media-box_appmsg fix-record">
+                        <input type="hidden" id="fixId" value="{{id}}"/>
+                        <div class="weui-media-box__hd">
+                            <img class="weui-media-box__thumb" src="/upload/img/{{attachmentId}}.jpeg" alt=""/>
+                        </div>
+                        <div class="weui-media-box__bd">
+                            <h4 class="weui-media-box__title">
+                                <div style="float:left">{{assetType}} </div>
+
+                                <div style="float:right;margin-right:5px"> <em class="num font-15" style="color:red;font-size:14px;font-weight:bold;font-style:normal">{{statusName}}</em></div>
+
+                            </h4>
+                            <p class="weui-media-box__desc">{{fixReason}}</p>
+                            <ul class="weui-media-box__info">
+                                <li class="weui-media-box__info__meta">报修人：{{applyUserName}}</li>
+                                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{applyDate}}
+                                </li>
+                            </ul>
+                        </div>
+
+                        </div>
+                        <div class="weui-cell__ft">
+                            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>
+                            <a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>
+                        </div>
+                    </div>
+                    {{/each}}
+                 </script>
+                <!--模板结束-->
+            </div>
+        </div>
+    </div>
+</div>
+
+#@tabbar()
+
+
+#@fix_add_page()
+
+#@fix_detail_page()
+
+<script src="/weui/js/jquery-2.1.4.js"></script>
+<script src="/weui/js/jquery-weui.min.js"></script>
+<script src="/js/handlebars-v4.0.11.js"></script>
+<script src="/weui/js/swiper.min.js"></script>
+<script src="/js/front/fix/fix-assets-list.js"></script>
+<script src="/js/front/fix/fix-assets-add.js"></script>
+
+
+
+</body>
+</html>

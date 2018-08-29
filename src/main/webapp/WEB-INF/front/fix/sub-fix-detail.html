@@ -1,0 +1,65 @@
+#define fix_detail_page()
+
+
+<div id="fix-detail" class="weui-popup__container" style="z-index:502">
+    <script id="fix-detail-template" type="text/x-handlebars-template">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal just-for-d"  style="font-size:13px">
+        <div class="weui-form-preview">
+            <div class="weui-form-preview__bd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">申请人</label>
+                    <span class="weui-form-preview__value">{{applyUserName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">申请时间</label>
+                    <span class="weui-form-preview__value">{{applyDate}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品分类</label>
+                    <span class="weui-form-preview__value">{{assetTypeName}}</span>
+                </div>
+
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品子分类</label>
+                    <span class="weui-form-preview__value">{{assetSubTypeName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">其它维修物品</label>
+                    <span class="weui-form-preview__value">{{assetName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">物品位置</label>
+                    <span class="weui-form-preview__value">{{assetLocation}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">报修原因</label>
+                    <span class="weui-form-preview__value">{{fixReason}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+
+
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                                {{#each attachmentIds}}
+                                <li class="weui-uploader__file" style="background-image:url(/upload/img/{{this}}.jpeg)"><input type="hidden" class="attachmentId" name="attachmentId" value="{{this}}"/></li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-form-preview__ft"  style="bottom:0">
+                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" href="javascript:">返回</button>
+            </div>
+        </div>
+    </div>
+
+    </script>
+</div>
+
+#end

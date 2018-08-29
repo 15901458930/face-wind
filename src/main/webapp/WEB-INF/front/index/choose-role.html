@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>欢迎光临</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+    <link rel="stylesheet" href="/weui/css/weui.min.css">
+    <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/css/front/front-style.css">
+
+</head>
+
+
+<body ontouchstart>
+
+
+<div class="weui-msg">
+    <div class="weui-msg__icon-area"><img src="#(session.user.avatar)" width="85" height="85"/></div>
+    <div class="weui-msg__text-area">
+        <h2 class="weui-msg__title">#(session.user.realName)</h2>
+        <h2>请选择您的角色</h2>
+    </div>
+    <div class="weui-msg__opr-area">
+        <p class="weui-btn-area">
+            <a href="javascript:;" class="weui-btn weui-btn_primary choose-role" user-type="2" data-val="老师">我是老师</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary choose-role" user-type="3" data-val="维修人员">我是维修人员</a>
+        </p>
+    </div>
+    <div class="weui-msg__extra-area">
+        <div class="weui-footer">
+            <p class="weui-footer__links">
+                <a href="javascript:void(0);" class="weui-footer__link">北京易好智通信息技术有限责任公司出品</a>
+            </p>
+            <p class="weui-footer__text">Copyright © 2010-2018 easyston.com</p>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<script src="/weui/js/jquery-2.1.4.js"></script>
+<script src="/weui/js/jquery-weui.min.js"></script>
+
+<script type="text/javascript">
+    $(function(){
+        $(".choose-role").click(function () {
+
+            var role = $(this).attr("data-val");
+            var userType = $(this).attr("user-type");
+            $.confirm("是否确认"+role+"身份？", function() {
+               location.href="/user/choose/"+ userType +"?v="+new Date().getTime();
+            }, function() {
+
+            });
+        });
+    });
+
+
+</script>
+</html>

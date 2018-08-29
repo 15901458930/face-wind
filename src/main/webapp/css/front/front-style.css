@@ -1,0 +1,95 @@
+body, html {
+    height: 100%;
+
+    -webkit-tap-highlight-color: transparent;
+}
+body{
+    overflow-x: hidden;
+}
+.demos-title {
+    text-align: center;
+    font-size: 34px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}
+
+.demos-sub-title {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+}
+
+.demos-header {
+    padding: 35px 0;
+}
+
+.demos-content-padded {
+    padding: 15px;
+}
+
+.demos-second-title {
+    text-align: center;
+    font-size: 24px;
+    color: #3cc51f;
+    font-weight: 400;
+    margin: 0 15%;
+}
+
+footer {
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+}
+
+footer a {
+    color: #999;
+    text-decoration: none;
+}
+
+
+.weui-footer_fixed-bottom {
+    bottom: 0;
+}
+.weui-form-preview__ft {
+    background: #fff;
+}
+
+.weui-tabbar {
+    position: fixed;
+    z-index: 2;
+    width:100%;
+    bottom:0;
+}
+.weui-tabbar__item.weui-bar__item--on .weui-tabbar__label {color: #92b9f4;}
+.weui-tabbar__item.weui-bar__item--on i {color: #92b9f4;}
+
+.hide{
+    display:none;
+}
+
+.show{
+    display:block;
+}
+
+.wy-center-top{width:100%; overflow:hidden; background:url(../images/center-top-bj.jpg) no-repeat; background-size:cover;}
+.user-grade {
+
+    color: #FC0;
+    margin: 2px 0;
+    font-size: 13px;
+
+}
+.user-integral {
+
+    font-size: 13px;
+    color: #fafafa;
+
+}
+.user-name {
+
+     color: #fff;
+     font-weight: 600;
+     font-size: 16px;
+
+ }

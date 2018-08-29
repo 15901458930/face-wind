@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>个人中心</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+    <link rel="stylesheet" href="/weui/css/weui.min.css">
+    <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/css/front/front-style.css">
+
+</head>
+
+
+<body ontouchstart>
+
+<div class='weui-content'>
+    <div class="wy-center-top">
+        <div class="weui-media-box weui-media-box_appmsg">
+            <div class="weui-media-box__hd"><img class="weui-media-box__thumb radius" src="#(session.user.avatar)" alt=""></div>
+            <div class="weui-media-box__bd">
+                <h4 class="weui-media-box__title user-name">#(session.user.realName)</h4>
+                <p class="user-grade">#(session.user.userType == 2 ? '教师' : '维修人员')</p>
+                <p class="user-integral">手机:<em class="num">#(session.user.phone)</em></p>
+            </div>
+        </div>
+        <!--    <div class="xx-menu weui-flex">
+              <div class="weui-flex__item"><div class="xx-menu-list"><em>987</em><p>账户余额</p></div></div>
+              <div class="weui-flex__item"><div class="xx-menu-list"><em>459</em><p>我的蓝豆</p></div></div>
+              <div class="weui-flex__item"><div class="xx-menu-list"><em>4</em><p>收藏商品</p></div></div>
+            </div>-->
+    </div>
+
+
+
+    <div class="weui-panel"><!--
+        <div class="weui-panel__bd">
+            <div class="weui-media-box weui-media-box_small-appmsg">
+                <div class="weui-cells">
+                    <a class="weui-cell weui-cell_access" href="record.html">
+                        <div class="weui-cell__hd"><img src="images/center-icon-jyjl.png" alt="" class="center-list-icon"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="center-list-txt">我的报修记录</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+                    <a class="weui-cell weui-cell_access" href="login.html">
+                        <div class="weui-cell__hd"><img src="images/center-icon-out.png" alt="" class="center-list-icon"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="center-list-txt">我的维修记录</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+                    <a class="weui-cell weui-cell_access" href="shoucang.html">
+                        <div class="weui-cell__hd"><img src="images/center-icon-sc.png" alt="" class="center-list-icon"></div>
+                        <div class="weui-cell__bd weui-cell_primary">
+                            <p class="center-list-txt">会议室预订记录</p>
+                        </div>
+                        <span class="weui-cell__ft"></span>
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+    --></div>
+
+
+    #@tabbar()
+</div>
+
+
+
+</body>
+
+<script src="/weui/js/jquery-2.1.4.js"></script>
+<script src="/weui/js/jquery-weui.min.js"></script>
+
+<script type="text/javascript">
+
+</script>
+</html>

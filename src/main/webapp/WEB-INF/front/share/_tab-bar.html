@@ -1,0 +1,25 @@
+#define tabbar()
+<div class="weui-tabbar">
+    <a href="/fix/index" class="weui-tabbar__item #(belong == 'fix' ? 'weui-bar__item--on' : '')">
+        <div class="weui-tabbar__icon"><i class="sstfont sst-shouye"></i></div>
+        <p class="weui-tabbar__label">报修单</p>
+    </a>
+    #if(session.user.userType == 3)
+    <a href="/repair/index" class="weui-tabbar__item #(belong == 'repair' ? 'weui-bar__item--on' : '')">
+        <div class="weui-tabbar__icon"><i class="sstfont sst-dashizaixian"></i></div>
+        <p class="weui-tabbar__label">维修单</p>
+    </a>
+    #end
+
+    #if(session.user.userType == 2)
+    <a href="/book/index" class="weui-tabbar__item #(belong == 'book' ? 'weui-bar__item--on' : '')">
+        <div class="weui-tabbar__icon"><i class="sstfont sst-xuetang"></i></div>
+        <p class="weui-tabbar__label">预订会议室</p>
+    </a>
+    #end
+    <a href="/user/me" class="weui-tabbar__item #(belong == 'user' ? 'weui-bar__item--on' : '')">
+        <div class="weui-tabbar__icon"><i class="sstfont sst-geren"></i></div>
+        <p class="weui-tabbar__label">我的</p>
+    </a>
+</div>
+#end

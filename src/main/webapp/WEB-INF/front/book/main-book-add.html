@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>预订会议室</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+
+    <link rel="stylesheet" href="/weui/css/weui.min.css">
+    <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/css/front/front-style.css">
+
+</head>
+
+
+<body ontouchstart>
+
+<div class="weui-tab">
+
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                        <div class="weui-cells weui-cells_form" >
+
+                            <div class="weui-cell">
+                                <div class="weui-cell__hd">
+                                    <label class="weui-label">会议室</label></div>
+                                <div class="weui-cell__bd">
+                                    #setLocal(sele = 'selected="selected"')
+                                    <input type="hidden" name="id" id="id" value="#(book.id)"/>
+                                    <select class="weui-select" name="select2" id="room-id">
+                                        #for(x :  roomList)
+                                            <option value="#(x.id)" #(book.roomId==x.id ? sele : '')>#(x.name)</option>
+                                        #end
+                                    </select>
+                                </div>
+                            </div>
+
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">开始时间</label></div>
+
+                                    <div class="weui-cell__bd">
+                                        <input class="weui-input" name="assetName" id="start-time" type="text" value='#date(book.bookStartTime, "yyyy-MM-dd HH:mm")' placeholder="请选择开始时间">
+                                    </div>
+                                </div>
+
+
+
+                                <div class="weui-cell">
+                                    <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
+
+                                    <div class="weui-cell__bd">
+                                        <input class="weui-input" name="assetLocation" id="end1-time"  value='#date(book.bookEndTime, "yyyy-MM-dd HH:mm")' type="text" placeholder="请选择结束时间">
+                                    </div>
+                                </div>
+
+
+                            <div class="weui-form-preview__ft">
+                                <button  class="weui-form-preview__btn weui-form-preview__btn_primary asset-btn-submit" href="javascript:">保存</button>
+                                <button  class="weui-form-preview__btn weui-form-preview__btn_primary" id="go_back">返回</button>
+
+                            </div>
+
+                        </div>
+
+                    <!--<div class="weui-form-preview__ft weui-footer_fixed-bottom" style="z-index:10002">-->
+                    <!--<a class="weui-form-preview__btn" id="attrbtn" style="color:red" href="javascript:">保存</a>-->
+                    <!--<a class="weui-form-preview__btn weui-form-preview__btn_primary" id="buybtn">返回</a>-->
+                    <!--</div>-->
+
+
+
+        </div>
+    </div>
+
+    <div class="weui-tabbar">
+        <a href="/fix/index" class="weui-tabbar__item weui-bar__item--on">
+            <div class="weui-tabbar__icon"><i class="sstfont sst-shouye"></i></div>
+            <p class="weui-tabbar__label">报修单</p>
+        </a>
+        <a href="/repair/index" class="weui-tabbar__item ">
+            <div class="weui-tabbar__icon"><i class="sstfont sst-dashizaixian"></i></div>
+            <p class="weui-tabbar__label">维修单</p>
+        </a>
+        <a href="/book/index" class="weui-tabbar__item ">
+            <div class="weui-tabbar__icon"><i class="sstfont sst-xuetang"></i></div>
+            <p class="weui-tabbar__label">预订</p>
+        </a>
+        <a href="/user/me" class="weui-tabbar__item ">
+            <div class="weui-tabbar__icon"><i class="sstfont sst-shangcheng"></i></div>
+            <p class="weui-tabbar__label">我的</p>
+        </a>
+    </div>
+
+</div>
+
+<script src="/weui/js/jquery-2.1.4.js"></script>
+<script src="/weui/js/fastclick.js"></script>
+<script src="/weui/js/jquery-weui.min.js"></script>
+<script src="/js/handlebars-v4.0.11.js"></script>
+<script src="/js/front/book/book-room-add.js"></script>
+
+<script type="text/javascript">
+
+    $(function(){
+        $("#go_back").click(function () {
+            location.href="/book/index?v="+new Date().getTime();
+        })
+    });
+</script>
+</body>
+</html>
