@@ -7,13 +7,20 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.xxl.wechat.config.routes.AdminRoute;
+import com.xxl.wechat.config.routes.FrontRoute;
+import com.xxl.wechat.constant.DictConstant;
 import com.xxl.wechat.controller.*;
 import com.xxl.wechat.form.FixForm;
 import com.xxl.wechat.http.HttpUtil;
 import com.xxl.wechat.init.AccessTokenSchedule;
+import com.xxl.wechat.init.WeChatPushSchedule;
 import com.xxl.wechat.interceptor.ExceptionInterceptor;
 import com.xxl.wechat.interceptor.ListInterceptor;
 import com.xxl.wechat.model.generator._MappingKit;
+import com.xxl.wechat.service.WeChatPushService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
@@ -21,6 +28,8 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class WeChatFinalConfig extends  JFinalConfig {
+
+    private static Logger log = LoggerFactory.getLogger(FixAssetsController.class);
 
 
     @Override
@@ -35,20 +44,8 @@ public class WeChatFinalConfig extends  JFinalConfig {
     @Override
     public void configRoute(Routes routes) {
 
-
-        routes.setBaseViewPath("WEB-INF/front");
-        routes.add("/fix", FixAssetsController.class);
-        routes.add("/repair", RepairAssetsController.class);
-        routes.add("/book", BookRoomController.class);
-        routes.add("/index", IndexController.class);
-        routes.add("/login", LoginController.class);
-        routes.add("/user", UserController.class);
-        routes.add("/attachment", AttachmentController.class);
-
-
-        
-
-
+        routes.add(new FrontRoute());  // 前端路由
+        routes.add(new AdminRoute());  // 后端路由
     }
 
 
@@ -90,7 +87,7 @@ public class WeChatFinalConfig extends  JFinalConfig {
     @Override
     public void configInterceptor(Interceptors interceptors) {
         interceptors.add(new SessionInViewInterceptor());
-        interceptors.add(new ListInterceptor());
+
     }
 
     @Override
@@ -102,10 +99,23 @@ public class WeChatFinalConfig extends  JFinalConfig {
     @Override
     public void afterJFinalStart() {
 
+
+        log.warn("afterJFinalStart ===1.准备定时获取access-token===");
+
         //启动定时任务，获取access_token
         ScheduledThreadPoolExecutor executor = (ScheduledThreadPoolExecutor)Executors.newScheduledThreadPool(1);
-
         final ScheduledFuture<?> schedule = executor.scheduleAtFixedRate(new AccessTokenSchedule(), 0,3600, TimeUnit.SECONDS);
+
+        log.warn("afterJFinalStart ===2.准备加载大类，子类(只加一次)===");
+        DictConstant.getInstance().init();
+
+
+        WeChatPushService service = new WeChatPushService();
+
+        //启动定时任务，获取access_token
+        ScheduledThreadPoolExecutor executor1 = (ScheduledThreadPoolExecutor)Executors.newScheduledThreadPool(1);
+        final ScheduledFuture<?> schedule1 = executor1.scheduleAtFixedRate(new WeChatPushSchedule(service), 0,5, TimeUnit.SECONDS);
+
 
     }
 

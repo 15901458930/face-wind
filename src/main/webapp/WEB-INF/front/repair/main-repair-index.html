@@ -19,34 +19,36 @@
 
 <body ontouchstart>
 
-<div class="weui-pull-to-refresh__layer">
-    <div class='weui-pull-to-refresh__arrow'></div>
-    <div class='weui-pull-to-refresh__preloader'></div>
 
-    <div class="down">下拉刷新</div>
-    <div class="up">释放刷新</div>
-    <div class="refresh">正在刷新</div>
-</div>
 
-<div class="weui-tab">
+<div class="weui-tab" id="weui-sb">
+
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
 
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
 
             <div class="weui-panel__bd" id="fix-asset-list">
 
-                <div class="weui-loadmore hide loadding">
+               <!-- <div class="weui-loadmore hide loadding">
                     <i class="weui-loading"></i>
                     <span class="weui-loadmore__tips">正在加载</span>
                 </div>
                 <div class="weui-loadmore weui-loadmore_line hide no-data">
                     <span class="weui-loadmore__tips">暂无数据</span>
-                </div>
+                </div>-->
 
                 <!--模板开始-->
                 <script id="fix-list-template" type="text/x-handlebars-template">
                     {{#each this}}
-                    <div class="weui-cell weui-cell_swiped record-{{id}}">
+                    <div class="weui-cell weui-cell_swiped record-{{id}} will-be-d">
                     <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
                         <div class="weui-cell__bd weui-media-box  weui-media-box_appmsg fix-record">
                         <input type="hidden" id="fixId" value="{{id}}"/>
@@ -57,7 +59,7 @@
                             <h4 class="weui-media-box__title">
                                 <div style="float:left">{{assetType}} </div>
 
-                                <div style="float:right;margin-right:5px"> <em class="num font-15" style="color:red;font-size:14px;font-weight:bold;font-style:normal">{{statusName}}</em></div>
+                                <div style="float:right;margin-right:5px"> <em class="num font-15" style="color:red;font-size:14px;font-weight:bold;font-style:normal" id="red-status">{{statusName}}</em></div>
 
                             </h4>
                             <p class="weui-media-box__desc">{{fixReason}}</p>
@@ -70,20 +72,28 @@
 
                         </div>
                         <div class="weui-cell__ft">
-                            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>
+                            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixId="{{id}}" href="javascript:">编辑</a>
                         </div>
                     </div>
                     {{/each}}
                  </script>
                 <!--模板结束-->
             </div>
+
+            <div class="weui-loadmore just-waiting hide">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+            </div>
+            <div class="weui-loadmore just-no-data weui-loadmore_line hide">
+                <span class="weui-loadmore__tips">暂无数据</span>
+            </div>
+            <div class="weui-loadmore just-no-more weui-loadmore_line hide">
+                <span class="weui-loadmore__tips">没有更多了</span>
+            </div>
         </div>
     </div>
-
-    #@tabbar()
-
-
 </div>
+#@tabbar()
 
 
 #@repair_add_page()

@@ -13,10 +13,39 @@ $(function () {
     //绑定查询按钮
     initSearchBtn();
 
+    //初始化上拉加载历史数据
+    initPullRefresh();
 
-
-    loading();
+    $("#weui-sb").pullToRefresh('triggerPullToRefresh');
 });
+
+
+function initPullRefresh(){
+
+    var downloading = false;
+
+    $("#weui-sb").pullToRefresh({
+        onRefresh: function () {
+
+            if(downloading){
+                return;
+            }
+
+            downloading = true;
+
+
+            loading();
+
+            downloading = false;
+        },
+        onPull: function (percent) {
+            /* 用户下拉过程中会触发，接收一个百分比表示用户下拉的比例 */
+
+        }
+        /* 下拉刷新的触发距离， 注意，如果你重新定义了这个值，那么你需要重载一部分CSS才可以，请参考下面的自定义样式部分 */
+
+    });
+}
 
 
 function initDelete(){
@@ -74,7 +103,7 @@ function loading(){
         $.toptip('请选择查询日期', 'warning');
         return;
     }
-    var reg = new RegExp( '-' , "g" )
+    var reg = new RegExp( '-' , "g" );
     searchDate = searchDate.replace(reg,"");
     $(document.body).find(".book-record").remove();
     $.ajax({
@@ -82,28 +111,29 @@ function loading(){
         dataType: 'json',
         url: "/book/list/"+roomId+"-"+searchDate,
         success: function (jsonObj) {
-            if(jsonObj.success===true){
+            if(jsonObj.success==true){
 
                 if(jsonObj.data.length == 0){
                     $(".loadding").hide();
                     $(".no-data").show();
-
+                    $("#weui-sb").pullToRefreshDone();
                     return;
                 }
-                console.log(jsonObj.data);
                 var source   = $("#book-list-template").html();
                 var template = Handlebars.compile(source);
                 var context = jsonObj.data;//数据信息
                 var html = template(context);
-                console.log(html);
+
                 $(".loadding").hide();
 
                 $("#book-room-list").append(html);
 
                 initDelete();
+                $("#weui-sb").pullToRefreshDone();
 
                 $('.weui-cell_swiped').swipeout();
             }else{
+                $("#weui-sb").pullToRefreshDone();
                 //失败
                 $(".loadding").hide();
                 $(".no-data").show();

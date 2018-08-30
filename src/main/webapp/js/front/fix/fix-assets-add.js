@@ -1,50 +1,3 @@
-var info1 = [
-    {
-        title: "办公室电脑",
-        value: "1001"
-    },
-    {
-        title: "办公室打印机",
-        value: "1002"
-    },
-    {
-        title: "笔记本",
-        value: "1003"
-    },
-    {
-        title: "手机",
-        value: "1004"
-    },
-    {
-        title: "班机展台",
-        value: "1005"
-    },
-    {
-        title: "ipad",
-        value: "1006"
-    },
-    {
-        title: "办公室IP电话",
-        value: "1007"
-    },
-    {
-        title: "班级多媒体",
-        value: "1008"
-    }
-];
-
-
-var info2 = [
-    {
-        title: "后1",
-        value: "2001"
-    },
-    {
-        title: "后2",
-        value: "1002"
-    }
-];
-
 
 /**
  * 绑定我要报修事件
@@ -56,8 +9,7 @@ function addPopupListener(){
 
         $("#fix-add").popup();
 
-
-        initFormHandler();
+        initFormHandler(categoryJson.sub["1"]);
     });
 
 }
@@ -90,13 +42,15 @@ function assemblyHandlerBars(data,template1,target) {
  * 通用打开明细页面后的一系列初始化操作
  * @param data
  */
-function initFormHandler(){
+function initFormHandler(subTypeData){
 
     //单选select事件
     initAssetTypeSelect();
 
+
+    console.log("小哥"+subTypeData);
     //多选select事件
-    initAssetSubTypeSelect();
+    initAssetSubTypeSelect(subTypeData);
 
     //初始化图片上传事件
     initUploaderImg();
@@ -123,7 +77,14 @@ function getFix(fixId,type){
                     assemblyHandlerBars(jsonObj.data,"#fix-add-template","#fix-add");
 
                     $("#fix-add").popup();
-                    initFormHandler();
+
+                    var subTypeData = categoryJson.sub[jsonObj.data.assetType];
+
+                    if(subTypeData == undefined){
+                        subTypeData = {};
+                    }
+
+                    initFormHandler(subTypeData);
 
                     //2个select无法被选中
                     //$("#asset-type").attr("value",jsonObj.data.assetTypeName);
@@ -252,33 +213,28 @@ function initAssetTypeSelect(){
     $("#asset-type").select({
         title: "选择物品分类",
        // input:assetType,
-        items: [
-            {
-                title: "信息分类",
-                value: "20"
-            }
-        ]
-        /*onChange:function(){
+        items: categoryJson.main,
+        onChange:function(){
 
             var type = $("#asset-type").attr("data-values");
-            if(type=="10"){
-                $("#asset-sub-type").select("update", {items:info2});
+            if(type != "" ){
 
-            }else if(type == "20"){
-                $("#asset-sub-type").select("update", {items:info1});
+                console.log("subType []   "+type+categoryJson.sub[type]);
+                $("#asset-sub-type").select("update", {items:categoryJson.sub[type],input:""});
+                $("#asset-sub-type").select("close");
 
             }
-
-        }*/
+        }
     });
 }
 
-function initAssetSubTypeSelect() {
+function initAssetSubTypeSelect(subTypeData) {
     $("#asset-sub-type").select({
         title: "选择物品子分类",
         multi: true,
        // input:assetSubType,
-        items:info1
+        items:subTypeData
+
     });
 }
 
@@ -308,12 +264,12 @@ function save(){
                 $.toast("保存成功",800, function() {
                     $("#fix-add").hide();//奇怪
                     $.closePopup();
-                    $('.weui-cell_swiped').swipeout('close');
-                    $(document.body).pullToRefresh('triggerPullToRefresh');
+                    //$('.weui-cell_swiped').swipeout('close');
+                    $("#weui-sb").pullToRefresh('triggerPullToRefresh');
 
                 });
             }else{
-                $.toast("保存失败，请稍后再试",2000);
+                $.toast("保存失败，请稍后再试",1000);
                 $.hideLoading();
                 $(".asset-btn-submit").removeClass("weui-btn_disabled");
             }

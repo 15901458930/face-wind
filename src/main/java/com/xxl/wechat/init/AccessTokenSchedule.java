@@ -34,16 +34,17 @@ public class AccessTokenSchedule implements Runnable{
 
             String url = String.format(tokenUrl, appid,secret);
 
-            log.info("===============开始获取ACCESSTOKEN===============");
+            log.info("===============定时任务获取ACCESSTOKEN  start===============");
             String accessToken = HttpUtil.httpGetRequest(url);
             log.info("通过URL:{}获取access-token返回的RESULT:{}",url,accessToken);
 
             AccessTokenResult form = FastJson.getJson().parse(accessToken, AccessTokenResult.class);
             AccessTokenCache.token = form.getAccess_token();
+            log.info("===============定时任务获取ACCESSTOKEN  end ===============");
 
         }catch(Exception e){
 
-            log.error("获取ACCESS_TOKEN出现异常",e);
+            log.error("定时任务获取ACCESS_TOKEN出现异常",e);
         }
 
     }

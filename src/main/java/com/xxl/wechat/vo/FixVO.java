@@ -30,7 +30,38 @@ public class FixVO {
 
     private String attachmentId;
 
+    private String fixUserName;
+
+    private String startFixDate;
+
+    private String fixedDate;
+
     private String[] attachmentIds;
+
+
+    public String getFixUserName() {
+        return fixUserName;
+    }
+
+    public void setFixUserName(String fixUserName) {
+        this.fixUserName = fixUserName;
+    }
+
+    public String getStartFixDate() {
+        return startFixDate;
+    }
+
+    public void setStartFixDate(String startFixDate) {
+        this.startFixDate = startFixDate;
+    }
+
+    public String getFixedDate() {
+        return fixedDate;
+    }
+
+    public void setFixedDate(String fixedDate) {
+        this.fixedDate = fixedDate;
+    }
 
     public String getAttachmentId() {
         return attachmentId;

@@ -1,43 +1,58 @@
 package com.xxl.wechat.constant;
 
+import com.xxl.wechat.controller.FixAssetsController;
+import com.xxl.wechat.entity.Category;
+import com.xxl.wechat.service.CategoryService;
+import com.xxl.wechat.vo.CategoryVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DictConstant {
 
-    public final static Map<String,String> ASSET_TYPE = new HashMap<>();
+    private static Logger log = LoggerFactory.getLogger(DictConstant.class);
 
-    public final static Map<String,Map<String,String>> ASSET_SUB_TYPE = new HashMap<>();
+    static CategoryService service = new CategoryService();
 
-    static{
+    public static List<Category> mainCategoryList = new ArrayList<>();
 
-       // ASSET_TYPE.put("10","桌椅板凳");
-        ASSET_TYPE.put("20","信息分类");
+    public  static  Map<String,List<Category>> subCategoryList = new HashMap<>();
 
-        Map<String,String> map1 = new HashMap<>();
-        map1.put("1001","办公室电脑");
-        map1.put("1002","办公室打印机");
-        map1.put("1003","笔记本");
-        map1.put("1004","手机");
-        map1.put("1005","班机展台");
-        map1.put("1006","ipad");
-        map1.put("1007","办公室IP电话");
-        map1.put("1008","班级多媒体");
-        ASSET_SUB_TYPE.put("20",map1);
 
-       /* Map<String,String> map2 = new HashMap<>();
-        map2.put("2001","板凳");
-        map2.put("2002","桌子");
-        map2.put("2003","黑板擦");
-        map2.put("2004","椅子");
-        map2.put("2005","窗子");*/
-       // ASSET_SUB_TYPE.put("10",map2);
+    public static Map<String,String> mainCategoryMap = new HashMap<>();
 
+    public static Map<String,String> subCategoryMap = new HashMap<>();
+
+
+    public static CategoryVO vo = new CategoryVO();
+
+    public static DictConstant dictConstant = new DictConstant();
+
+    private DictConstant(){
 
     }
 
+    public static DictConstant getInstance(){
+        return dictConstant;
+    }
 
 
+    /**
+     * 初始化（）
+     */
+    public void init(){
 
+        mainCategoryList = service.findMainCategory4json();
+
+        subCategoryList = service.findSubCategory4json();
+
+        mainCategoryMap = service.findMainCategoryMap();
+
+        subCategoryMap = service.findSubCategoryMap();
+    }
 
 }

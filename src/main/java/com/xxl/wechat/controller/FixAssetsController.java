@@ -62,6 +62,18 @@ public class FixAssetsController extends Controller {
         renderJson(result);
     }
 
+    public void accept(){
+
+        int id = this.getParaToInt(0);
+        int version = this.getParaToInt(1);
+        SyUser user = (SyUser)getSessionAttr("user");
+        boolean accept = fixAssetsService.accept(id, version, user.getId());
+        String msg = accept ? "该报修信息已被其它维修人员领取！" : "";
+        ResponseResult<String> result = ResponseResult.instance().setErrorMsg(!accept,msg);
+        renderJson(result);
+
+    }
+
     /**
      * 我的报修
      */

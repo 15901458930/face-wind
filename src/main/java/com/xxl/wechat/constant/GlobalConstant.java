@@ -2,7 +2,7 @@ package com.xxl.wechat.constant;
 
 public class GlobalConstant {
 
-    public final static int DEFAULT_PAGE_SIZE = 5;
+    public final static int DEFAULT_PAGE_SIZE = 10;
 
 
     /**

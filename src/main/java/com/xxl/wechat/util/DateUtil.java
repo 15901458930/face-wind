@@ -18,6 +18,9 @@ public class DateUtil {
     public final static String NO_SECONDS_PATTERN = "yyyy-MM-dd HH:mm";
 
 
+    public final static String MM_DD_HH_PATTERN = "MM-dd HH";
+
+
     public final static String HH_MM_PATTERN = "HH:mm";
 
 

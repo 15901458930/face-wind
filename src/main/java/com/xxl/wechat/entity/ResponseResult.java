@@ -64,4 +64,11 @@ public class ResponseResult<T> {
     	return this;
 	}
 
+	public ResponseResult<T> setErrorMsg(boolean flag ,String errorMsg){
+		this.success = flag;
+		this.data = null;
+		this.message = errorMsg;
+		return this;
+	}
+
 }

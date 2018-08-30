@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+    <meta name="description"
+          content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
 
     <link rel="stylesheet" href="/weui/css/weui.min.css">
     <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
@@ -18,14 +19,21 @@
 
 <body ontouchstart>
 
-<div class="weui-tab">
+<div class="weui-tab" id="weui-sb">
+
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
 
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
 
-
-            <a class="weui-btn weui-btn_primary open-popup" href="/book/add"
-               style="position: fixed;bottom:70px;right:20px;z-index:501">+</a>
+            <a class="weui-btn weui-btn_primary open-popup" href="/book/add"  style="position: fixed;bottom:70px;right:20px;z-index:501"><i class="sstfont sst-bianji"></i></a>
 
             <!--检索条件START-->
             <div class="weui-cells weui-cells_form">
@@ -33,23 +41,24 @@
                     <div class="weui-cell__hd">
                         <select class="weui-select" name="select2" id="room-id">
                             #setLocal(sele = 'selected="selected"')
-                            #for(x :  roomList)
+                            #for(x : roomList)
                                 <option value="#(x.id)" #(roomId==x.id ? sele : '')>#(x.name)</option>
                             #end
                         </select>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" name="searchDate" id="search-date" type="text" value="#(curDate)" placeholder="请选择查询日期">
+                        <input class="weui-input" name="searchDate" id="search-date" type="text" value="#(curDate)"
+                               placeholder="请选择查询日期">
 
 
                     </div>
                     <div class="weui-cell__ft">
-                        <a class="weui-btn weui-btn_plain-default" id="search-btn" style="border:0"><i class="weui-icon-search"></i></a>
+                        <a class="weui-btn weui-btn_plain-default" id="search-btn" style="border:0"><i
+                                class="weui-icon-search"></i></a>
                     </div>
+                </div>
+                <!--检索条件END-->
             </div>
-            <!--检索条件END-->
-        </div>
-
 
 
             <div class="weui-panel__bd" id="book-room-list">
@@ -62,18 +71,20 @@
                     <span class="weui-loadmore__tips">暂无数据</span>
                 </div>
 
-            <!--列表集合渲染START-->
-            <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
+                <!--列表集合渲染START-->
+                <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
 
-            <!--列表集合渲染END-->
+                <!--列表集合渲染END-->
             </div>
 
         </div>
 
-        #@tabbar()
+    </div>
 
 </div>
-</div>
+
+
+#@tabbar()
 
 
 </body>
@@ -81,9 +92,7 @@
 <script src="/weui/js/fastclick.js"></script>
 <script src="/weui/js/jquery-weui.min.js"></script>
 <script src="/js/handlebars-v4.0.11.js"></script>
-
 <script src="/js/front/book/book-room-list.js"></script>
-
 
 <script id="book-list-template" type="text/x-handlebars-template">
     {{#each this}}
@@ -101,15 +110,17 @@
         </div>
         {{#if_eq hasPower true}}
         <div class="weui-cell__ft">
-            <a class="weui-swiped-btn weui-swiped-btn_default delete-swipeout update-room" href="/book/update/{{id}}">编辑</a>
-            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout delete-room" fixid="{{id}}" href="javascript:">删除</a>
+            <a class="weui-swiped-btn weui-swiped-btn_default delete-swipeout update-room"
+               href="/book/update/{{id}}">编辑</a>
+            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout delete-room" fixid="{{id}}"
+               href="javascript:">删除</a>
         </div>
         {{/if_eq}}
     </div>
     {{/each}}
     <!--<div class="weui-cell__ft">-->
-        <!--<a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>-->
-        <!--<a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>-->
+    <!--<a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>-->
+    <!--<a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>-->
     <!--</div>-->
 </script>
 

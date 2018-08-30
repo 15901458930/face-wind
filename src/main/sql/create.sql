@@ -103,6 +103,39 @@ CREATE TABLE `SY_SUB_CATEGORY` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='系统子分类';
 
 
+DROP TABLE IF EXISTS `WECHAT_NOTICE_TASK`;
+CREATE TABLE `WECHAT_NOTICE_TASK` (
+  `ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `USER_ID` varchar(256) NOT NULL COMMENT '微信企业号用户ID,多个用|线分开',
+  `SEND_MSG` varchar(1024) default  NULL comment '推送的消息',
+  `REMARK` varchar(256) DEFAULT NULL COMMENT '备注',
+  `RESULT` varchar(1024) DEFAULT  NULL comment '',
+  `STATUS` int NOT NULL comment '',
+  `ERROR_CODE` int default  null COMMENT '微信接口返回',
+  `ERR_MSG` varchar(256) default  null COMMENT '微信接口返回',
+  `INVALID_USER` varchar(256) default  null COMMENT '微信接口返回',
+  `CREATE_DATE` datetime NOT NULL comment  '创建时间'
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='微信推送';
+
+
+
+insert into WECHAT_NOTICE_TASK(ID,USER_ID,SEND_MSG,STATUS,CREATE_DATE) values(1,'WangPeng','您07-28 15的报修发生变化',0,'2018-04-01 18:55:55');
+
+
+
+insert into SY_MAIN_CATEGORY values(1,'信息中心','XXZX','','2018-04-01 18:55:55');
+insert into SY_MAIN_CATEGORY values(2,'后勤中心','HQZX','','2018-04-01 18:55:55');
+
+insert into SY_SUB_CATEGORY values(10010,'电脑','DN',1,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(10020,'打印机','DYJ',1,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(10030,'大屏','DP',1,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(10040,'音箱','YX',1,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(10050,'IP电话','IPDH',1,'','2018-04-01 18:55:55');
+
+insert into SY_SUB_CATEGORY values(20010,'黑板','HB',2,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(20020,'学生桌','XSZ',2,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(20030,'学生椅','XSY',2,'','2018-04-01 18:55:55');
+
 
 insert into SY_ROOM VALUES(1,'大会议室','','2018-04-01 18:55:55');
 insert into SY_ROOM VALUES(2,'东区二会','','2018-04-01 18:55:55');

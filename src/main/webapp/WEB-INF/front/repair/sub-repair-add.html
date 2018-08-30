@@ -35,6 +35,14 @@
                     <span class="weui-form-preview__value">{{fixReason}}</span>
                 </div>
                 <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">维修人</label>
+                    <span class="weui-form-preview__value">{{fixUserName}}</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">接单时间</label>
+                    <span class="weui-form-preview__value">{{startFixDate}}</span>
+                </div>
+                <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">状态</label>
                     <span class="weui-form-preview__value">
                         {{statusName}}
@@ -43,15 +51,26 @@
 
                 <div class="weui-form-preview__item">
 
-                    <span class="weui-form-preview__value">
-                        {{#each attachmentIds}}
-                                    <img src="/upload/img/{{this}}.jpeg" width="120" height="80"/>
-                        {{/each}}
-                    </span>
+                    <div class="weui-uploader__hd">
+
+                    </div>
+                    <div class="weui-uploader__bd">
+                        <ul class="weui-uploader__files" id="uploaderFiles">
+                            {{#each attachmentIds}}
+                            <li class="weui-uploader__file" style="background-image:url(/upload/img/{{this}}.jpeg)"><input type="hidden" class="attachmentId" name="attachmentId" value="{{this}}"/></li>
+                            {{/each}}
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="weui-form-preview__ft">
-                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary change-status" data-id="{{id}}" href="javascript:">更改状态</button>
+                {{#if_eq fixUserName null}}
+                    <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary accept-order" data-id="{{id}}" data-ver="{{version}}" href="javascript:">接单</button>
+                {{/if_eq}}
+
+                {{#if_n_eq fixUserName null}}
+                    <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary change-status" data-id="{{id}}" href="javascript:">更改状态</button>
+                {{/if_n_eq}}
                 <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" href="javascript:">返回</button>
             </div>
         </div>

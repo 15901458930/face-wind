@@ -1,42 +1,48 @@
-var maxId = 0; //下拉显示的最新的ID
-var minId = 0; //上拉显示历史数据的最小ID
-var uploading = false; //是否在上拉
-var downloading = false; //是否在下拉
+var minId = 999999999; //上拉显示历史数据的最小ID
 
+var categoryJson = {};
 
 $(function() {
 
-
-    //去掉延迟点击事件 左滑删除和编辑，所以要注掉
-    //FastClick.attach(document.body);
-
     //初始化下拉加载最新
    initPullRefresh();
-    //loadingData();
-    //立即刷新一次再说，先安排再说
-   $(document.body).pullToRefresh('triggerPullToRefresh');
+
+   //初始化上拉加载历史数据
+    initPushRefresh();
+
+    //立即刷新一次再说，先安排再说（不要绑定在body上，都是坑啊）
+   $("#weui-sb").pullToRefresh('triggerPullToRefresh');
 
     //绑定+++++我要报修+++++事件
     addPopupListener();
 
+    //添加报修页面下拉列表要用的json数据
+    getCategoryJson();
 });
 
+function getCategoryJson() {
 
+    $.ajax({
+        type: "get",
+        dataType: 'json',
+        url: "/category/get/",
+        success: function (jsonObj) {
+            console.log(jsonObj);
+            categoryJson = jsonObj;
+        }
+    });
+}
 
 /**
  * 点击修改
  */
 function addListDetailListener(){
-    console.log("准备绑定列表事件");
 
     $(".fix-record").off("click");
 
     $(".fix-record").on("click",function() {
 
-        console.log("点击A标签。。。");
         var fixId = $(this).find("#fixId").val();
-
-        console.log("fixId"+fixId);
 
         getFix(fixId,"preview");
     });
@@ -80,18 +86,139 @@ function addListDetailListener(){
         });
 
     });
+}
+
+/**
+ * 上拉加载历史记录
+ */
+function initPushRefresh(){
 
 
+    var uploadding = false;
 
+    $(document.body).infinite(1).on("infinite", function() {
+
+
+        if(uploadding || minId == -1){
+            return;
+        }
+
+        uploadding = true;
+
+
+        var url = "/fix/list/1-"+minId;
+
+        $(".just-waiting").show();
+
+        loadingData(url,function(jsonObj){
+
+            if(jsonObj.data.length == 0){
+
+                if(minId < 999999999){
+                    //不等于原始值，并且还没取到数据，就认为已经没有历史 数据 了，后续不再取
+                    minId = -1;
+                }
+
+                uploadding = false;
+
+                $(".just-waiting").hide();
+                $(".just-no-more").show();
+                return;
+            }
+
+            //$(".will-be-delete").remove();
+            $(".just-waiting").hide();
+            console.log(jsonObj.data);
+            var source   = $("#fix-list-template").html();
+            var template = Handlebars.compile(source);
+            var context = jsonObj.data;//数据信息
+            var html = template(context);
+
+            var reg = new RegExp( 'will-be-d' , "g" );
+            html = html.replace(reg, "will-be-delete");
+
+            $("#fix-asset-list").append(html);
+
+            $.each(jsonObj.data,function(i,item){
+                if(parseInt(item.id) < minId){
+                    minId = item.id;
+                }
+            });
+
+            $('.weui-cell_swiped').swipeout();
+
+            uploadding = false;
+            //当下拉刷新的工作完成之后，需要重置下拉刷新的状态
+            $("#weui-sb").pullToRefreshDone();
+
+            addListDetailListener();
+        });
+
+    //     setTimeout(function() {
+    //         $("#list").append("<p> 我是新加载的内容 </p>");
+    //         loading = false;
+    //     }, 1500);   //模拟延迟
+    });
 }
 
 function initPullRefresh(){
 
-    $(document.body).pullToRefresh({
+    var downloading = false;
+
+    $("#weui-sb").pullToRefresh({
         onRefresh: function () {
+
+            if(downloading){
+                return;
+            }
+
+            downloading = true;
+
             console.log("下拉触发。。。");
             /* 当下拉刷新触发的时候执行的回调 */
-            loadingData();
+            var url = "/fix/list/2-0";
+            loadingData(url,function (jsonObj){
+                $(".just-no-more").hide();
+                if(jsonObj.data.length == 0){
+                    $("#weui-sb").pullToRefreshDone();
+                    downloading = false;
+
+                    $(".just-no-data").show();
+                    $(".loadding").hide();
+
+                }else{
+
+                    $(".just-no-data").hide();
+                    $(".will-be-delete").remove();
+
+                    console.log(jsonObj.data);
+                    var source   = $("#fix-list-template").html();
+                    var template = Handlebars.compile(source);
+                    var context = jsonObj.data;//数据信息
+                    var html = template(context);
+
+                    var reg = new RegExp( 'will-be-d' , "g" );
+                    html = html.replace(reg, "will-be-delete");
+
+                    $("#fix-asset-list").append(html);
+
+                    $.each(jsonObj.data,function(i,item){
+                        if(parseInt(item.id) < minId){
+                            minId = item.id;
+                        }
+                    });
+
+                    $('.weui-cell_swiped').swipeout();
+
+                    downloading = false;
+                    //当下拉刷新的工作完成之后，需要重置下拉刷新的状态
+                    $("#weui-sb").pullToRefreshDone();
+
+                    addListDetailListener();
+                }
+
+
+            });
 
         },
         onPull: function (percent) {
@@ -103,53 +230,17 @@ function initPullRefresh(){
     });
 }
 
-function loadingData(){
-
-    if(downloading){
-
-        return;
-    }
 
 
-    downloading = true;
-
-    if(!maxId){
-        maxId = 0;
-    }
+function loadingData(url,callback){
 
     $.ajax({
         type: "get",
         dataType: 'json',
-        url: "/fix/list/2-"+maxId,
+        url: url,
         success: function (jsonObj) {
             if(jsonObj.success===true){
-
-                if(jsonObj.data.length == 0){
-                    $(document.body).pullToRefreshDone();
-                    downloading = false;
-                    $(".loadding").hide();
-                    return;
-                }
-
-                console.log(jsonObj.data);
-                var source   = $("#fix-list-template").html();
-                var template = Handlebars.compile(source);
-                var context = jsonObj.data;//数据信息
-                var html = template(context);
-                $("#fix-asset-list").append(html);
-
-                $.each(jsonObj.data,function(i,item){
-                    if(parseInt(item.id) > maxId){
-                        maxId = item.id;
-                    }
-                });
-
-                $('.weui-cell_swiped').swipeout();
-
-                downloading = false;
-                //当下拉刷新的工作完成之后，需要重置下拉刷新的状态
-                $(document.body).pullToRefreshDone();
-                addListDetailListener();
+                callback(jsonObj);
               //document.getElementById("div1").innerHTML= html;
             }else{
                //失败

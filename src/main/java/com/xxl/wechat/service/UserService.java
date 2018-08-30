@@ -6,6 +6,7 @@ import com.xxl.wechat.http.HttpUtil;
 import com.xxl.wechat.model.generator.SyRoom;
 import com.xxl.wechat.model.generator.SyUser;
 import com.xxl.wechat.util.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,12 @@ public class UserService {
 
         return syUserDao.findById(id);
     }
+
+    public List<SyUser> findAllUser(){
+
+        return syUserDao.find("select * from SY_USER");
+    }
+
 
     public SyUser save(UserInfoResult result){
 
@@ -50,6 +57,21 @@ public class UserService {
         user.setUserType(userType);
 
         user.update();
+    }
+
+
+    public String findFixUser(){
+
+        String sql = "select * from SY_USER WHERE USER_TYPE = 3";
+        List<SyUser> syUsers = syUserDao.find(sql);
+
+        StringBuilder sb = new StringBuilder();
+
+        for(SyUser user : syUsers){
+            sb.append(user.getId()).append("|");
+        }
+
+        return  StringUtils.chop(sb.toString());
     }
 
 }

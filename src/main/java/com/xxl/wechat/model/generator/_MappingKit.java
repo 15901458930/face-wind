@@ -23,6 +23,7 @@ public class _MappingKit {
 		arp.addMapping("SY_ROOM", "ID", SyRoom.class);
 		arp.addMapping("SY_SUB_CATEGORY", "ID", SySubCategory.class);
 		arp.addMapping("SY_USER", "ID", SyUser.class);
+		arp.addMapping("WECHAT_NOTICE_TASK", "ID", WechatNoticeTask.class);
 	}
 }
 

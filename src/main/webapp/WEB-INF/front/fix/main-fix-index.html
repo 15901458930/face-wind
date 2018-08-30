@@ -19,16 +19,17 @@
 
 <body ontouchstart>
 
-<div class="weui-pull-to-refresh__layer">
-    <div class='weui-pull-to-refresh__arrow'></div>
-    <div class='weui-pull-to-refresh__preloader'></div>
 
-    <div class="down">下拉刷新</div>
-    <div class="up">释放刷新</div>
-    <div class="refresh">正在刷新</div>
-</div>
+<div class="weui-tab" id="weui-sb">
 
-<div class="weui-tab">
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
 
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
@@ -38,18 +39,10 @@
 
             <div class="weui-panel__bd" id="fix-asset-list">
 
-                <div class="weui-loadmore hide loadding">
-                    <i class="weui-loading"></i>
-                    <span class="weui-loadmore__tips">正在加载</span>
-                </div>
-                <div class="weui-loadmore weui-loadmore_line hide no-data">
-                    <span class="weui-loadmore__tips">暂无数据</span>
-                </div>
-
                 <!--模板开始-->
                 <script id="fix-list-template" type="text/x-handlebars-template">
                     {{#each this}}
-                    <div class="weui-cell weui-cell_swiped record-{{id}}">
+                    <div class="weui-cell weui-cell_swiped record-{{id}} will-be-d">
                     <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
                         <div class="weui-cell__bd weui-media-box  weui-media-box_appmsg fix-record">
                         <input type="hidden" id="fixId" value="{{id}}"/>
@@ -80,6 +73,16 @@
                     {{/each}}
                  </script>
                 <!--模板结束-->
+            </div>
+            <div class="weui-loadmore just-waiting hide">
+                <i class="weui-loading"></i>
+                <span class="weui-loadmore__tips">正在加载</span>
+            </div>
+            <div class="weui-loadmore just-no-data weui-loadmore_line hide">
+                <span class="weui-loadmore__tips">暂无数据</span>
+            </div>
+            <div class="weui-loadmore just-no-more weui-loadmore_line hide">
+                <span class="weui-loadmore__tips">没有更多了</span>
             </div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 package com.xxl.wechat.service;
 
 import com.jfinal.aop.Duang;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
 import com.xxl.wechat.constant.DictConstant;
@@ -26,6 +27,10 @@ public class FixAssetsService {
 
     static AttachmentService attachmentService = new AttachmentService();
 
+    static WeChatPushService weChatPushService = new WeChatPushService();
+
+    static UserService userService = new UserService();
+
 
     public List<FixVO> findFixAssets(String userId, int primaryId, int userType, int upOrDown, String keywords){
         String sql = "";
@@ -33,16 +38,20 @@ public class FixAssetsService {
         if(userType == GlobalConstant.FIX_APPLY_USER_TYPE && upOrDown == GlobalConstant.UP){
             sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where F.APPLY_USER_ID = ? and F.ID < ?  order by F.ID desc limit 0,?";
         }else if(userType == GlobalConstant.FIX_APPLY_USER_TYPE && upOrDown == GlobalConstant.DOWN){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where  F.APPLY_USER_ID = ? and F.ID > ? order by F.ID desc  limit 0,?";
+            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where  F.APPLY_USER_ID = ?  order by F.ID desc  limit 0,?";
         }else if(userType == GlobalConstant.FIX_REPAIR_USER_TYPE && upOrDown == GlobalConstant.UP){
             sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) and F.ID < ? order by F.ID desc limit 0,?";
         }else if(userType == GlobalConstant.FIX_REPAIR_USER_TYPE && upOrDown == GlobalConstant.DOWN){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) and F.ID > ? order by F.ID desc  limit 0,?";
+            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) order by F.ID desc  limit 0,?";
         }
         SqlPara sqlPara = new SqlPara();
         sqlPara.setSql(sql);
         sqlPara.addPara(userId);
-        sqlPara.addPara(primaryId);
+
+        if(GlobalConstant.UP == upOrDown){
+            sqlPara.addPara(primaryId);
+        }
+
         sqlPara.addPara(GlobalConstant.DEFAULT_PAGE_SIZE);
         List<FixAssetTask> fixAssetTasks = fixAssetTaskDao.find(sqlPara);
 
@@ -57,7 +66,7 @@ public class FixAssetsService {
             sb.append(task.getId()).append(",");
             FixVO vo = new FixVO();
             vo.setId(task.getId());
-            vo.setAssetType(DictConstant.ASSET_TYPE.get(task.getAssetType()));
+            vo.setAssetType(DictConstant.mainCategoryMap.get(task.getAssetType()));
             vo.setApplyDate(DateUtil.format(task.getApplyDate(),DateUtil.DEFAULT_PATTERN));
             vo.setApplyUserName(task.get("REAL_NAME"));
             vo.setFixReason(task.getFixReason());
@@ -75,12 +84,36 @@ public class FixAssetsService {
     }
 
     public void change(int id,int status,String userId){
-        FixAssetTask task = new FixAssetTask();
-        task.setId(id);
-        task.setStatus(status);
-        task.setFixUserId(userId);
-        task.setFixedDate(DateUtil.getCurrentDate());
-        task.update();
+        FixAssetTask task = fixAssetTaskDao.findById(id);
+
+        if(task.getStatus() != status){
+            task.setStatus(status);
+            task.setFixUserId(userId);
+            task.setStartFixDate(DateUtil.getCurrentDate());
+            task.update();
+
+            String date = DateUtil.format(task.getApplyDate(),DateUtil.MM_DD_HH_PATTERN);
+            //添加到推送队列
+            weChatPushService.save(task.getApplyUserId(),"您"+date+"的报修状态有变化！");
+        }
+    }
+
+
+    public boolean accept(int id,int version,String userId){
+
+        FixAssetTask fixAssetTask = fixAssetTaskDao.findById(id);
+
+        int newVersion = version + 1;
+        int update = Db.update("update FIX_ASSET_TASK set FIX_USER_ID = '" + userId + "',VERSION = " + newVersion + ",STATUS = "+StatusConstant.IN_PROCESS+" where ID = " + id + " and VERSION = " + version);
+
+        boolean result = update == 0;
+
+        if(!result){
+            //添加到推送队列
+            weChatPushService.save(fixAssetTask.getApplyUserId(),"您的报修申请已被人认领，请耐心等待！");
+        }
+
+        return result;
 
     }
 
@@ -90,14 +123,16 @@ public class FixAssetsService {
 
     public FixVO get(int id){
 
-        FixAssetTask task = fixAssetTaskDao.findFirst("select F.*,U.REAL_NAME from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID WHERE F.ID = ? ",id);
+        FixAssetTask task = fixAssetTaskDao.findFirst("select F.*,U.REAL_NAME,S.REAL_NAME AS FIX_USER_REAL_NAME from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID LEFT JOIN SY_USER S ON F.FIX_USER_ID = S.ID WHERE F.ID = ? ",id);
 
         FixVO vo = new FixVO();
 
         if(task == null){
             return vo;
         }
+        vo.setFixUserName(task.get("FIX_USER_REAL_NAME"));
 
+        vo.setStartFixDate(task.getStartFixDate() == null ? "" : DateUtil.format(task.getStartFixDate(),DateUtil.DEFAULT_PATTERN));
         vo.setApplyUserName(task.get("REAL_NAME"));
         vo.setAssetLocation(task.getAssetLocation());
         vo.setAssetName(task.getAssetName());
@@ -108,20 +143,19 @@ public class FixAssetsService {
         vo.setStatusName(StatusConstant.getStatusMap(task.getStatus()));
         vo.setApplyDate(DateUtil.format(task.getApplyDate(),DateUtil.DEFAULT_PATTERN));
         vo.setVersion(task.getVersion());
-        vo.setAssetTypeName(DictConstant.ASSET_TYPE.get(task.getAssetType()));
+        vo.setAssetTypeName(DictConstant.mainCategoryMap.get(task.getAssetType()));
 
         if(StringUtils.isNotBlank(task.getAssetType()) && StringUtils.isNotBlank(task.getAssetSubType())){
 
             String[] assetSubTypes = StringUtils.split(task.getAssetSubType(),",");
             StringBuilder sb = new StringBuilder();
             for(String singleSubType : assetSubTypes){
-                sb.append(DictConstant.ASSET_SUB_TYPE.get(task.getAssetType()).get(singleSubType));
+                sb.append(DictConstant.subCategoryMap.get(singleSubType));
                 sb.append(",");
             }
             String assetSubTypeName = StringUtils.chop(sb.toString());
             vo.setAssetSubTypeName(assetSubTypeName);
             log.info("{}>>>{}",task.getAssetSubType(),assetSubTypeName);
-
         }
 
         vo.setAssetSubType(task.getAssetSubType());
@@ -130,7 +164,6 @@ public class FixAssetsService {
         vo.setVersion(task.getVersion());
 
         vo.setAttachmentIds(attachmentService.findAttachmentIdsByBid(task.getId()));
-
 
         return vo;
     }
@@ -152,6 +185,10 @@ public class FixAssetsService {
             task.setApplyDate(DateUtil.getCurrentDate());
             task.setStatus(StatusConstant.WAIT_PROCESS);
             task.save();
+
+            //添加到推送队列
+            weChatPushService.save(userService.findFixUser(),"有新的报修！");
+
         }else{
             task.setId(form.getId());
             task.update();
