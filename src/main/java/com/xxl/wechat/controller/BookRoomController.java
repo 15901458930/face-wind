@@ -95,7 +95,7 @@ public class BookRoomController extends Controller {
     public void save(){
 
         String json = getPara("book");
-       SyUser user = (SyUser)getSessionAttr("user");
+        SyUser user = (SyUser)getSessionAttr("user");
         BookRoomForm form = FastJson.getJson().parse(json, BookRoomForm.class);
         form.setCuUserId(user.getId());
         List<BookRoomVO> list = bookRoomService.save(form);

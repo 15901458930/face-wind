@@ -9,6 +9,7 @@ import com.xxl.wechat.constant.GlobalConstant;
 import com.xxl.wechat.constant.StatusConstant;
 import com.xxl.wechat.form.FixForm;
 import com.xxl.wechat.model.generator.FixAssetTask;
+import com.xxl.wechat.model.generator.SyUser;
 import com.xxl.wechat.util.DateUtil;
 import com.xxl.wechat.vo.FixVO;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +33,7 @@ public class FixAssetsService {
     static UserService userService = new UserService();
 
 
-    public List<FixVO> findFixAssets(String userId, int primaryId, int userType, int upOrDown, String keywords){
+    public List<FixVO> findFixAssets(int userId, int primaryId, int userType, int upOrDown, String keywords){
         String sql = "";
         //我的【报修】【上拉】刷新
         if(userType == GlobalConstant.FIX_APPLY_USER_TYPE && upOrDown == GlobalConstant.UP){
@@ -83,34 +84,39 @@ public class FixAssetsService {
         return voList;
     }
 
-    public void change(int id,int status,String userId){
+    public void change(int id,int status,int userId){
         FixAssetTask task = fixAssetTaskDao.findById(id);
 
         if(task.getStatus() != status){
             task.setStatus(status);
             task.setFixUserId(userId);
-            task.setStartFixDate(DateUtil.getCurrentDate());
+            //task.setStartFixDate(DateUtil.getCurrentDate());
             task.update();
 
             String date = DateUtil.format(task.getApplyDate(),DateUtil.MM_DD_HH_PATTERN);
+
+            SyUser user = userService.getUser(task.getApplyUserId());
+
             //添加到推送队列
-            weChatPushService.save(task.getApplyUserId(),"您"+date+"的报修状态有变化！");
+            weChatPushService.save(user.getWechatUserId(),"您"+date+"的报修状态有变化！");
         }
     }
 
 
-    public boolean accept(int id,int version,String userId){
+    public boolean accept(int id,int version,int userId){
 
         FixAssetTask fixAssetTask = fixAssetTaskDao.findById(id);
 
         int newVersion = version + 1;
-        int update = Db.update("update FIX_ASSET_TASK set FIX_USER_ID = '" + userId + "',VERSION = " + newVersion + ",STATUS = "+StatusConstant.IN_PROCESS+" where ID = " + id + " and VERSION = " + version);
+        int update = Db.update("update FIX_ASSET_TASK set FIX_USER_ID = '" + userId + "',VERSION = " + newVersion + ",STATUS = "+StatusConstant.IN_PROCESS+",START_FIX_DATE = '"+DateUtil.getCurrentDateStr()+"' where ID = " + id + " and VERSION = " + version);
 
         boolean result = update == 0;
 
         if(!result){
+            SyUser user = userService.getUser(fixAssetTask.getApplyUserId());
+
             //添加到推送队列
-            weChatPushService.save(fixAssetTask.getApplyUserId(),"您的报修申请已被人认领，请耐心等待！");
+            weChatPushService.save(user.getWechatUserId(),"您的报修申请已被人认领，请耐心等待！");
         }
 
         return result;

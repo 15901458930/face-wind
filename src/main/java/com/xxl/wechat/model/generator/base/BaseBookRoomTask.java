@@ -33,12 +33,12 @@ public abstract class BaseBookRoomTask<M extends BaseBookRoomTask<M>> extends Mo
 		return getStr("BOOK_DATE");
 	}
 
-	public void setBookUserId(java.lang.String bookUserId) {
+	public void setBookUserId(java.lang.Integer bookUserId) {
 		set("BOOK_USER_ID", bookUserId);
 	}
 	
-	public java.lang.String getBookUserId() {
-		return getStr("BOOK_USER_ID");
+	public java.lang.Integer getBookUserId() {
+		return getInt("BOOK_USER_ID");
 	}
 
 	public void setBookStartTime(java.util.Date bookStartTime) {
@@ -73,12 +73,12 @@ public abstract class BaseBookRoomTask<M extends BaseBookRoomTask<M>> extends Mo
 		return get("CREATE_DATE");
 	}
 
-	public void setCreateUserId(java.lang.String createUserId) {
+	public void setCreateUserId(java.lang.Integer createUserId) {
 		set("CREATE_USER_ID", createUserId);
 	}
 	
-	public java.lang.String getCreateUserId() {
-		return getStr("CREATE_USER_ID");
+	public java.lang.Integer getCreateUserId() {
+		return getInt("CREATE_USER_ID");
 	}
 
 	public void setVersion(java.lang.Integer version) {

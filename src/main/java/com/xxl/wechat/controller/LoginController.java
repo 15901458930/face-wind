@@ -33,7 +33,7 @@ public class LoginController extends Controller {
         if(devModel.equals("true")){
             //开发模式
             SyUser user  = new SyUser();
-            user.setId("10000");
+            user.setId(10000);
             user.setAvatar("http://p.qlogo.cn/bizmail/r2LaXyGa7ibchfHtM3KH9ba3hticNWNTibJV8o0I7LmPPCXeMuKoHDddw/");
             user.setRealName("许小丽");
 

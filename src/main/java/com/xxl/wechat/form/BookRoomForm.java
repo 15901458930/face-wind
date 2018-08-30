@@ -7,13 +7,13 @@ public class BookRoomForm {
     private String startTime;
     private String endTime;
 
-    private String cuUserId;
+    private Integer cuUserId;
 
-    public String getCuUserId() {
+    public Integer getCuUserId() {
         return cuUserId;
     }
 
-    public void setCuUserId(String cuUserId) {
+    public void setCuUserId(Integer cuUserId) {
         this.cuUserId = cuUserId;
     }
 

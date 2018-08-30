@@ -19,7 +19,7 @@ public class UserService {
     static SyUser syUserDao = new SyUser().dao();
 
 
-    public SyUser getUser(String id){
+    public SyUser getUser(int id){
 
         return syUserDao.findById(id);
     }
@@ -35,8 +35,7 @@ public class UserService {
 
         SyUser user = new SyUser();
 
-
-        user.setId(result.getUserid());
+        user.setWechatUserId(result.getUserid());
         user.setPhone(result.getMobile());
         user.setAvatar(result.getAvatar());
         user.setPosition(result.getPosition());
@@ -49,7 +48,7 @@ public class UserService {
         return user;
     }
 
-    public void update(Integer userType,String userId){
+    public void update(Integer userType,Integer userId){
 
 
         SyUser user = new SyUser();

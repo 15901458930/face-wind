@@ -9,12 +9,20 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSyUser<M extends BaseSyUser<M>> extends Model<M> implements IBean {
 
-	public void setId(java.lang.String id) {
+	public void setId(java.lang.Integer id) {
 		set("ID", id);
 	}
 	
-	public java.lang.String getId() {
-		return getStr("ID");
+	public java.lang.Integer getId() {
+		return getInt("ID");
+	}
+
+	public void setWechatUserId(java.lang.String wechatUserId) {
+		set("WECHAT_USER_ID", wechatUserId);
+	}
+	
+	public java.lang.String getWechatUserId() {
+		return getStr("WECHAT_USER_ID");
 	}
 
 	public void setClassId(java.lang.Integer classId) {

@@ -18,15 +18,15 @@ public class FixForm {
     private String fixReason;
     private String[] attachmentIds;
 
-    private String curUserId;
+    private Integer curUserId;
 
     private Integer version;
 
-    public String getCurUserId() {
+    public Integer getCurUserId() {
         return curUserId;
     }
 
-    public void setCurUserId(String curUserId) {
+    public void setCurUserId(Integer curUserId) {
         this.curUserId = curUserId;
     }
 

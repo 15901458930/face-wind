@@ -29,7 +29,9 @@
     <div class="weui-msg__opr-area">
         <p class="weui-btn-area">
             <a href="javascript:;" class="weui-btn weui-btn_primary choose-role" user-type="2" data-val="老师">我是老师</a>
-            <a href="javascript:;" class="weui-btn weui-btn_primary choose-role" user-type="3" data-val="维修人员">我是维修人员</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary choose-again" data-val="维修人员">我是服务人员</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary choose-role" user-type="6" data-val="我是领导">我是领导</a>
+
         </p>
     </div>
     <div class="weui-msg__extra-area">
@@ -59,7 +61,35 @@
 
             });
         });
+
+
+        $(".choose-again").click(function(){
+            $.actions({
+                title:'请选择',
+
+                actions: [{
+                    text: "后勤中心维修",
+                    className:'color-primary',
+                    onClick: function() {
+                        //do something
+                        location.href="/user/choose/3?v="+new Date().getTime();
+
+                    }
+                },{
+                    text: "信息中心维修",
+                    className:'color-primary',
+                    onClick: function() {
+                        //do something
+                        location.href="/user/choose/4"+ userType +"?v="+new Date().getTime();
+
+                    }
+                }]
+            });
+        });
+
     });
+
+
 
 
 </script>

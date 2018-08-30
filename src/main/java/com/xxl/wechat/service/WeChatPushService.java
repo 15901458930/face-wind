@@ -23,7 +23,7 @@ public class WeChatPushService {
 
         WechatNoticeTask task = new WechatNoticeTask();
 
-        task.setUserId(userIds);
+        task.setUserId(userIds);//TODO
         task.setSendMsg(msg);
         task.setStatus(0);
         task.setCreateDate(DateUtil.getCurrentDate());

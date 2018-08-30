@@ -17,20 +17,20 @@ public abstract class BaseFixAssetTask<M extends BaseFixAssetTask<M>> extends Mo
 		return getInt("ID");
 	}
 
-	public void setFixUserId(java.lang.String fixUserId) {
+	public void setFixUserId(java.lang.Integer fixUserId) {
 		set("FIX_USER_ID", fixUserId);
 	}
 	
-	public java.lang.String getFixUserId() {
-		return getStr("FIX_USER_ID");
+	public java.lang.Integer getFixUserId() {
+		return getInt("FIX_USER_ID");
 	}
 
-	public void setApplyUserId(java.lang.String applyUserId) {
+	public void setApplyUserId(java.lang.Integer applyUserId) {
 		set("APPLY_USER_ID", applyUserId);
 	}
 	
-	public java.lang.String getApplyUserId() {
-		return getStr("APPLY_USER_ID");
+	public java.lang.Integer getApplyUserId() {
+		return getInt("APPLY_USER_ID");
 	}
 
 	public void setAssetType(java.lang.String assetType) {

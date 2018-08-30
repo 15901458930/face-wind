@@ -52,7 +52,7 @@ public class BookRoomService {
     }
 
 
-    public List<BookRoomVO> findRoomByDateAndRoom(String roomId,String bookDate,String userId){
+    public List<BookRoomVO> findRoomByDateAndRoom(String roomId,String bookDate,int userId){
 
         String sql = "select U.REAL_NAME,B.CREATE_DATE,B.ID,B.BOOK_START_TIME,B.BOOK_END_TIME,S.NAME AS ROOM_NAME,B.BOOK_USER_ID from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID where ROOM_ID = ? and BOOK_DATE = ? order by B.BOOK_START_TIME ASC" ;
         List<BookRoomTask>  list = bookRoomTaskDao.find(sql, roomId, bookDate);

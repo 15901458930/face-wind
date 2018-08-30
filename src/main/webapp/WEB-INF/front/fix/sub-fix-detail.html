@@ -44,7 +44,10 @@
                     <label class="weui-form-preview__label">接单时间</label>
                     <span class="weui-form-preview__value">{{startFixDate}}</span>
                 </div>
-
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">当前状态</label>
+                    <span class="weui-form-preview__value">{{statusName}}</span>
+                </div>
 
                 <div class="weui-form-preview__item">
 
@@ -55,7 +58,7 @@
                         <div class="weui-uploader__bd">
                             <ul class="weui-uploader__files" id="uploaderFiles">
                                 {{#each attachmentIds}}
-                                <li class="weui-uploader__file" style="background-image:url(/upload/img/{{this}}.jpeg)"><input type="hidden" class="attachmentId" name="attachmentId" value="{{this}}"/></li>
+                                    <li class="weui-uploader__file" style="background-image:url(/upload/img/{{this}}.jpeg)"><input type="hidden" class="attachmentId" name="attachmentId" value="{{this}}"/></li>
                                 {{/each}}
                             </ul>
                         </div>
