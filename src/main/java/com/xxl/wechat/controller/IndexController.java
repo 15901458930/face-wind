@@ -57,7 +57,7 @@ public class IndexController extends Controller {
         }else{
             //如果是企业内部用户，则通过USER_ID查询该用户是否在用户表中存在
 
-            SyUser user  = userService.getUser(userTicketResult.getUserId());
+            SyUser user  = userService.getUserByWechatUserId(userTicketResult.getUserId());
 
             if(user == null ){
 
@@ -91,12 +91,12 @@ public class IndexController extends Controller {
         log.warn("<<<<<<<<<<<<<USER_TYPE的值为》》》》"+user.getUserType());
         if(user.getUserType() == null){
             render("choose-role.html");
-        }else if(user.getUserType() == 2){
+        }else if(user.getUserType() == 2 || user.getUserType() == 5){
             redirect("/fix/index");
-        }else if(user.getUserType() == 3){
+        }else if(user.getUserType() == 3 || user.getUserType() == 4){
             redirect("/repair/index");
-        }else{
-            log.warn("USER_TYPE的值为》》》》"+user.getUserType());
+        }else {
+
         }
     }
 

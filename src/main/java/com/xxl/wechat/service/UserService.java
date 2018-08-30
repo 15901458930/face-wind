@@ -24,6 +24,11 @@ public class UserService {
         return syUserDao.findById(id);
     }
 
+    public SyUser getUserByWechatUserId(String id){
+
+        return syUserDao.findFirst("select * from SY_USER WHERE WECHAT_USER_ID = ? " ,id);
+    }
+
     public List<SyUser> findAllUser(){
 
         return syUserDao.find("select * from SY_USER");
