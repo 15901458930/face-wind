@@ -2,6 +2,7 @@ CREATE DATABASE wechat DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 create user 'wechat'@'%' identified by '1234+asdf';
 grant all privileges on wechat.* to 'wechat'@'%';
 
+/**用户*/
 DROP TABLE IF EXISTS `SY_USER`;
  CREATE TABLE `SY_USER` (
   `ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -36,6 +37,7 @@ CREATE TABLE `FIX_ASSET_TASK` (
   `ASSET_SUB_TYPE` varchar(256) DEFAULT NULL COMMENT '物品小类(多选，多个用逗号分隔)',
   `ASSET_NAME` varchar(256) DEFAULT NULL COMMENT '物品名称',
   `ASSET_LOCATION` varchar(256) DEFAULT NULL COMMENT '物品位置',
+  `BELONG_CAMPUS` int(11) default  null  COMMENT '所属校区',
   `FIX_REASON` varchar(2048) DEFAULT NULL COMMENT '维修原因',
   `STATUS` tinyint(4) NOT NULL COMMENT '1.其它 2.已上报领导 3.已联系厂商 4.维修需要很久，慢慢等待  5.没有问题了  6 修理完成',
   `APPLY_DATE` datetime DEFAULT NULL COMMENT '申请时间',
@@ -68,7 +70,14 @@ CREATE TABLE `BOOK_ROOM_TASK` (
   `BOOK_USER_ID` int(11)  DEFAULT NULL COMMENT '预订人',
   `BOOK_START_TIME` datetime NOT NULL COMMENT '预订开始时间',
   `BOOK_END_TIME` datetime DEFAULT NULL COMMENT '预订结束时间',
+  `DEPART` varchar(256) DEFAULT NULL COMMENT '使用部门',
+  `USE_REASON` varchar(256) DEFAULT NULL COMMENT '使用事由',
+  `DEVICE` varchar(256) DEFAULT NULL COMMENT '使用设备名称',
   `REMARK` varchar(256) DEFAULT NULL COMMENT '备注',
+  `NEED_CAMERA` int DEFAULT NULL COMMENT '是否需要照相',
+  `SPECIAL_REQUIRE` int DEFAULT NULL COMMENT '特殊要求',
+  `STATUS` int DEFAULT  NULL COMMENT '状态',
+  `RESPONSIBLE_USER` varchar(256) DEFAULT NULL COMMENT '责任人',
   `CREATE_DATE` datetime NOT NULL comment  '创建时间',
   `CREATE_USER_ID` int(11)  DEFAULT NULL COMMENT '创建人',
   `VERSION` int NOT NULL COMMENT '版本号（用于乐观锁）'
@@ -124,19 +133,18 @@ CREATE TABLE `WECHAT_NOTICE_TASK` (
 insert into WECHAT_NOTICE_TASK(ID,USER_ID,SEND_MSG,STATUS,CREATE_DATE) values(1,'WangPeng','您07-28 15的报修发生变化',0,'2018-04-01 18:55:55');
 
 
+insert into SY_MAIN_CATEGORY values(3,'后勤中心','HQZX','','2018-04-01 18:55:55');
+insert into SY_MAIN_CATEGORY values(4,'信息中心','XXZX','','2018-04-01 18:55:55');
 
-insert into SY_MAIN_CATEGORY values(1,'信息中心','XXZX','','2018-04-01 18:55:55');
-insert into SY_MAIN_CATEGORY values(2,'后勤中心','HQZX','','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(40010,'电脑','DN',4,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(40020,'打印机','DYJ',4,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(40030,'大屏','DP',4,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(40040,'音箱','YX',4,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(40050,'IP电话','IPDH',4,'','2018-04-01 18:55:55');
 
-insert into SY_SUB_CATEGORY values(10010,'电脑','DN',1,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(10020,'打印机','DYJ',1,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(10030,'大屏','DP',1,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(10040,'音箱','YX',1,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(10050,'IP电话','IPDH',1,'','2018-04-01 18:55:55');
-
-insert into SY_SUB_CATEGORY values(20010,'黑板','HB',2,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(20020,'学生桌','XSZ',2,'','2018-04-01 18:55:55');
-insert into SY_SUB_CATEGORY values(20030,'学生椅','XSY',2,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(30010,'黑板','HB',3,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(30020,'学生桌','XSZ',3,'','2018-04-01 18:55:55');
+insert into SY_SUB_CATEGORY values(30030,'学生椅','XSY',3,'','2018-04-01 18:55:55');
 
 
 insert into SY_ROOM VALUES(1,'东楼会议室','','2018-04-01 18:55:55');

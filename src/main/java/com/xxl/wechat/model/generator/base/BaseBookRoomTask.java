@@ -57,12 +57,68 @@ public abstract class BaseBookRoomTask<M extends BaseBookRoomTask<M>> extends Mo
 		return get("BOOK_END_TIME");
 	}
 
+	public void setDepart(java.lang.String depart) {
+		set("DEPART", depart);
+	}
+	
+	public java.lang.String getDepart() {
+		return getStr("DEPART");
+	}
+
+	public void setUseReason(java.lang.String useReason) {
+		set("USE_REASON", useReason);
+	}
+	
+	public java.lang.String getUseReason() {
+		return getStr("USE_REASON");
+	}
+
+	public void setDevice(java.lang.String device) {
+		set("DEVICE", device);
+	}
+	
+	public java.lang.String getDevice() {
+		return getStr("DEVICE");
+	}
+
 	public void setRemark(java.lang.String remark) {
 		set("REMARK", remark);
 	}
 	
 	public java.lang.String getRemark() {
 		return getStr("REMARK");
+	}
+
+	public void setNeedCamera(java.lang.Integer needCamera) {
+		set("NEED_CAMERA", needCamera);
+	}
+	
+	public java.lang.Integer getNeedCamera() {
+		return getInt("NEED_CAMERA");
+	}
+
+	public void setSpecialRequire(java.lang.Integer specialRequire) {
+		set("SPECIAL_REQUIRE", specialRequire);
+	}
+	
+	public java.lang.Integer getSpecialRequire() {
+		return getInt("SPECIAL_REQUIRE");
+	}
+
+	public void setStatus(java.lang.Integer status) {
+		set("STATUS", status);
+	}
+	
+	public java.lang.Integer getStatus() {
+		return getInt("STATUS");
+	}
+
+	public void setResponsibleUser(java.lang.String responsibleUser) {
+		set("RESPONSIBLE_USER", responsibleUser);
+	}
+	
+	public java.lang.String getResponsibleUser() {
+		return getStr("RESPONSIBLE_USER");
 	}
 
 	public void setCreateDate(java.util.Date createDate) {
