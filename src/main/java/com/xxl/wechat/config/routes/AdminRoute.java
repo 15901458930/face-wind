@@ -8,9 +8,9 @@ public class AdminRoute extends Routes {
     @Override
     public void config() {
         setBaseViewPath("WEB-INF/");
-        add("/manager/main", ManagerIndexController.class);
-        add("/manager/login", ManagerLoginController.class);
-        add("/manager/user", ManagerUserController.class);
+        add("/admin/main", AdminIndexController.class);
+        add("/admin/login", AdminLoginController.class);
+        add("/admin/user", AdminUserController.class);
 
     }
 }

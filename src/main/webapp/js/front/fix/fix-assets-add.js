@@ -1,3 +1,4 @@
+var index; //第几张图片
 
 /**
  * 绑定我要报修事件
@@ -10,6 +11,7 @@ function addPopupListener(){
         $("#fix-add").popup();
 
         initFormHandler(categoryJson.sub["1"]);
+
     });
 
 }
@@ -39,6 +41,23 @@ function assemblyHandlerBars(data,template1,target) {
 }
 
 /**
+ * 初始化明细页面预览图片事件
+ */
+function initViewHandler(){
+    //点击预览大图
+    $("#detailFiles").on("click", "li", function() {
+        index = $(this).index();
+        $("#v_galleryImg").attr("style", this.getAttribute("style"));
+        $("#v_gallery").fadeIn(100);
+    });
+    //点击取消预览大图
+    $("#v_gallery").on("click", function() {
+        $("#v_gallery").fadeOut(100);
+    });
+}
+
+
+/**
  * 通用打开明细页面后的一系列初始化操作
  * @param data
  */
@@ -47,10 +66,10 @@ function initFormHandler(subTypeData){
     //单选select事件
     initAssetTypeSelect();
 
-
-    console.log("小哥"+subTypeData);
     //多选select事件
     initAssetSubTypeSelect(subTypeData);
+
+    initCampusSelect();
 
     //初始化图片上传事件
     initUploaderImg();
@@ -92,8 +111,10 @@ function getFix(fixId,type){
 
                 }else{
                     //预览
+
                     assemblyHandlerBars(jsonObj.data,"#fix-detail-template","#fix-detail");
                     $("#fix-detail").popup();
+                    initViewHandler();
                     $(".swiper-container").swiper();
                 }
             }else{
@@ -105,11 +126,11 @@ function getFix(fixId,type){
     });
 }
 
-
 /**
  * 图片上传组件
  */
 function initUploaderImg() {
+
     // 允许上传的图片类型
     var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
     // 1024KB，也就是 1MB
@@ -206,8 +227,56 @@ function initUploaderImg() {
             };
         }
     });
+
+
+    //点击预览大图
+    $("#uploaderFiles").on("click", "li", function() {
+        index = $(this).index();
+        var attchmentId = $(this).find(".attachmentId").val();
+        alert("get"+attchmentId);
+        $("#galleryImg").attr("style", this.getAttribute("style"));
+        $(".weui-gallery__del").attr("id",attchmentId);
+        $("#gallery").fadeIn(100);
+    });
+    //点击取消预览大图
+    $("#gallery").on("click", function() {
+        $("#gallery").fadeOut(100);
+    });
+    //大图下方的删除按钮删除图片
+    $(".weui-gallery__del").click(function() {
+
+        var attchmentId = $(this).attr("id");
+
+        if(attchmentId){
+
+            $.confirm("您确定要删除此图片吗?", "确认删除?", function() {
+                deletePic(attchmentId);
+            }, function() {
+                //取消操作
+            });
+        }
+    });
 }
 
+
+function deletePic(id){
+    $.ajax({
+        type: "get",
+        dataType: 'json',
+        url: "/attachment/delete/"+id,
+        success: function (jsonObj) {
+            if(jsonObj.success===true){
+
+                $.toast("删除成功",1000);
+                $("#uploaderFiles").find("li").eq(index).remove();
+            }else{
+                //失败
+                $.toast("删除成功，请稍后重试！",1200);
+            }
+
+        }
+    });
+}
 
 function initAssetTypeSelect(){
     $("#asset-type").select({
@@ -225,6 +294,14 @@ function initAssetTypeSelect(){
 
             }
         }
+    });
+}
+
+function initCampusSelect() {
+    $("#belongCampus").select({
+        title: "选择物品校区",
+        // input:assetSubType,
+        items: categoryJson.campus
     });
 }
 
@@ -251,13 +328,20 @@ function save(){
     $(".asset-btn-submit").addClass("weui-btn_disabled");
     $.showLoading("保存中");
 
-    var _data  = _assembleForm();
+    var  _data = _assembleForm();
+
+    if(!valid(_data)){
+        $.hideLoading();
+        return;
+    }
+
+    var jsonStr = JSON.stringify(_data);
 
     $.ajax({
         type: "post",
         dataType: 'json',
         url: '/fix/save',
-        data: {"fix": _data},
+        data: {"fix": jsonStr},
         success:function(res){
             if(res.result == "success"){
                 $.hideLoading();
@@ -280,17 +364,67 @@ function save(){
     });
 
 }
+function valid(data){
+    //先清掉所有的提示
+    $(".weui-cell").removeClass("weui-cell_warn");
+
+    if(!data.assetType || !data.assetLocation || !data.fixReason || !data.assetSubType){
+        //先判断非空选项
+        if(!data.assetType){
+            $("#asset-valid").addClass("weui-cell_warn");
+        }
+        if(!data.assetLocation){
+            $("#asset-location-valid").addClass("weui-cell_warn");
+        }
+        if(!data.fixReason){
+            $("#asset-reason-valid").addClass("weui-cell_warn");
+        }
+        if(!data.assetSubType){
+            $("#sub-asset-valid").addClass("weui-cell_warn");
+        }
+
+        $.toptip('带红色星号为必填项',2000,'warning');
+        return false;
+
+    }else{
+        //如果都不为空，继续判断有没有超过字符长度
+        var warnnn = false;
+        if(data.assetName && data.assetName.length > 50){
+            warnnn = true;
+            $("#asset-name-valid").addClass("weui-cell_warn");
+        }
+        if(data.fixReason.length > 200){
+            warnnn = true;
+            $("#asset-reason-valid").addClass("weui-cell_warn");
+        }
+        if(data.assetLocation.length > 50){
+            warnnn = true;
+            $("#asset-location-valid").addClass("weui-cell_warn");
+        }
+        if(warnnn){
+            $.toptip('请不要超过限制长度',2000,'warning');
+            return false;
+        }
+    }
+    return true;
+}
+
 
 function _assembleForm() {
     var formObj = new Object();
 
     var assetType = $("input[name='assetType']").attr("data-values");
     var assetSubType = $("input[name='assetSubType']").attr("data-values");
+    var belongCampus = $("input[name='belongCampus']").attr("data-values");
     var assetName = $("input[name='assetName']").val();
     var assetLocation = $("input[name='assetLocation']").val();
     var fixReason = $("#fixReason").val();
     var id = $("input[name='id']").val();
     var version = $("input[name='version']").val();
+
+
+
+
 
     formObj.assetType = assetType;
     formObj.assetSubType = assetSubType;
@@ -298,6 +432,7 @@ function _assembleForm() {
     formObj.assetLocation = assetLocation;
     formObj.fixReason = fixReason;
     formObj.id = id;
+    formObj.belongCampus = belongCampus;
 
     //附件ID
     var attchmentIds = new Array();
@@ -307,6 +442,6 @@ function _assembleForm() {
     });
 
     formObj.attachmentIds = attchmentIds;
-    var jsonStr = JSON.stringify(formObj);
-    return jsonStr;
+
+    return formObj;
 }

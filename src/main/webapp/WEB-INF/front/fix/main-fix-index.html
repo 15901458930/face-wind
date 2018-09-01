@@ -22,7 +22,7 @@
 
 <div class="weui-tab" id="weui-sb">
 
-    <div class="weui-pull-to-refresh__layer">
+  <div class="weui-pull-to-refresh__layer">
         <div class='weui-pull-to-refresh__arrow'></div>
         <div class='weui-pull-to-refresh__preloader'></div>
 
@@ -53,13 +53,13 @@
                             <h4 class="weui-media-box__title">
                                 <div style="float:left">{{assetType}} </div>
 
-                                <div style="float:right;margin-right:5px"> <em class="num font-15" style="color:red;font-size:14px;font-weight:bold;font-style:normal">{{statusName}}</em></div>
+                                <div style="float:right;margin-right:5px"> <em class="num font-15 red-status">【{{statusName}}】</em></div>
 
                             </h4>
                             <p class="weui-media-box__desc">{{fixReason}}</p>
                             <ul class="weui-media-box__info">
-                                <li class="weui-media-box__info__meta">报修人：{{applyUserName}}</li>
-                                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{applyDate}}
+                                <li class="weui-media-box__info__meta">报修人:{{applyUserName}} | {{applyDate}}</li>
+                                <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">
                                 </li>
                             </ul>
                         </div>
@@ -70,6 +70,7 @@
                             <a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>
                         </div>
                     </div>
+
                     {{/each}}
                  </script>
                 <!--模板结束-->
@@ -86,12 +87,10 @@
             </div>
         </div>
     </div>
-
-
-    #@fix_add_page()
-
-    #@fix_detail_page()
 </div>
+#@fix_add_page()
+
+#@fix_detail_page()
 
 #@tabbar()
 
@@ -100,10 +99,12 @@
 
 <script src="/weui/js/jquery-2.1.4.js"></script>
 <script src="/weui/js/jquery-weui.min.js"></script>
+<script src="/weui/js/fastclick.js"></script>
+
 <script src="/js/handlebars-v4.0.11.js"></script>
 <script src="/weui/js/swiper.min.js"></script>
-<script src="/js/front/fix/fix-assets-list.js"></script>
-<script src="/js/front/fix/fix-assets-add.js"></script>
+<script src="/js/front/fix/fix-assets-list.js?ver=222"></script>
+<script src="/js/front/fix/fix-assets-add.js?ver=122211"></script>
 
 
 

@@ -58,7 +58,7 @@ public class ResponseResult<T> {
 	}
 
 
-	public ResponseResult<T> setInstance(boolean success,T data){
+	public ResponseResult<T> setSuccessData(boolean success,T data){
     	this.success = success;
     	this.data = data;
     	return this;

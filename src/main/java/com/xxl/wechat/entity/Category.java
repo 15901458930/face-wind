@@ -24,4 +24,9 @@ public class Category {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public Category(String title, String value) {
+        this.title = title;
+        this.value = value;
+    }
 }

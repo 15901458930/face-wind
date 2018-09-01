@@ -2276,7 +2276,7 @@ button.swiper-pagination-bullet {
   background-color: #4cd964;
 }
 .weui-toptips {
-  z-index: 100;
+  z-index: 600;
   opacity: 0;
   -webkit-transition: opacity .3s;
   transition: opacity .3s;

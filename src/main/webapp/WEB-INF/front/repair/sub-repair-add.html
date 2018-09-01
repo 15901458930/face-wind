@@ -4,6 +4,9 @@
     <div class="weui-popup__overlay"></div>
     <div class="weui-popup__modal just-for-d"  style="font-size:13px">
         <div class="weui-form-preview">
+
+
+
             <div class="weui-form-preview__bd">
                 <div class="weui-form-preview__item">
                     <label class="weui-form-preview__label">申请人</label>
@@ -49,13 +52,17 @@
                     </span>
                 </div>
 
+                <div class="weui-gallery" id="v_gallery">
+                    <span class="weui-gallery__img" id="v_galleryImg"></span>
+                </div>
+
                 <div class="weui-form-preview__item">
 
                     <div class="weui-uploader__hd">
 
                     </div>
                     <div class="weui-uploader__bd">
-                        <ul class="weui-uploader__files" id="uploaderFiles">
+                        <ul class="weui-uploader__files" id="detailFiles">
                             {{#each attachmentIds}}
                             <li class="weui-uploader__file" style="background-image:url(/upload/img/{{this}}.jpeg)"><input type="hidden" class="attachmentId" name="attachmentId" value="{{this}}"/></li>
                             {{/each}}
@@ -63,15 +70,23 @@
                     </div>
                 </div>
             </div>
-            <div class="weui-form-preview__ft">
+
+            <div class="weui-form-preview__ft weui-footer_fixed-bottom">
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" id="buybtn" href="javascript:">返回</a>
+                <!--<a class="weui-form-preview__btn weui-form-preview__btn_primary" id="buybtn" href="javascript:$.toptip('请先选择规格', 'error');;">返回</a>-->
+            </div>
+
+
+            <div class="weui-form-preview__ft weui-footer_fixed-bottom">
                 {{#if_eq fixUserName null}}
-                    <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary accept-order" data-id="{{id}}" data-ver="{{version}}" href="javascript:">接单</button>
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary close-popup accept-order" data-id="{{id}}" data-ver="{{version}}"  href="javascript:">接单</a>
+
                 {{/if_eq}}
 
                 {{#if_n_eq fixUserName null}}
-                    <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary change-status" data-id="{{id}}" href="javascript:">更改状态</button>
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary close-popup change-status" data-id="{{id}}"  href="javascript:">更改状态</a>
                 {{/if_n_eq}}
-                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" href="javascript:">返回</button>
+                    <a class="weui-form-preview__btn weui-form-preview__btn_primary close-popup close-popup" data-id="{{id}}"  href="javascript:">返回</a>
             </div>
         </div>
     </div>

@@ -37,12 +37,16 @@ public class FixAssetsController extends Controller {
     }
 
 
+    public void demo(){
+        render("demo.html");
+    }
+
     public void change(){
         int id = this.getParaToInt(0);
         int status = this.getParaToInt(1);
         SyUser user = (SyUser)getSessionAttr("user");
         fixAssetsService.change(id,status,user.getId());
-        ResponseResult<String> result = ResponseResult.instance().setInstance(true,"");
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
         renderJson(result);
     }
 
@@ -50,7 +54,7 @@ public class FixAssetsController extends Controller {
         int id = this.getParaToInt(0);
 
         FixVO fixVO = fixAssetsService.get(id);
-        ResponseResult<FixVO> result = ResponseResult.instance().setInstance(true,fixVO);
+        ResponseResult<FixVO> result = ResponseResult.instance().setSuccessData(true,fixVO);
         renderJson(result);
     }
 
@@ -58,7 +62,7 @@ public class FixAssetsController extends Controller {
         int id = this.getParaToInt(0);
 
         fixAssetsService.delete(id);
-        ResponseResult<String> result = ResponseResult.instance().setInstance(true,"");
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
         renderJson(result);
     }
 
@@ -87,8 +91,8 @@ public class FixAssetsController extends Controller {
         int upOrDown = this.getParaToInt(0);
         int primaryId = this.getParaToInt(1);
 
-        List<FixVO> fixAssets = fixAssetsService.findFixAssets(user.getId(), primaryId,GlobalConstant.FIX_APPLY_USER_TYPE,upOrDown, "");
-        ResponseResult<FixVO> result = ResponseResult.instance().setInstance(true,fixAssets);
+        List<FixVO> fixAssets = fixAssetsService.findFixAssets(user.getId(), primaryId,user.getUserType(),upOrDown, "");
+        ResponseResult<FixVO> result = ResponseResult.instance().setSuccessData(true,fixAssets);
         renderJson(result);
     }
 

@@ -6,7 +6,7 @@
         <p class="weui-tabbar__label">报修单</p>
     </a>
     #end
-    #if(session.user.userType == 3)
+    #if(session.user.userType == 3 || session.user.userType == 4)
     <a href="/repair/index" class="weui-tabbar__item #(belong == 'repair' ? 'weui-bar__item--on' : '')">
         <div class="weui-tabbar__icon"><i class="sstfont sst-dashizaixian"></i></div>
         <p class="weui-tabbar__label">维修单</p>

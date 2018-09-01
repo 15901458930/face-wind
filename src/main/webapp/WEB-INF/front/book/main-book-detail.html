@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>预订会议室</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.">
+
+    <link rel="stylesheet" href="/weui/css/weui.min.css">
+    <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/css/front/front-style.css">
+
+</head>
+<body ontouchstart>
+
+<div class="weui-tab">
+
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="weui-cells weui-cells_form" >
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">预订地点</label></div>
+                    <div class="weui-cell__bd">
+                        #(book.roomName)
+                    </div>
+                </div>
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">开始时间</label></div>
+
+                        <div class="weui-cell__bd">
+                            #date(book.bookStartDate, "yyyy-MM-dd HH:mm")
+                        </div>
+                    </div>
+
+
+
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
+
+                        <div class="weui-cell__bd">
+                            #date(book.bookEndDate, "yyyy-MM-dd HH:mm")
+                        </div>
+                    </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">使用部门</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.depart)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">活动负责人</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.responsibleUser)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">使用事由</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.useReason)
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">准备器材</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.device)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">是否照相</label></div>
+                    <div class="weui-cell__bd">
+                        #(book.needPhoto == 1 ? '是' : '否')
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">是否摄像</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.needCamera == 1 ? '是' : '否')
+                    </div>
+                </div>
+
+            </div><br/><br/><br/>
+            <div class="weui-form-preview__ft weui-footer_fixed-bottom">
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:red"  id="go_back" href="javascript:">返回</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/weui/js/jquery-2.1.4.js"></script>
+<script src="/weui/js/fastclick.js"></script>
+<script src="/weui/js/jquery-weui.min.js"></script>
+<script src="/js/handlebars-v4.0.11.js"></script>
+<script src="/js/front/book/book-room-add.js"></script>
+
+<script type="text/javascript">
+
+    $(function(){
+        $("#go_back").click(function () {
+            location.href="/book/index?v="+new Date().getTime();
+        })
+    });
+</script>
+</body>
+</html>

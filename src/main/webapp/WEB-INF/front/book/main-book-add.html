@@ -14,87 +14,126 @@
     <link rel="stylesheet" href="/css/front/front-style.css">
 
 </head>
-
-
 <body ontouchstart>
 
 <div class="weui-tab">
 
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
-                        <div class="weui-cells weui-cells_form" >
+            <div class="weui-cells weui-cells_form" >
 
-                            <div class="weui-cell">
-                                <div class="weui-cell__hd">
-                                    <label class="weui-label">会议室</label></div>
-                                <div class="weui-cell__bd">
-                                    #setLocal(sele = 'selected="selected"')
-                                    <input type="hidden" name="id" id="id" value="#(book.id)"/>
-                                    <select class="weui-select" name="select2" id="room-id">
-                                        #for(x :  roomList)
-                                            <option value="#(x.id)" #(book.roomId==x.id ? sele : '')>#(x.name)</option>
-                                        #end
-                                    </select>
-                                </div>
-                            </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">预订地点</label></div>
+                    <div class="weui-cell__bd">
+                        #setLocal(sele = 'selected="selected"')
+                        #setLocal(chec = 'checked="checked"')
+                        <input type="hidden" name="id" id="id" value="#(book.id)"/>
+                        <select class="weui-select" name="select2" id="room-id">
+                            #for(x :  roomList)
+                                <option value="#(x.id)" #(book.roomId==x.id ? sele : '')>#(x.name)</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
 
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd"><label class="weui-label">开始时间</label></div>
+                    <div class="weui-cell" id="book-start-valid">
+                        <div class="weui-cell__hd"><label class="weui-label">开始时间 <span class="bold-red">*</span></label></div>
 
-                                    <div class="weui-cell__bd">
-                                        <input class="weui-input" name="assetName" id="start-time" type="text" value='#date(book.bookStartTime, "yyyy-MM-dd HH:mm")' placeholder="请选择开始时间">
-                                    </div>
-                                </div>
-
-
-
-                                <div class="weui-cell">
-                                    <div class="weui-cell__hd"><label class="weui-label">结束时间</label></div>
-
-                                    <div class="weui-cell__bd">
-                                        <input class="weui-input" name="assetLocation" id="end1-time"  value='#date(book.bookEndTime, "yyyy-MM-dd HH:mm")' type="text" placeholder="请选择结束时间">
-                                    </div>
-                                </div>
-
-
-                            <div class="weui-form-preview__ft">
-                                <button  class="weui-form-preview__btn weui-form-preview__btn_primary asset-btn-submit" href="javascript:">保存</button>
-                                <button  class="weui-form-preview__btn weui-form-preview__btn_primary" id="go_back">返回</button>
-
-                            </div>
-
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" name="bookStartTime" id="start-time" type="text" value='#date(book.bookStartDate, "yyyy-MM-dd HH:mm")' placeholder="请选择开始时间">
                         </div>
-
-                    <!--<div class="weui-form-preview__ft weui-footer_fixed-bottom" style="z-index:10002">-->
-                    <!--<a class="weui-form-preview__btn" id="attrbtn" style="color:red" href="javascript:">保存</a>-->
-                    <!--<a class="weui-form-preview__btn weui-form-preview__btn_primary" id="buybtn">返回</a>-->
-                    <!--</div>-->
+                        <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                    </div>
 
 
 
+                    <div class="weui-cell" id="book-end-valid">
+                        <div class="weui-cell__hd"><label class="weui-label">结束时间 <span class="bold-red">*</span></label></div>
+
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" name="bookStartTime" id="end1-time"  value='#date(book.bookEndDate, "yyyy-MM-dd HH:mm")' type="text" placeholder="请选择结束时间">
+                        </div>
+                        <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                    </div>
+
+                <div class="weui-cell" id="depart-valid">
+                    <div class="weui-cell__hd"><label class="weui-label">使用部门 <span class="bold-red">*</span></label></div>
+
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="depart" id="depart" value="#(book.depart)" type="text" placeholder="请填写使用部门(最多50个字符)">
+                    </div>
+                    <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                </div>
+
+                <div class="weui-cell" id="responsible-user-valid">
+                    <div class="weui-cell__hd"><label class="weui-label">活动负责人 <span class="bold-red">*</span></label></div>
+
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="responsibleUser"  id="responsibleUser" value="#(book.responsibleUser)" type="text" placeholder="请填写负责人(最多50个字符)">
+                    </div>
+                    <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                </div>
+
+                <div class="weui-cell" id="use-reason-valid">
+                    <div class="weui-cell__hd"><label class="weui-label">使用事由 <span class="bold-red">*</span></label></div>
+
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="useReason" id="useReason" value="#(book.useReason)" type="text" placeholder="请填写使用事由(最多50个字符)">
+                    </div>
+                    <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                </div>
+                <div class="weui-cell" id="device-valid">
+                    <div class="weui-cell__hd"><label class="weui-label">准备器材 <span class="bold-red">*</span></label></div>
+
+                    <div class="weui-cell__bd">
+                        <textarea class="weui-textarea" id="device" value="#(book.device)" name="device" placeholder="请描述准备器材" rows="3">#(book.device)</textarea>
+                        <div class="weui-textarea-counter"><span>0</span>/200</div>
+                    </div>
+                    <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                </div>
+
+                <div class="weui-cells weui-cells_checkbox">
+                    <div class="weui-cell weui-cell_switch">
+                        <div class="weui-cell__bd">是否照相</div>
+                        <div class="weui-cell__ft">
+                            <label for="needPhoto" class="weui-switch-cp">
+                                <input id="needPhoto" class="weui-switch-cp__input"  #(book.needPhoto == 1 ? chec : '')   type="checkbox">
+                                <div class="weui-switch-cp__box"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="weui-cell weui-cell_switch">
+                        <div class="weui-cell__bd">是否摄像</div>
+                        <div class="weui-cell__ft">
+                            <label for="needCamera" class="weui-switch-cp">
+                                <input id="needCamera" class="weui-switch-cp__input" #(book.needCamera == 1 ? chec : '') type="checkbox">
+                                <div class="weui-switch-cp__box"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weui-cell" id="specia-require-valid">
+                    <div class="weui-cell__hd"><label class="weui-label">特殊要求</label></div>
+
+                    <div class="weui-cell__bd">
+                        <textarea class="weui-textarea" id="specialRequire" value="#(book.specialRequire)" name="specialRequire" placeholder="请描述特殊要求" rows="3">#(book.device)</textarea>
+                        <div class="weui-textarea-counter"><span>0</span>/200</div>
+                    </div>
+                    <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
+                </div>
+
+            </div><br/><br/><br/>
+            <div class="weui-form-preview__ft weui-footer_fixed-bottom">
+                <a class="weui-form-preview__btn asset-btn-submit" id="attrbtn"  href="javascript:">保存</a>
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary" style="color:red"  id="go_back" href="javascript:">返回</a>
+                <!--<a class="weui-form-preview__btn weui-form-preview__btn_primary" id="buybtn" href="javascript:$.toptip('请先选择规格', 'error');;">返回</a>-->
+            </div>
+            </div>
+            </div>
         </div>
-    </div>
 
-    <div class="weui-tabbar">
-        <a href="/fix/index" class="weui-tabbar__item weui-bar__item--on">
-            <div class="weui-tabbar__icon"><i class="sstfont sst-shouye"></i></div>
-            <p class="weui-tabbar__label">报修单</p>
-        </a>
-        <a href="/repair/index" class="weui-tabbar__item ">
-            <div class="weui-tabbar__icon"><i class="sstfont sst-dashizaixian"></i></div>
-            <p class="weui-tabbar__label">维修单</p>
-        </a>
-        <a href="/book/index" class="weui-tabbar__item ">
-            <div class="weui-tabbar__icon"><i class="sstfont sst-xuetang"></i></div>
-            <p class="weui-tabbar__label">预订</p>
-        </a>
-        <a href="/user/me" class="weui-tabbar__item ">
-            <div class="weui-tabbar__icon"><i class="sstfont sst-shangcheng"></i></div>
-            <p class="weui-tabbar__label">我的</p>
-        </a>
-    </div>
-
-</div>
 
 <script src="/weui/js/jquery-2.1.4.js"></script>
 <script src="/weui/js/fastclick.js"></script>

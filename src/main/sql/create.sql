@@ -37,14 +37,14 @@ CREATE TABLE `FIX_ASSET_TASK` (
   `ASSET_SUB_TYPE` varchar(256) DEFAULT NULL COMMENT '物品小类(多选，多个用逗号分隔)',
   `ASSET_NAME` varchar(256) DEFAULT NULL COMMENT '物品名称',
   `ASSET_LOCATION` varchar(256) DEFAULT NULL COMMENT '物品位置',
-  `BELONG_CAMPUS` int(11) default  null  COMMENT '所属校区',
+  `BELONG_CAMPUS` varchar(1) default  null  COMMENT '所属校区',
   `FIX_REASON` varchar(2048) DEFAULT NULL COMMENT '维修原因',
   `STATUS` tinyint(4) NOT NULL COMMENT '1.其它 2.已上报领导 3.已联系厂商 4.维修需要很久，慢慢等待  5.没有问题了  6 修理完成',
   `APPLY_DATE` datetime DEFAULT NULL COMMENT '申请时间',
   `START_FIX_DATE` datetime DEFAULT NULL COMMENT '接单时间',
   `FIXED_DATE` datetime DEFAULT NULL COMMENT '处理完毕时间',
   `VERSION` int NOT NULL COMMENT '版本号（用于乐观锁）'
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='资产维修任务表';
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='资产维修任务表';
 
 
 CREATE TABLE `SY_ATTACHMENT` (
@@ -74,14 +74,15 @@ CREATE TABLE `BOOK_ROOM_TASK` (
   `USE_REASON` varchar(256) DEFAULT NULL COMMENT '使用事由',
   `DEVICE` varchar(256) DEFAULT NULL COMMENT '使用设备名称',
   `REMARK` varchar(256) DEFAULT NULL COMMENT '备注',
-  `NEED_CAMERA` int DEFAULT NULL COMMENT '是否需要照相',
-  `SPECIAL_REQUIRE` int DEFAULT NULL COMMENT '特殊要求',
+  `NEED_PHOTO` int DEFAULT NULL COMMENT '是否需要照相',
+  `NEED_CAMERA` int DEFAULT NULL COMMENT '是否需要摄像',
+  `SPECIAL_REQUIRE` varchar(512) DEFAULT NULL COMMENT '特殊要求',
   `STATUS` int DEFAULT  NULL COMMENT '状态',
   `RESPONSIBLE_USER` varchar(256) DEFAULT NULL COMMENT '责任人',
   `CREATE_DATE` datetime NOT NULL comment  '创建时间',
   `CREATE_USER_ID` int(11)  DEFAULT NULL COMMENT '创建人',
   `VERSION` int NOT NULL COMMENT '版本号（用于乐观锁）'
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='预订房间表';
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='预订房间表';
 
 
 DROP TABLE IF EXISTS `SY_ROOM`;
@@ -146,10 +147,9 @@ insert into SY_SUB_CATEGORY values(30010,'黑板','HB',3,'','2018-04-01 18:55:55
 insert into SY_SUB_CATEGORY values(30020,'学生桌','XSZ',3,'','2018-04-01 18:55:55');
 insert into SY_SUB_CATEGORY values(30030,'学生椅','XSY',3,'','2018-04-01 18:55:55');
 
-
-insert into SY_ROOM VALUES(1,'东楼会议室','','2018-04-01 18:55:55');
-insert into SY_ROOM VALUES(2,'西楼会议室','','2018-04-01 18:55:55');
-insert into SY_ROOM VALUES(3,'南楼会议室','','2018-04-01 18:55:55');
-insert into SY_ROOM VALUES(4,'北楼会议室','','2018-04-01 18:55:55');
+insert into SY_ROOM VALUES(1,'大会议室','','2018-04-01 18:55:55');
+insert into SY_ROOM VALUES(2,'小会议室','','2018-04-01 18:55:55');
+insert into SY_ROOM VALUES(3,'报告厅','','2018-04-01 18:55:55');
+insert into SY_ROOM VALUES(4,'风雨操场','','2018-04-01 18:55:55');
 
 INSERT INTO SY_USER(ID,REAL_NAME,STATUS,CREATE_USER_ID,CREATE_DATE) VALUE('10000','王大鹏',1,'10000','2018-04-01 18:55:55');

@@ -1,10 +1,13 @@
 package com.xxl.wechat.service;
 
+import com.jfinal.plugin.activerecord.SqlPara;
+import com.xxl.wechat.cache.DictCache;
 import com.xxl.wechat.form.BookRoomForm;
 import com.xxl.wechat.model.generator.BookRoomTask;
 import com.xxl.wechat.model.generator.FixAssetTask;
 import com.xxl.wechat.util.DateUtil;
 import com.xxl.wechat.vo.BookRoomVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +20,9 @@ public class BookRoomService {
 
     static BookRoomTask bookRoomTaskDao = new BookRoomTask().dao();
 
+    static WeChatPushService weChatPushService = new WeChatPushService();
+
+    static UserService userService = new UserService();
 
     public List<BookRoomVO> findRoomByRangeTime(String startTime,String endTime,Integer roomId,Integer id){
 
@@ -38,33 +44,84 @@ public class BookRoomService {
                 BookRoomVO vo = new BookRoomVO();
                 vo.setId(task.getId());
                 vo.setBookDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
-                vo.setBookStartDate(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
-                vo.setBookEndDate(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
+                vo.setBookStartTime(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
+                vo.setBookEndTime(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
                 vo.setRoomName(task.get("ROOM_NAME"));
                 vo.setUserName(task.get("REAL_NAME"));
                 voList.add(vo);
             }
         }
-
         return voList;
-
-
     }
 
+    
+    
+    public BookRoomVO getVO(int id){
 
+        String sql = "select U.REAL_NAME,B.*,S.NAME AS ROOM_NAME from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID WHERE B.ID  = ?" ;
+
+        BookRoomTask task = bookRoomTaskDao.findFirst(sql,id);
+
+        BookRoomVO vo = new BookRoomVO();
+        vo.setId(task.getId());
+        vo.setBookDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
+        vo.setBookStartTime(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
+        vo.setBookEndTime(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
+
+        vo.setDepart(task.getDepart());
+        vo.setResponsibleUser(task.getResponsibleUser());
+        vo.setUseReason(task.getUseReason());
+        vo.setDevice(task.getDevice());
+        vo.setNeedPhoto(task.getNeedPhoto());
+        vo.setNeedCamera(task.getNeedCamera());
+        vo.setSpecialRequire(task.getSpecialRequire());
+
+        vo.setBookStartDate(task.getBookStartTime());
+        vo.setBookEndDate(task.getBookEndTime());
+
+        vo.setRoomName(task.get("ROOM_NAME"));
+        vo.setUserName(task.get("REAL_NAME"));
+
+        return vo;
+    }
+
+    /**
+     * 默认进来显示当天前一天以后的所有预订记录
+     * @param roomId
+     * @param bookDate
+     * @param userId
+     * @return
+     */
     public List<BookRoomVO> findRoomByDateAndRoom(String roomId,String bookDate,int userId){
 
-        String sql = "select U.REAL_NAME,B.CREATE_DATE,B.ID,B.BOOK_START_TIME,B.BOOK_END_TIME,S.NAME AS ROOM_NAME,B.BOOK_USER_ID from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID where ROOM_ID = ? and BOOK_DATE = ? order by B.BOOK_START_TIME ASC" ;
-        List<BookRoomTask>  list = bookRoomTaskDao.find(sql, roomId, bookDate);
+        StringBuilder sql = new StringBuilder("select U.REAL_NAME,B.*,S.NAME AS ROOM_NAME,B.BOOK_USER_ID from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID where 1=1 " );
+        List<BookRoomTask>  list = new ArrayList<BookRoomTask>();
+        if(StringUtils.isNotBlank(bookDate)){
+            //指定查询日期的话，则不用时间限制
+            sql.append(" and  BOOK_DATE = '").append(bookDate).append("'");
+            if(StringUtils.isNotBlank(roomId)){
+                sql.append(" and  ROOM_ID = ").append(roomId);
+            }
+        }else{
+            String preDayZeroStr = DateUtil.getPreDayZeroStr();
+            //没指定查询日期的话只查询预订时间是最近3天
+            sql.append(" and BOOK_START_TIME > '").append(preDayZeroStr).append("'");
+        }
+        sql.append(" order by B.BOOK_START_TIME ASC");
+        list  = bookRoomTaskDao.find(sql.toString());
 
         List<BookRoomVO> voList = new ArrayList<>();
         if(list != null && list.size() > 0){
             for(BookRoomTask task : list){
                 BookRoomVO vo = new BookRoomVO();
                 vo.setId(task.getId());
-                vo.setBookDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
-                vo.setBookStartDate(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
-                vo.setBookEndDate(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
+                vo.setUseReason(task.getUseReason());
+                vo.setResponsibleUser(task.getResponsibleUser());
+                vo.setDepart(task.getDepart());
+                vo.setCreateDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
+                vo.setBookDate(DateUtil.format(task.getBookStartTime(),DateUtil.YMD_PATTERN));
+                vo.setBookStartTime(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
+                vo.setBookEndTime(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
                 vo.setRoomName(task.get("ROOM_NAME"));
                 vo.setUserName(task.get("REAL_NAME"));
                 if(task.getBookUserId().equals(userId)){
@@ -106,6 +163,14 @@ public class BookRoomService {
         task.setBookStartTime(DateUtil.parseDate(form.getStartTime(),DateUtil.NO_SECONDS_PATTERN));
         task.setBookEndTime(DateUtil.parseDate(form.getEndTime(),DateUtil.NO_SECONDS_PATTERN));
 
+        task.setDepart(form.getDepart());
+        task.setResponsibleUser(form.getResponsibleUser());
+        task.setUseReason(form.getUseReason());
+        task.setDevice(form.getDevice());
+        task.setNeedPhoto(form.getNeedPhoto());
+        task.setNeedCamera(form.getNeedCamera());
+        task.setSpecialRequire(form.getSpecialRequire());
+
         if(form.getId() == null){
             task.setBookUserId(form.getCuUserId());
             task.setVersion(1);
@@ -117,6 +182,11 @@ public class BookRoomService {
             task.update();
         }
 
+        String start = DateUtil.format(task.getBookStartTime(), DateUtil.HH_MM_PATTERN);
+        String end = DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN);
+
+        String msg = task.getBookDate()+start+"至"+end+ task.getDepart()+"预订"+DictCache.roomMap.get(task.getRoomId());
+        weChatPushService.save(userService.findFixUser("3,4,5"),msg);
 
         return list;
     }

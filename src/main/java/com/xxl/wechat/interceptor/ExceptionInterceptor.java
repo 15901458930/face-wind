@@ -5,6 +5,7 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.xxl.wechat.controller.AttachmentController;
+import com.xxl.wechat.entity.ResponseResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +36,12 @@ public class ExceptionInterceptor implements Interceptor {
 
             if(isAjax(ai.getController())){
                 Map<String,String> map  = new HashMap<>();
-                map.put("result","error");
-                ai.getController().renderJson(map);
+                String baseUrl  = ai.getController().getRequest().getRequestURI() ;
+                String queryString = ai.getController().getRequest().getQueryString();
+                queryString = (queryString == null) ? "" : queryString;
+                ResponseResult result = ResponseResult.instance().setErrorMsg(true,"ajax请求出现异常，请查看后台日志");
+                ai.getController().renderJson(result);
+                log.error("URL:{} ajax请求出现异常，统一返回Json数据 ",baseUrl+queryString,e);
             }else{
                 ai.getController().renderError(500);
             }

@@ -65,12 +65,12 @@ public abstract class BaseFixAssetTask<M extends BaseFixAssetTask<M>> extends Mo
 		return getStr("ASSET_LOCATION");
 	}
 
-	public void setBelongCampus(java.lang.Integer belongCampus) {
+	public void setBelongCampus(java.lang.String belongCampus) {
 		set("BELONG_CAMPUS", belongCampus);
 	}
 	
-	public java.lang.Integer getBelongCampus() {
-		return getInt("BELONG_CAMPUS");
+	public java.lang.String getBelongCampus() {
+		return getStr("BELONG_CAMPUS");
 	}
 
 	public void setFixReason(java.lang.String fixReason) {

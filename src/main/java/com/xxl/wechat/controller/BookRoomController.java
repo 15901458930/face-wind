@@ -42,7 +42,7 @@ public class BookRoomController extends Controller {
 
         List<BookRoomVO> list = bookRoomService.findRoomByDateAndRoom(roomId,date,user.getId());
 
-        ResponseResult<BookRoomVO> result = ResponseResult.instance().setInstance(true,list);
+        ResponseResult<BookRoomVO> result = ResponseResult.instance().setSuccessData(true,list);
 
         renderJson(result);
     }
@@ -52,8 +52,18 @@ public class BookRoomController extends Controller {
         //TODO 取openid再次判断
 
         bookRoomService.delete(id);
-        ResponseResult<String> result = ResponseResult.instance().setInstance(true,"");
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
         renderJson(result);
+    }
+
+
+    public void detail(){
+
+        int id = this.getParaToInt(0);
+
+        BookRoomVO vo = bookRoomService.getVO(id);
+        setAttr("book",vo);
+        render("main-book-detail.html");
     }
 
 
@@ -61,11 +71,12 @@ public class BookRoomController extends Controller {
         int id = this.getParaToInt(0);
         //TODO 取openid再次判断
 
-        BookRoomTask bookRoomTask = bookRoomService.get(id);
+        BookRoomVO bookRoomTask = bookRoomService.getVO(id);
         setAttr("book",bookRoomTask);
 
         List<SyRoom> syRoomList = roomService.findSyRoom();
         setAttr("roomList",syRoomList);
+
         render("main-book-add.html");
 
     }
@@ -100,7 +111,7 @@ public class BookRoomController extends Controller {
         form.setCuUserId(user.getId());
         List<BookRoomVO> list = bookRoomService.save(form);
 
-        ResponseResult<BookRoomVO> result = ResponseResult.instance().setInstance(true,list);
+        ResponseResult<BookRoomVO> result = ResponseResult.instance().setSuccessData(true,list);
 
         renderJson(result);
     }

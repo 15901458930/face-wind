@@ -40,13 +40,14 @@ public class WeChatPushSchedule implements Runnable{
 
             String url = String.format(pushUrl, AccessTokenCache.token);
 
-            log.info("===============定时任务获取推送微信  start===============");
+           // log.info("===============定时任务获取推送微信  start===============");
 
             List<WechatNoticeTask> noProcessTask = service.findNoProcessTask();
 
             if(noProcessTask == null || noProcessTask.size()==0){
-                log.info("暂无要推送的微信信息");
+                log.info("暂无要推送的微信信息...");
             }else{
+                log.info("待推送微信信息:{}条"+noProcessTask.size());
                 for (WechatNoticeTask task : noProcessTask){
                     WeChatPushPostJson json = new WeChatPushPostJson();
                     WeChatPushPostJson.Content content = new WeChatPushPostJson.Content();
@@ -72,7 +73,7 @@ public class WeChatPushSchedule implements Runnable{
                 service.batchUpdate(noProcessTask);
             }
 
-            log.info("===============定时任务获取推送微信  end===============");
+           // log.info("===============定时任务获取推送微信  end===============");
         }catch(Exception e){
 
             log.error("定时任务获取推送微信出现异常",e);

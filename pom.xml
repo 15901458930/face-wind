@@ -232,12 +232,9 @@
           <password>1234+asdf</password>
           <uriEncoding>UTF-8</uriEncoding>
           <path>/</path>
-          <port>9999</port>
+          <port>8888</port>
         </configuration>
       </plugin>
-
-
-
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

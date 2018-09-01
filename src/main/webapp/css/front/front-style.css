@@ -93,3 +93,28 @@ footer a {
      font-size: 16px;
 
  }
+
+
+.modal-open {
+    position: fixed;
+    width: 100%;
+}
+
+.bold-red{
+    color:red;
+    font-weight: bold;
+}
+
+.red-status{
+    color:red;font-size:14px;font-weight:bold;font-style:normal
+}
+
+.green-status{
+    color:green;font-size:14px;font-weight:bold;font-style:normal
+}
+
+.sstmb {
+
+    padding-bottom: 2rem;
+
+}

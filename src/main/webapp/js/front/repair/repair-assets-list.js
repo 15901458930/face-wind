@@ -27,10 +27,23 @@ $(function() {
     //立即刷新一次再说，安排
     $("#weui-sb").pullToRefresh('triggerPullToRefresh');
 
-
-
-
 });
+
+/**
+ * 初始化明细页面预览图片事件
+ */
+function initViewHandler(){
+    //点击预览大图
+    $("#detailFiles").on("click", "li", function() {
+        index = $(this).index();
+        $("#v_galleryImg").attr("style", this.getAttribute("style"));
+        $("#v_gallery").fadeIn(100);
+    });
+    //点击取消预览大图
+    $("#v_gallery").on("click", function() {
+        $("#v_gallery").fadeOut(100);
+    });
+}
 
 
 /**
@@ -147,6 +160,9 @@ function getFix(fixId,type){
             bindChangeStatusListener();
 
             bindAcceptOrderListener();
+
+            initViewHandler();
+
 
             }else{
                 //失败

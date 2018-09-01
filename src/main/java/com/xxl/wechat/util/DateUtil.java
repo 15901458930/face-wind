@@ -104,6 +104,24 @@ public class DateUtil {
         return age;
     }
 
+    public static String getPreDayZeroStr(){
+       Date date =  getPreDay();
+       return format(date,YMD_PATTERN)+" 00:00:00";
+    }
+
+    public static Date getPreDay() {
+       return getAnotherDay(new Date(),-1);
+    }
+
+    public static Date getAnotherDay(Date date,int gap) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, gap);
+        date = calendar.getTime();
+        return date;
+    }
+
+
     public static String getCurTimestamp() {
         return String.valueOf(System.currentTimeMillis());
     }

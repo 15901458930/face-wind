@@ -2,21 +2,17 @@ package com.xxl.wechat.config;
 
 import com.jfinal.config.*;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
-import com.jfinal.json.FastJson;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
+import com.xxl.wechat.cache.DictCache;
 import com.xxl.wechat.config.routes.AdminRoute;
 import com.xxl.wechat.config.routes.FrontRoute;
-import com.xxl.wechat.constant.DictConstant;
 import com.xxl.wechat.controller.*;
-import com.xxl.wechat.form.FixForm;
-import com.xxl.wechat.http.HttpUtil;
 import com.xxl.wechat.init.AccessTokenSchedule;
 import com.xxl.wechat.init.WeChatPushSchedule;
 import com.xxl.wechat.interceptor.ExceptionInterceptor;
-import com.xxl.wechat.interceptor.ListInterceptor;
 import com.xxl.wechat.model.generator._MappingKit;
 import com.xxl.wechat.service.WeChatPushService;
 import org.slf4j.Logger;
@@ -87,6 +83,7 @@ public class WeChatFinalConfig extends  JFinalConfig {
     @Override
     public void configInterceptor(Interceptors interceptors) {
         interceptors.add(new SessionInViewInterceptor());
+        interceptors.add(new ExceptionInterceptor());
 
     }
 
@@ -107,11 +104,12 @@ public class WeChatFinalConfig extends  JFinalConfig {
         final ScheduledFuture<?> schedule = executor.scheduleAtFixedRate(new AccessTokenSchedule(), 0,3600, TimeUnit.SECONDS);
 
         log.warn("afterJFinalStart ===2.准备加载大类，子类(只加一次)===");
-        DictConstant.getInstance().init();
+        DictCache.getInstance().init();
 
 
         WeChatPushService service = new WeChatPushService();
 
+        log.warn("afterJFinalStart ===3.准备定时推送微信，子类(只加一次)===");
         //启动定时任务，获取access_token
         ScheduledThreadPoolExecutor executor1 = (ScheduledThreadPoolExecutor)Executors.newScheduledThreadPool(1);
         final ScheduledFuture<?> schedule1 = executor1.scheduleAtFixedRate(new WeChatPushSchedule(service), 0,5, TimeUnit.SECONDS);

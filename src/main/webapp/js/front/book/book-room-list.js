@@ -48,7 +48,7 @@ function initPullRefresh(){
 }
 
 
-function initDelete(){
+function bindListListener(){
 
     $(".delete-room").click(function(){
         var id = $(this).attr("fixid");
@@ -73,13 +73,20 @@ function initDelete(){
         });
     });
 
+    $(".book-record").off("click");
+    $(".book-record").on("click",function() {
+
+        var roomId = $(this).find("#pid").val();
+
+        location.href="/book/detail/"+roomId+"?ver="+new Date().getTime();
+    });
+
 }
 
 function initSearchBar(){
 
     $("#search-date").calendar({
         closeOnSelect:true,
-        inputReadOnly:true,
         closeByOutsideClick:true,
         dateFormat:'yyyy-mm-dd'
     });
@@ -90,7 +97,6 @@ function initSearchBtn() {
     $("#search-btn").click(function(){
        loading();
     });
-
 }
 
 function loading(){
@@ -99,10 +105,6 @@ function loading(){
     var roomId = $("#room-id").val();
     var searchDate = $("#search-date").val();
 
-    if(searchDate == ""){
-        $.toptip('请选择查询日期', 'warning');
-        return;
-    }
     var reg = new RegExp( '-' , "g" );
     searchDate = searchDate.replace(reg,"");
     $(document.body).find(".book-record").remove();
@@ -128,7 +130,8 @@ function loading(){
 
                 $("#book-room-list").append(html);
 
-                initDelete();
+                bindListListener();
+
                 $("#weui-sb").pullToRefreshDone();
 
                 $('.weui-cell_swiped').swipeout();

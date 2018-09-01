@@ -36,7 +36,7 @@ public class RepairAssetsController extends Controller {
         int id = this.getParaToInt(0);
 
         FixVO fixVO = fixAssetsService.get(id);
-        ResponseResult<FixVO> result = ResponseResult.instance().setInstance(true,fixVO);
+        ResponseResult<FixVO> result = ResponseResult.instance().setSuccessData(true,fixVO);
         renderJson(result);
     }
 
@@ -47,8 +47,8 @@ public class RepairAssetsController extends Controller {
        SyUser user = (SyUser)getSessionAttr("user");
         int upOrDown = this.getParaToInt(0);
         int primaryId = this.getParaToInt(1);
-        List<FixVO> fixAssets = fixAssetsService.findFixAssets(user.getId(), primaryId,GlobalConstant.FIX_REPAIR_USER_TYPE,upOrDown, "");
-        ResponseResult<FixVO> result = ResponseResult.instance().setInstance(true,fixAssets);
+        List<FixVO> fixAssets = fixAssetsService.findRepairAssets(user.getId(), primaryId,user.getUserType(),upOrDown, "");
+        ResponseResult<FixVO> result = ResponseResult.instance().setSuccessData(true,fixAssets);
         renderJson(result);
     }
 

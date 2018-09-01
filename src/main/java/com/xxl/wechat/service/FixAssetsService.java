@@ -1,10 +1,8 @@
 package com.xxl.wechat.service;
 
-import com.jfinal.aop.Duang;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
-import com.xxl.wechat.constant.DictConstant;
+import com.xxl.wechat.cache.DictCache;
 import com.xxl.wechat.constant.GlobalConstant;
 import com.xxl.wechat.constant.StatusConstant;
 import com.xxl.wechat.form.FixForm;
@@ -34,21 +32,41 @@ public class FixAssetsService {
 
 
     public List<FixVO> findFixAssets(int userId, int primaryId, int userType, int upOrDown, String keywords){
+        StringBuilder sql = new StringBuilder();
+        //我的【报修】【上拉】刷新
+        if(upOrDown == GlobalConstant.UP){
+            sql.append("select F.*,U.REAL_NAME from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where F.ID <   ").append(primaryId);
+        }else{
+            sql.append("select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID WHERE 1=1 ");
+        }
+
+        if(userType == 2){
+            //老师只能看到自己的，领导不做限制
+            sql.append(" AND  F.APPLY_USER_ID = "+userId);
+        }else if(userType == 3 || userType == 4){
+            sql.append(" AND 3=4 ");//强行看?，不好意
+        }
+        sql.append(" order by F.ID desc limit 0,"+GlobalConstant.DEFAULT_PAGE_SIZE);
+
+        List<FixAssetTask> fixAssetTasks = fixAssetTaskDao.find(sql.toString());
+
+        return convert(fixAssetTasks);
+    }
+
+
+    public List<FixVO> findRepairAssets(int userId, int primaryId, int userType, int upOrDown, String keywords){
         String sql = "";
         //我的【报修】【上拉】刷新
-        if(userType == GlobalConstant.FIX_APPLY_USER_TYPE && upOrDown == GlobalConstant.UP){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where F.APPLY_USER_ID = ? and F.ID < ?  order by F.ID desc limit 0,?";
-        }else if(userType == GlobalConstant.FIX_APPLY_USER_TYPE && upOrDown == GlobalConstant.DOWN){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where  F.APPLY_USER_ID = ?  order by F.ID desc  limit 0,?";
-        }else if(userType == GlobalConstant.FIX_REPAIR_USER_TYPE && upOrDown == GlobalConstant.UP){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) and F.ID < ? order by F.ID desc limit 0,?";
-        }else if(userType == GlobalConstant.FIX_REPAIR_USER_TYPE && upOrDown == GlobalConstant.DOWN){
-            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) order by F.ID desc  limit 0,?";
+        if(upOrDown == GlobalConstant.UP){
+            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) AND F.ASSET_TYPE = ? and F.ID < ? order by F.ID desc limit 0,?";
+        }else if(upOrDown == GlobalConstant.DOWN){
+            sql = "select F.*,U.REAL_NAME from FIX_ASSET_TASK  F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID where (F.FIX_USER_ID = ?  or F.STATUS = 1) AND F.ASSET_TYPE = ? order by F.ID desc  limit 0,?";
         }
         SqlPara sqlPara = new SqlPara();
         sqlPara.setSql(sql);
         sqlPara.addPara(userId);
 
+        sqlPara.addPara(userType);
         if(GlobalConstant.UP == upOrDown){
             sqlPara.addPara(primaryId);
         }
@@ -56,18 +74,22 @@ public class FixAssetsService {
         sqlPara.addPara(GlobalConstant.DEFAULT_PAGE_SIZE);
         List<FixAssetTask> fixAssetTasks = fixAssetTaskDao.find(sqlPara);
 
+        return convert(fixAssetTasks);
+    }
+
+    private List<FixVO> convert(List<FixAssetTask> list){
         List<FixVO> voList = new ArrayList<>();
 
-        if(fixAssetTasks == null || fixAssetTasks.size() == 0){
+        if(list == null || list.size() == 0){
             return voList;
         }
 
         StringBuilder sb = new StringBuilder();
-        for(FixAssetTask task : fixAssetTasks){
+        for(FixAssetTask task : list){
             sb.append(task.getId()).append(",");
             FixVO vo = new FixVO();
             vo.setId(task.getId());
-            vo.setAssetType(DictConstant.mainCategoryMap.get(task.getAssetType()));
+            vo.setAssetType(DictCache.mainCategoryMap.get(task.getAssetType()));
             vo.setApplyDate(DateUtil.format(task.getApplyDate(),DateUtil.DEFAULT_PATTERN));
             vo.setApplyUserName(task.get("REAL_NAME"));
             vo.setFixReason(task.getFixReason());
@@ -77,11 +99,12 @@ public class FixAssetsService {
         String sqlIn = StringUtils.chop(sb.toString());
         Map<Integer,String> map = attachmentService.findAttachmentByBids(sqlIn);
 
-       for(FixVO vo : voList){
-           vo.setAttachmentId(map.get(vo.getId())==null ? "" : map.get(vo.getId()));
-       }
+        for(FixVO vo : voList){
+            vo.setAttachmentId(map.get(vo.getId())==null ? "" : map.get(vo.getId()));
+        }
 
         return voList;
+
     }
 
     public void change(int id,int status,int userId){
@@ -98,7 +121,9 @@ public class FixAssetsService {
             SyUser user = userService.getUser(task.getApplyUserId());
 
             //添加到推送队列
-            weChatPushService.save(user.getWechatUserId(),"您"+date+"的报修状态有变化！");
+            weChatPushService.save(user.getWechatUserId(),"您"+date+"提交的报修状态有变化！");
+            weChatPushService.save(userService.findFixUser("5"),"流水号:"+id+"的报修申请状态发生变化！");
+
         }
     }
 
@@ -116,7 +141,8 @@ public class FixAssetsService {
             SyUser user = userService.getUser(fixAssetTask.getApplyUserId());
 
             //添加到推送队列
-            weChatPushService.save(user.getWechatUserId(),"您的报修申请已被人认领，请耐心等待！");
+            weChatPushService.save(user.getWechatUserId(),"您的报修申请(流水号:"+fixAssetTask.getId()+")已被人认领，请耐心等待！");
+            weChatPushService.save(userService.findFixUser("5"),"流水号:"+fixAssetTask.getId()+"的报修申请已被人认领！");
         }
 
         return result;
@@ -145,23 +171,24 @@ public class FixAssetsService {
         vo.setAssetType(task.getAssetType());
         vo.setAssetName(task.getAssetName());
         vo.setFixReason(task.getFixReason());
+        vo.setBelongCampusName(DictCache.belongCampusMap.get(task.getBelongCampus()));
         vo.setStatus(task.getStatus());
+        vo.setBelongCampus(task.getBelongCampus());
         vo.setStatusName(StatusConstant.getStatusMap(task.getStatus()));
         vo.setApplyDate(DateUtil.format(task.getApplyDate(),DateUtil.DEFAULT_PATTERN));
         vo.setVersion(task.getVersion());
-        vo.setAssetTypeName(DictConstant.mainCategoryMap.get(task.getAssetType()));
+        vo.setAssetTypeName(DictCache.mainCategoryMap.get(task.getAssetType()));
 
         if(StringUtils.isNotBlank(task.getAssetType()) && StringUtils.isNotBlank(task.getAssetSubType())){
 
             String[] assetSubTypes = StringUtils.split(task.getAssetSubType(),",");
             StringBuilder sb = new StringBuilder();
             for(String singleSubType : assetSubTypes){
-                sb.append(DictConstant.subCategoryMap.get(singleSubType));
+                sb.append(DictCache.subCategoryMap.get(singleSubType));
                 sb.append(",");
             }
             String assetSubTypeName = StringUtils.chop(sb.toString());
             vo.setAssetSubTypeName(assetSubTypeName);
-            log.info("{}>>>{}",task.getAssetSubType(),assetSubTypeName);
         }
 
         vo.setAssetSubType(task.getAssetSubType());
@@ -184,6 +211,7 @@ public class FixAssetsService {
         task.setAssetName(form.getAssetName());
         task.setFixReason(form.getFixReason());
         task.setAssetLocation(form.getAssetLocation());
+        task.setBelongCampus(form.getBeLongCampus());
 
         if(form.getId() == null){
             task.setApplyUserId(form.getCurUserId());
@@ -192,8 +220,9 @@ public class FixAssetsService {
             task.setStatus(StatusConstant.WAIT_PROCESS);
             task.save();
 
-            //添加到推送队列
-            weChatPushService.save(userService.findFixUser(),"有新的报修！");
+            //添加到推送队列(发送给维修人员和领导)
+            String userTypes = task.getAssetType()+",5";
+            weChatPushService.save(userService.findFixUser(userTypes),"有新的报修！");
 
         }else{
             task.setId(form.getId());

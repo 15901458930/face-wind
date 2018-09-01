@@ -16,6 +16,10 @@ public class FixVO {
 
     private String assetLocation;
 
+    private String belongCampus;
+    private String belongCampusName;
+
+
     private String fixReason;
 
     private String applyUserName;
@@ -38,6 +42,13 @@ public class FixVO {
 
     private String[] attachmentIds;
 
+    public String getBelongCampus() {
+        return belongCampus;
+    }
+
+    public void setBelongCampus(String belongCampus) {
+        this.belongCampus = belongCampus;
+    }
 
     public String getFixUserName() {
         return fixUserName;
@@ -190,5 +201,13 @@ public class FixVO {
 
     public void setAttachmentIds(String[] attachmentIds) {
         this.attachmentIds = attachmentIds;
+    }
+
+    public String getBelongCampusName() {
+        return belongCampusName;
+    }
+
+    public void setBelongCampusName(String belongCampusName) {
+        this.belongCampusName = belongCampusName;
     }
 }

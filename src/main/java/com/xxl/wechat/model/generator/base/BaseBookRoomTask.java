@@ -89,6 +89,14 @@ public abstract class BaseBookRoomTask<M extends BaseBookRoomTask<M>> extends Mo
 		return getStr("REMARK");
 	}
 
+	public void setNeedPhoto(java.lang.Integer needPhoto) {
+		set("NEED_PHOTO", needPhoto);
+	}
+	
+	public java.lang.Integer getNeedPhoto() {
+		return getInt("NEED_PHOTO");
+	}
+
 	public void setNeedCamera(java.lang.Integer needCamera) {
 		set("NEED_CAMERA", needCamera);
 	}
@@ -97,12 +105,12 @@ public abstract class BaseBookRoomTask<M extends BaseBookRoomTask<M>> extends Mo
 		return getInt("NEED_CAMERA");
 	}
 
-	public void setSpecialRequire(java.lang.Integer specialRequire) {
+	public void setSpecialRequire(java.lang.String specialRequire) {
 		set("SPECIAL_REQUIRE", specialRequire);
 	}
 	
-	public java.lang.Integer getSpecialRequire() {
-		return getInt("SPECIAL_REQUIRE");
+	public java.lang.String getSpecialRequire() {
+		return getStr("SPECIAL_REQUIRE");
 	}
 
 	public void setStatus(java.lang.Integer status) {

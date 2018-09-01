@@ -21,14 +21,14 @@
 
 <div class="weui-tab" id="weui-sb">
 
-    <div class="weui-pull-to-refresh__layer">
+    <!--<div class="weui-pull-to-refresh__layer">
         <div class='weui-pull-to-refresh__arrow'></div>
         <div class='weui-pull-to-refresh__preloader'></div>
 
         <div class="down">下拉刷新</div>
         <div class="up">释放刷新</div>
         <div class="refresh">正在刷新</div>
-    </div>
+    </div>-->
 
     <div class="weui-tab__bd">
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
@@ -39,23 +39,22 @@
             <div class="weui-cells weui-cells_form">
                 <div class="weui-cell weui-cell_select weui-cell_select-before">
                     <div class="weui-cell__hd">
-                        <select class="weui-select" name="select2" id="room-id">
+                        <select class="weui-select" name="select2" id="room-id" placeholder="请选择场地">
+                            <option value="">请选择</option>
                             #setLocal(sele = 'selected="selected"')
                             #for(x : roomList)
-                                <option value="#(x.id)" #(roomId==x.id ? sele : '')>#(x.name)</option>
+                                <option value="#(x.id)">#(x.name)</option>
                             #end
                         </select>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input" name="searchDate" id="search-date" type="text" value="#(curDate)"
+                        <input class="weui-input" name="searchDate" id="search-date" type="text" value=""
                                placeholder="请选择查询日期">
 
 
                     </div>
                     <div class="weui-cell__ft">
-                        <a class="weui-btn weui-btn_plain-default" id="search-btn" style="border:0"><i
-                                class="weui-icon-search"></i></a>
-                    </div>
+                        <button class="weui-vcode-btn" id="search-btn"><i  class="weui-icon-search"></i>查询</button></div>
                 </div>
                 <!--检索条件END-->
             </div>
@@ -71,19 +70,42 @@
                     <span class="weui-loadmore__tips">暂无数据</span>
                 </div>
 
-                <!--列表集合渲染START-->
-                <!--<a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg fix-record">-->
 
-                <!--列表集合渲染END-->
+                <script id="book-list-template" type="text/x-handlebars-template">
+                    {{#each this}}
+                    <div class="weui-cell weui-cell_swiped record-{{id}} book-record">
+                        <div class="weui-cell__bd weui-media-box  weui-media-box_appmsg ">
+                            <input type="hidden" id="pid" value="{{id}}"/>
+                            <div class="weui-media-box__bd">
+                                <h4 class="weui-media-box__title">
+                                    <div style="float:left">{{roomName}} </div>
+                                    <div style="float:right;margin-right:5px"> <em class="num font-15 green-status">{{bookDate}} {{bookStartTime}} 至 {{bookEndTime}}</em></div>
+                                </h4>
+                                <p class="weui-media-box__desc">事由:{{useReason}}</p>
+
+                                <ul class="weui-media-box__info">
+                                    <li class="weui-media-box__info__meta">责任人：{{responsibleUser}}</li>
+                                    <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">使用部门：{{depart}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {{#if_eq hasPower true}}
+                        <div class="weui-cell__ft">
+                            <a class="weui-swiped-btn weui-swiped-btn_default delete-swipeout update-room"
+                               href="/book/update/{{id}}">编辑</a>
+                            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout delete-room" fixid="{{id}}"
+                               href="javascript:">删除</a>
+                        </div>
+                        {{/if_eq}}
+                    </div>
+                    {{/each}}
+
+                </script>
             </div>
-
         </div>
-
     </div>
-
 </div>
-
-
 #@tabbar()
 
 
@@ -94,34 +116,6 @@
 <script src="/js/handlebars-v4.0.11.js"></script>
 <script src="/js/front/book/book-room-list.js"></script>
 
-<script id="book-list-template" type="text/x-handlebars-template">
-    {{#each this}}
-    <div class="weui-cell weui-cell_swiped record-{{id}} book-record">
-        <div class="weui-cell__bd weui-media-box  weui-media-box_appmsg">
-            <input type="hidden" id="id" value="{{id}}"/>
-            <div class="weui-media-box__bd">
-                <h4 class="weui-media-box__title">{{bookStartDate}} 至 {{bookEndDate}}</h4>
-                <ul class="weui-media-box__info">
-                    <li class="weui-media-box__info__meta">申请人：{{userName}}</li>
-                    <li class="weui-media-box__info__meta weui-media-box__info__meta_extra">{{bookDate}}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        {{#if_eq hasPower true}}
-        <div class="weui-cell__ft">
-            <a class="weui-swiped-btn weui-swiped-btn_default delete-swipeout update-room"
-               href="/book/update/{{id}}">编辑</a>
-            <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout delete-room" fixid="{{id}}"
-               href="javascript:">删除</a>
-        </div>
-        {{/if_eq}}
-    </div>
-    {{/each}}
-    <!--<div class="weui-cell__ft">-->
-    <!--<a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>-->
-    <!--<a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>-->
-    <!--</div>-->
-</script>
+
 
 </html>

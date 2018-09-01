@@ -47,16 +47,12 @@ public class CategoryService {
 
         for(SySubCategory sub : subCategoryList){
             if(map.containsKey(String.valueOf(sub.getMainCategoryId()))){
-                Category c1 = new Category();
-                c1.setTitle(sub.getName());
-                c1.setValue(String.valueOf(sub.getId()));
+                Category c1 = new Category(sub.getName(),String.valueOf(sub.getId()));
                 map.get(String.valueOf(sub.getMainCategoryId())).add(c1);
 
             }else{
                 List<Category> list = new ArrayList<>();
-                Category c = new Category();
-                c.setTitle(sub.getName());
-                c.setValue(String.valueOf(sub.getId()));
+                Category c = new Category(sub.getName(),String.valueOf(sub.getId()));
                 list.add(c);
                 map.put(String.valueOf(sub.getMainCategoryId()),list);
             }
@@ -74,9 +70,7 @@ public class CategoryService {
         List<Category> list = new ArrayList<>();
 
         for(SyMainCategory main : mainCategoryList){
-            Category c = new Category();
-            c.setTitle(main.getName());
-            c.setValue(String.valueOf(main.getId()));
+            Category c = new Category(main.getName(),String.valueOf(main.getId()));
             list.add(c);
         }
 

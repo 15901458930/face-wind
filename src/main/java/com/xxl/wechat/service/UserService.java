@@ -1,11 +1,13 @@
 package com.xxl.wechat.service;
 
 import com.jfinal.json.FastJson;
+import com.jfinal.plugin.activerecord.Page;
 import com.xxl.wechat.entity.UserInfoResult;
 import com.xxl.wechat.http.HttpUtil;
 import com.xxl.wechat.model.generator.SyRoom;
 import com.xxl.wechat.model.generator.SyUser;
 import com.xxl.wechat.util.DateUtil;
+import com.xxl.wechat.vo.LayuiResultVO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -19,6 +21,11 @@ public class UserService {
     static SyUser syUserDao = new SyUser().dao();
 
 
+    public SyUser findUserByUserNameAndPassword(String userName,String password){
+        String sql = "select * from SY_USER WHERE USER_NAME = ? AND PASSWORD = ?";
+        return syUserDao.findFirst(sql,userName,password);
+    }
+
     public SyUser getUser(int id){
 
         return syUserDao.findById(id);
@@ -29,11 +36,22 @@ public class UserService {
         return syUserDao.findFirst("select * from SY_USER WHERE WECHAT_USER_ID = ? " ,id);
     }
 
-    public List<SyUser> findAllUser(){
+    public LayuiResultVO<SyUser> findAllUser( int page,int pageSize,String realName,String userType){
 
-        return syUserDao.find("select * from SY_USER");
+        String sqlExceptSelect = "from SY_USER WHERE 1=1 ";
+        if(StringUtils.isNotBlank(realName)){
+            sqlExceptSelect += " AND REAL_NAME LIKE '%"+realName+"%'";
+        }
+        if(StringUtils.isNotBlank(userType)){
+            sqlExceptSelect += " AND USER_TYPE =  "+userType;
+        }
+        Page<SyUser> paginate = syUserDao.paginate(page, pageSize, "select * ", sqlExceptSelect);
+
+        LayuiResultVO<SyUser> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getList().size(),paginate.getList());
+
+        return vo;
+
     }
-
 
     public SyUser save(UserInfoResult result){
 
@@ -64,15 +82,17 @@ public class UserService {
     }
 
 
-    public String findFixUser(){
 
-        String sql = "select * from SY_USER WHERE USER_TYPE = 3";
+
+    public String findFixUser(String userType){
+
+        String sql = "select * from SY_USER WHERE USER_TYPE in ("+userType+")";
         List<SyUser> syUsers = syUserDao.find(sql);
 
         StringBuilder sb = new StringBuilder();
 
         for(SyUser user : syUsers){
-            sb.append(user.getId()).append("|");
+            sb.append(user.getWechatUserId()).append("|");
         }
 
         return  StringUtils.chop(sb.toString());

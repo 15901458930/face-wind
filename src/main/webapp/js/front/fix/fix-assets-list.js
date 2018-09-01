@@ -4,6 +4,8 @@ var categoryJson = {};
 
 $(function() {
 
+    //FastClick.attach(document.body);
+
     //初始化下拉加载最新
    initPullRefresh();
 
@@ -11,7 +13,7 @@ $(function() {
     initPushRefresh();
 
     //立即刷新一次再说，先安排再说（不要绑定在body上，都是坑啊）
-   $("#weui-sb").pullToRefresh('triggerPullToRefresh');
+    $("#weui-sb").pullToRefresh('triggerPullToRefresh');
 
     //绑定+++++我要报修+++++事件
     addPopupListener();
@@ -100,6 +102,7 @@ function initPushRefresh(){
 
 
         if(uploadding || minId == -1){
+            $(".just-no-more").show();
             return;
         }
 
@@ -173,8 +176,6 @@ function initPullRefresh(){
             }
 
             downloading = true;
-
-            console.log("下拉触发。。。");
             /* 当下拉刷新触发的时候执行的回调 */
             var url = "/fix/list/2-0";
             loadingData(url,function (jsonObj){

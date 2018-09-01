@@ -6,8 +6,8 @@
     <div class="weui-popup__overlay"></div>
     <div class="weui-popup__modal just-for-d"  style="font-size:13px">
         <div class="weui-cells weui-cells_form" >
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">物品分类</label></div>
+            <div class="weui-cell" id="asset-valid">
+                <div class="weui-cell__hd"><label class="weui-label">物品分类 <span class="bold-red">*</span></label></div>
                 <div class="weui-cell__bd">
                     <input type="hidden" name="id" value="{{id}}"/>
                     <input type="hidden" name="version" value="{{version}}"/>
@@ -15,44 +15,62 @@
                     <input class="weui-input" name="assetType" id="asset-type"  type="text" value="{{assetTypeName}}" data-values="{{assetType}}" placeholder="请选择物品分类">
 
                 </div>
+                <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
             </div>
 
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">物品子分类</label></div>
+            <div class="weui-cell"  id="sub-asset-valid">
+                <div class="weui-cell__hd"><label class="weui-label">物品子分类 <span class="bold-red">*</span></label></div>
                 <div class="weui-cell__bd">
                     <input class="weui-input" name="assetSubType" id="asset-sub-type" readonly="" value="{{assetSubTypeName}}" data-values="{{assetSubType}}" type="text" placeholder="请选择物品类别">
                 </div>
+                <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
             </div>
-        <div class="weui-cells">
-            <div class="weui-cell">
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">所属校区</label></div>
+
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" name="belongCampus" id="belongCampus" value="{{belongCampusName}}" data-values="{{belongCampus}}"  type="text" placeholder="请选择校区">
+                    </div>
+            </div>
+
+            <div class="weui-cell"  id="asset-name-valid">
                 <div class="weui-cell__hd"><label class="weui-label">其它报修物品</label></div>
 
                 <div class="weui-cell__bd">
-                    <input class="weui-input" name="assetName" type="text" value="{{assetName}}" placeholder="如还有其它报修物品，请在此填写">
+                    <input class="weui-input" name="assetName" type="text" value="{{assetName}}" placeholder="请填写其它报修物品(最多50个字符)">
                 </div>
+                <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
             </div>
-        </div>
 
-        <div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">物品位置</label></div>
+            <div class="weui-cell" id="asset-location-valid">
+                <div class="weui-cell__hd"><label class="weui-label">物品位置 <span class="bold-red">*</span></label></div>
 
                 <div class="weui-cell__bd">
-                    <input class="weui-input" name="assetLocation" value="{{assetLocation}}" type="text" placeholder="请填写物品位置">
+                    <input class="weui-input" name="assetLocation" value="{{assetLocation}}" type="text" placeholder="请填写物品位置(最多50个字符)">
                 </div>
+                <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
             </div>
-        </div>
 
-        <div class="weui-cells">
-            <div class="weui-cell">
-                <div class="weui-cell__hd"><label class="weui-label">报修原因</label></div>
+            <div class="weui-cell" id="asset-reason-valid">
+                <div class="weui-cell__hd"><label class="weui-label">报修原因 <span class="bold-red">*</span></label></div>
 
                 <div class="weui-cell__bd">
                     <textarea class="weui-textarea" id="fixReason" value="{{fixReason}}" name="fixReason" placeholder="请描述物品报修原因" rows="3">{{fixReason}}</textarea>
                     <div class="weui-textarea-counter"><span>0</span>/200</div>
                 </div>
+                <div class="weui-cell__ft"><i class="weui-icon-warn"></i></div>
             </div>
-        </div>
+
+
+            <div class="weui-gallery" id="gallery">
+                <span class="weui-gallery__img" id="galleryImg"></span>
+                <div class="weui-gallery__opr">
+                    <a href="javascript:" class="weui-gallery__del">
+                        <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                    </a>
+                </div>
+            </div>
 
             <div class="weui-cell">
                 <div class="weui-cell__bd">
@@ -74,11 +92,11 @@
                     </div>
                 </div>
             </div>
-
+            <br/><br/><br/>
             <div class="weui-form-preview__ft">
-                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary asset-btn-submit" href="javascript:">保存</button>
-                <button type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" href="javascript:">返回</button>
-
+                <a class="weui-form-preview__btn asset-btn-submit" id="attrbtn" style="color:red" href="javascript:">保存</a>
+                <a class="weui-form-preview__btn weui-form-preview__btn_primary close-popup" id="buybtn" href="javascript:">返回</a>
+                <!--<a class="weui-form-preview__btn weui-form-preview__btn_primary" id="buybtn" href="javascript:$.toptip('请先选择规格', 'error');;">返回</a>-->
             </div>
 
             </div>

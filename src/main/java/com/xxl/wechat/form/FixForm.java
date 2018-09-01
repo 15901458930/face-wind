@@ -7,6 +7,9 @@ public class FixForm {
     private String assetType;
     private String assetTypeName;
 
+    private String belongCampus;
+    private String beLongCampusName;
+
 
     private String assetSubType;
     private String assetSubTypeName;
@@ -108,5 +111,21 @@ public class FixForm {
 
     public void setAssetSubTypeName(String assetSubTypeName) {
         this.assetSubTypeName = assetSubTypeName;
+    }
+
+    public String getBeLongCampus() {
+        return belongCampus;
+    }
+
+    public void setBeLongCampus(String belongCampus) {
+        this.belongCampus = belongCampus;
+    }
+
+    public String getBeLongCampusName() {
+        return beLongCampusName;
+    }
+
+    public void setBeLongCampusName(String beLongCampusName) {
+        this.beLongCampusName = beLongCampusName;
     }
 }

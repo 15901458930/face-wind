@@ -5,11 +5,13 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.upload.ExceededSizeException;
 import com.jfinal.upload.UploadFile;
 import com.xxl.wechat.constant.GlobalConstant;
+import com.xxl.wechat.entity.ResponseResult;
 import com.xxl.wechat.model.generator.FixAssetTask;
 import com.xxl.wechat.model.generator.SyAttachment;
 import com.xxl.wechat.service.AttachmentService;
 import com.xxl.wechat.service.FixAssetsService;
 import com.xxl.wechat.util.FileUtil;
+import com.xxl.wechat.vo.FixVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,5 +54,13 @@ public class AttachmentController extends Controller {
             log.error("上传文件失败", e);
         }
         renderJson(map);
+    }
+
+    public void delete(){
+        String id = getPara(0);
+        attachmentService.delete(id);
+
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
+        renderJson(result);
     }
 }
