@@ -4,9 +4,9 @@ layui.use(['table','jquery','layer','form'], function(){
     var table = layui.table;
     var layer = layui.layer;
 
-    var name = $("input[name='name']").val();
+    var searchName = $("input[name='searchName']").val();
     var parentId = $("select[name='parentId']").val();
-    var url = "/admin/category/list/"+parentId+"?name"+name;
+    var url = "/admin/category/list/"+parentId+"?name"+searchName;
 
     //第一个实例
     var tabins = table.render({
@@ -15,19 +15,19 @@ layui.use(['table','jquery','layer','form'], function(){
         ,page: true //开启分页
         ,cols: [[ //表头
             {field: 'ID', title: 'ID', sort: true, fixed: 'left', width:'10%'},
-            ,{field: 'NAME',title: '名称', width:'30%'}
-            ,{field: 'MAIN_CATEGORY_ID',title: '名称',hide:true}
             ,{field: 'PARENT_NAME',title: '物品类型', width:'20%'}
+            ,{field: 'NAME',title:'名称', width:'30%'}
             ,{field: 'CREATE_DATE', title: '创建时间', width:'20%'}
             ,{field: 'DO', title: '操作',toolbar: '#category-operation', width:'20%'}
+            ,{field: 'MAIN_CATEGORY_ID',title:'',hide:true}
         ]],
         loading:true
     });
 
     $("#search-btn").click(function(){
-        var name = $("input[name='name']").val();
+        var searchName = $("input[name='searchName']").val();
         var parentId = $("select[name='parentId']").val();
-        var url = "/admin/category/list/"+parentId+"?name="+name;
+        var url = "/admin/category/list/"+parentId+"?name="+searchName;
         tabins.reload({url:url,page:{curr:1}});
     });
 
@@ -46,11 +46,14 @@ layui.use(['table','jquery','layer','form'], function(){
             layer.confirm('确定删除该条记录吗？', function(index){
                 del(data.ID,function () {
                     obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                    layer.close(index);
                     layer.msg('删除成功');
-                },function(){
-                    layer.close(index);
-                    layer.msg('删除失败，请稍后重试');
+                },function(message){
+                    if(message){
+                        layer.msg(message);
+                    }else{
+                        layer.msg('删除失败，请稍后重试');
+                    }
+
                 });
             });
         } else if(layEvent === 'edit'){
@@ -77,6 +80,9 @@ layui.use(['table','jquery','layer','form'], function(){
                 "mainCategoryId":obj.data.MAIN_CATEGORY_ID||"",
                 "name":obj.data.NAME||""
             });
+        }else{
+            $("input[name='name']").val("");
+            $("select[name='mainCategoryId']").val("");
         }
 
 
@@ -105,7 +111,10 @@ layui.use(['table','jquery','layer','form'], function(){
                 layer.close(openEdit)
 
             },function () {
+
                 layer.msg('修改失败，请稍后重试');
+
+
             });
 
             return false;
@@ -125,7 +134,7 @@ layui.use(['table','jquery','layer','form'], function(){
                 if(jsonObj.success===true){
                     suc();//回调，先从数据库删除成功以后再删除列
                 }else{
-                    fail();
+                    fail("该物品类型已在报修单中关联数据，无法删除！");
                 }
             },error:function () {
                 fail();

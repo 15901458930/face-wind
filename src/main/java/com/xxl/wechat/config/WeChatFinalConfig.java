@@ -31,8 +31,12 @@ public class WeChatFinalConfig extends  JFinalConfig {
     @Override
     public void configConstant(Constants constants) {
 
-        constants.setDevMode(true);
+
         PropKit.use("config.properties");
+
+        String flag = PropKit.get("dev.model") == null ? "false" : PropKit.get("dev.model");
+        constants.setDevMode(Boolean.valueOf(flag));
+
         constants.setError404View("/WEB-INF/view/404.html");
         constants.setError500View("/WEB-INF/view/500.html");
     }
@@ -119,6 +123,16 @@ public class WeChatFinalConfig extends  JFinalConfig {
 
     }
 
+    public static void main(String[] args) {
+        System.out.println(Boolean.valueOf(null));
+        System.out.println(Boolean.valueOf(""));
 
+        System.out.println(Boolean.valueOf(" "));
+        System.out.println(Boolean.valueOf("TRUE"));
+        System.out.println(Boolean.valueOf("true"));
+
+
+
+    }
 
 }

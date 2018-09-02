@@ -12,38 +12,28 @@
     <link rel="stylesheet" href="/weui/css/weui.min.css">
     <link rel="stylesheet" href="/weui/css/jquery-weui.min.css">
     <link rel="stylesheet" href="/weui/css/iconfont.css">
+    <link rel="stylesheet" href="/weui/icon/iconfont.css">
     <link rel="stylesheet" href="/css/front/front-style.css">
 
 </head>
 
-
 <body ontouchstart>
-
-
 
 <div class="weui-tab" id="weui-sb">
 
-    <div class="weui-pull-to-refresh__layer">
-        <div class='weui-pull-to-refresh__arrow'></div>
-        <div class='weui-pull-to-refresh__preloader'></div>
-
-        <div class="down">下拉刷新</div>
-        <div class="up">释放刷新</div>
-        <div class="refresh">正在刷新</div>
-    </div>
-
     <div class="weui-tab__bd">
+
+        <div class="weui-loadmore top-just-waiting hide">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+
         <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
 
-            <div class="weui-panel__bd" id="fix-asset-list">
+            <a class="weui-btn weui-btn_primary refresh-it" href="javascript:"  style="position: fixed;bottom:120px;right:20px;z-index:501"><i class="iconfont icon-refresh"></i></a>
 
-               <!-- <div class="weui-loadmore hide loadding">
-                    <i class="weui-loading"></i>
-                    <span class="weui-loadmore__tips">正在加载</span>
-                </div>
-                <div class="weui-loadmore weui-loadmore_line hide no-data">
-                    <span class="weui-loadmore__tips">暂无数据</span>
-                </div>-->
+
+            <div class="weui-panel__bd" id="fix-asset-list">
 
                 <!--模板开始-->
                 <script id="fix-list-template" type="text/x-handlebars-template">
@@ -102,7 +92,7 @@
 <script src="/weui/js/fastclick.js"></script>
 <script src="/weui/js/jquery-weui.min.js"></script>
 <script src="/js/handlebars-v4.0.11.js"></script>
-<script src="/js/front/repair/repair-assets-list.js"></script>
+<script src="/js/front/repair/repair-assets-list.js?v=#(session.user.version)"></script>
 
 
 

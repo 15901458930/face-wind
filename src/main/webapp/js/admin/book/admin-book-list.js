@@ -109,8 +109,8 @@ layui.use(['table','jquery','layer','form','laydate','laytpl'], function(){
         $(selector).find(".responsibleUser").text(data.responsibleUser);
         $(selector).find(".useReason").text(data.useReason);
         $(selector).find(".device").text(data.device);
-        $(selector).find(".needPhoto").text(data.needPhoto);
-        $(selector).find(".needCamera").text(data.needCamera);
+        $(selector).find(".needPhoto").text(data.needPhoto == 1 ? "是":"否");
+        $(selector).find(".needCamera").text(data.needCamera == 1 ? "是":"否");
         $(selector).find(".specialRequire").text(data.specialRequire || "");
         $(selector).find(".createDate").text(data.createDate);
         $(selector).find(".createUserName").text(data.createUserName);

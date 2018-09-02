@@ -23,7 +23,7 @@ public class UserController extends Controller {
         SyUser user = (SyUser)getSessionAttr("user");
 
         user.setUserType(userType);
-        userService.update(userType,user.getId());
+        userService.updateStatus(user.getId(),userType);
 
         redirect("/index/route");
 

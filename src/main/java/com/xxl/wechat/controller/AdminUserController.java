@@ -29,6 +29,10 @@ public class AdminUserController extends Controller {
         renderJson(syUser);
     }
 
+    public void loginOut(){
+        setSessionAttr("user",null);
+        redirect("/admin/login");
+    }
 
 
 

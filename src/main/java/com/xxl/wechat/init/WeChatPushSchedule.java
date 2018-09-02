@@ -31,9 +31,6 @@ public class WeChatPushSchedule implements Runnable{
 
         try{
 
-
-
-
             String agentid = PropKit.get("wechat.agentid");
 
             String pushUrl = PropKit.get("wechat.api.push");
@@ -45,7 +42,7 @@ public class WeChatPushSchedule implements Runnable{
             List<WechatNoticeTask> noProcessTask = service.findNoProcessTask();
 
             if(noProcessTask == null || noProcessTask.size()==0){
-                log.info("暂无要推送的微信信息...");
+                //log.info("暂无要推送的微信信息...");
             }else{
                 log.info("待推送微信信息:{}条"+noProcessTask.size());
                 for (WechatNoticeTask task : noProcessTask){

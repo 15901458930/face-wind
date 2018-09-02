@@ -83,6 +83,12 @@ public class DictCache {
 
     }
 
+    public void refreshSubCategory(){
+        subCategoryList = service.findSubCategory4json();
+        subCategoryMap = service.findSubCategoryMap();
+
+    }
+
 
     public  static void  initBelongCampusMapAndList(){
 

@@ -46,6 +46,6 @@ public class WeChatPushService {
 
         int[] batchResult = Db.batchUpdate(list,30);
 
-        log.info("批量更新微信推送结果：{}}", Arrays.toString(batchResult));
+        log.info("批量更新微信推送结果：{}", Arrays.toString(batchResult));
     }
 }

@@ -16,35 +16,18 @@ $(function () {
     //初始化上拉加载历史数据
     initPullRefresh();
 
-    $("#weui-sb").pullToRefresh('triggerPullToRefresh');
+
+    loading();
 });
 
 
 function initPullRefresh(){
 
-    var downloading = false;
-
-    $("#weui-sb").pullToRefresh({
-        onRefresh: function () {
-
-            if(downloading){
-                return;
-            }
-
-            downloading = true;
-
-
-            loading();
-
-            downloading = false;
-        },
-        onPull: function (percent) {
-            /* 用户下拉过程中会触发，接收一个百分比表示用户下拉的比例 */
-
-        }
-        /* 下拉刷新的触发距离， 注意，如果你重新定义了这个值，那么你需要重载一部分CSS才可以，请参考下面的自定义样式部分 */
-
+    $(".refresh-it").click(function () {
+        loading();
     });
+
+
 }
 
 

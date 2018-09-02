@@ -23,6 +23,14 @@
             <div class="weui-cells weui-cells_form" >
 
                 <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">流水号</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.id)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
                     <div class="weui-cell__hd">
                         <label class="weui-label">预订地点</label></div>
                     <div class="weui-cell__bd">
@@ -91,6 +99,29 @@
 
                     <div class="weui-cell__bd">
                         #(book.needCamera == 1 ? '是' : '否')
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">特殊要求</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.specialRequire)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">申请人</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.createUserName)
+                    </div>
+                </div>
+
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">申请时间</label></div>
+
+                    <div class="weui-cell__bd">
+                        #(book.createDate)
                     </div>
                 </div>
 

@@ -20,6 +20,8 @@ public class FixVO {
     private String belongCampusName;
 
 
+    private Integer  applyUserId;
+
     private String fixReason;
 
     private String applyUserName;
@@ -41,6 +43,14 @@ public class FixVO {
     private String fixedDate;
 
     private String[] attachmentIds;
+
+    public Integer getApplyUserId() {
+        return applyUserId;
+    }
+
+    public void setApplyUserId(Integer applyUserId) {
+        this.applyUserId = applyUserId;
+    }
 
     public String getBelongCampus() {
         return belongCampus;

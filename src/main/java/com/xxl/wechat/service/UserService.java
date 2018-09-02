@@ -93,6 +93,9 @@ public class UserService {
         user.setCreateUserId(result.getUserid());
         user.setCreateDate(DateUtil.getCurrentDate());
         user.save();
+
+        log.info("保存用户信息：{}",FastJson.getJson().toJson(user));
+
         return user;
     }
 
@@ -102,6 +105,8 @@ public class UserService {
         SyUser user = new SyUser();
         user.setId(id);
         user.setUserType(userType);
+
+        log.warn("{}改变状态{}",id,userType);
 
         user.update();
     }

@@ -93,6 +93,8 @@ public class BookRoomService {
             endDate += " 23:59:59";
             sqlExceptSelect += "  and  B.BOOK_START_TIME <= '" + endDate + "'";
         }
+
+        sqlExceptSelect += " order by B.ID desc ";
         Page<BookRoomTask> paginate = bookRoomTaskDao.paginate(page, pageSize, "select B.*,U.REAL_NAME AS BOOK_USER_NAME,U2.REAL_NAME AS CREATE_USER_NAME,R.NAME AS ROOM_NAME ", sqlExceptSelect);
 
         for(BookRoomTask task : paginate.getList()){
@@ -235,7 +237,7 @@ public class BookRoomService {
         String start = DateUtil.format(task.getBookStartTime(), DateUtil.HH_MM_PATTERN);
         String end = DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN);
 
-        String msg = task.getBookDate()+start+"至"+end+ task.getDepart()+"预订"+DictCache.roomMap.get(task.getRoomId());
+        String msg = "有新的预约场地申请！ (流水号:"+task.getId()+"，场地："+DictCache.roomMap.get(task.getRoomId())+"，预约时间："+task.getBookDate()+"日 "+start+"分至"+end+"分，使用部门："+ task.getDepart()+"，需要准备器材："+task.getDevice()+"     （更多详细信息，请点击下方的【报修预约】进入应用内查看！）";
         weChatPushService.save(userService.findFixUser("3,4,5"),msg);
 
         return list;

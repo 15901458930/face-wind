@@ -4,6 +4,7 @@ import com.jfinal.json.FastJson;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.xxl.wechat.cache.DictCache;
 import com.xxl.wechat.entity.Category;
 import com.xxl.wechat.model.generator.FixAssetTask;
 import com.xxl.wechat.model.generator.SyAttachment;
@@ -137,7 +138,7 @@ public class CategoryService {
       if(flag){
           SySubCategory sub = subCategoryDao.findById(id);
           subCategoryDao.deleteById(id);
-            log.warn("删除SY_SUB_CATEGORY单条数据成功，记录：{}",FastJson.getJson().toJson(sub));
+            log.info("删除SY_SUB_CATEGORY单条数据成功，记录：{}",FastJson.getJson().toJson(sub));
             return true;
 
       }
@@ -150,9 +151,15 @@ public class CategoryService {
         if(cate.getId() == null){
             cate.setCreateDate(DateUtil.getCurrentDate());
             cate.save();
+
         }else{
             cate.update();
         }
+
+
+        DictCache.getInstance().refreshSubCategory();
+
+        log.info("子分类有更新和添加操作，DictCache缓存刷新中。。。。");
 
 
 

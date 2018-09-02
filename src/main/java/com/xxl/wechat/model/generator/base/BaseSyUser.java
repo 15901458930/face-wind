@@ -169,4 +169,12 @@ public abstract class BaseSyUser<M extends BaseSyUser<M>> extends Model<M> imple
 		return getStr("CREATE_USER_ID");
 	}
 
+	public void setVersion(java.lang.String version) {
+		set("VERSION", version);
+	}
+	
+	public java.lang.String getVersion() {
+		return getStr("VERSION");
+	}
+
 }

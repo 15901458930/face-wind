@@ -1,5 +1,6 @@
 package com.xxl.wechat.service;
 
+import com.jfinal.json.FastJson;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
@@ -65,6 +66,10 @@ public class AttachmentService {
         syAttachment.setCreateUserId(1);//TODO 当前用户ID
         syAttachment.save();
 
+        log.info("保存图片附件表成功：{}",FastJson.getJson().toJson(syAttachment));
+
+
+
     }
 
     public SyAttachment uploadImg(String img) {
@@ -110,12 +115,16 @@ public class AttachmentService {
 
         syAttachment.save();
 
-        log.info("文件上传UUID:{}", attachId);
         return syAttachment;
     }
 
     public void delete(String id) {
+
+        SyAttachment syAttachment = syAttachmentDao.findById(id);
         syAttachmentDao.deleteById(id);
+
+        log.info("删除文件成功{}",syAttachment);
+
     }
 
 
@@ -137,5 +146,7 @@ public class AttachmentService {
         }
         //批量更新
         int[] batchResult = Db.batchUpdate(batchList, 50);
+
+        log.info("批量更新Attachment表中的业务ID：{}",Arrays.toString(attachmentIds));
     }
 }

@@ -233,7 +233,6 @@ function initUploaderImg() {
     $("#uploaderFiles").on("click", "li", function() {
         index = $(this).index();
         var attchmentId = $(this).find(".attachmentId").val();
-        alert("get"+attchmentId);
         $("#galleryImg").attr("style", this.getAttribute("style"));
         $(".weui-gallery__del").attr("id",attchmentId);
         $("#gallery").fadeIn(100);
@@ -349,7 +348,8 @@ function save(){
                     $("#fix-add").hide();//奇怪
                     $.closePopup();
                     //$('.weui-cell_swiped').swipeout('close');
-                    $("#weui-sb").pullToRefresh('triggerPullToRefresh');
+                    loadding();
+
 
                 });
             }else{

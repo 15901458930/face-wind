@@ -1,5 +1,6 @@
 package com.xxl.wechat.service;
 
+import com.jfinal.json.FastJson;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
@@ -74,6 +75,7 @@ public class FixAssetsService {
             endDate += " 23:59:59";
             sqlExceptSelect += "  and  F.APPLY_DATE <= '" + endDate + "'";
         }
+        sqlExceptSelect += " order by F.ID desc";
 
         return fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U2.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
     }
@@ -155,21 +157,32 @@ public class FixAssetsService {
     }
 
     public void change(int id,int status,int userId){
-        FixAssetTask task = fixAssetTaskDao.findById(id);
 
-        if(task.getStatus() != status){
+        FixVO fixVO = get(id);
+
+        if(fixVO.getStatus() != status){
+            FixAssetTask task = new FixAssetTask();
+            task.setId(fixVO.getId());
             task.setStatus(status);
             task.setFixUserId(userId);
+
+            if(fixVO.getStatus() == 7){
+                //如果修理完成，添加一个时间记录
+                task.setFixedDate(DateUtil.getCurrentDate());
+            }
+
             //task.setStartFixDate(DateUtil.getCurrentDate());
             task.update();
 
-            String date = DateUtil.format(task.getApplyDate(),DateUtil.MM_DD_HH_PATTERN);
+            log.info("报修单流水ID:{}的状态发生变化{} ===>>>> {}",id,fixVO.getStatus(),status);
 
-            SyUser user = userService.getUser(task.getApplyUserId());
+            SyUser user = userService.getUser(fixVO.getApplyUserId());
+
+            String msg = "(流水号:"+fixVO.getId()+",报修物品:"+fixVO.getAssetSubTypeName()+","+fixVO.getAssetName()+",报修原因："+fixVO.getFixReason()+",当前状态："+StatusConstant.getStatusMap(status)+")";
 
             //添加到推送队列
-            weChatPushService.save(user.getWechatUserId(),"您"+date+"提交的报修状态有变化！");
-            weChatPushService.save(userService.findFixUser("5"),"流水号:"+id+"的报修申请状态发生变化！");
+            weChatPushService.save(user.getWechatUserId(),"您提交的报修状态有变化！"+msg);
+            weChatPushService.save(userService.findFixUser("5"),"有报修申请状态发生变化！"+msg);
 
         }
     }
@@ -177,7 +190,7 @@ public class FixAssetsService {
 
     public boolean accept(int id,int version,int userId){
 
-        FixAssetTask fixAssetTask = fixAssetTaskDao.findById(id);
+        FixVO fixVO = get(id);
 
         int newVersion = version + 1;
         int update = Db.update("update FIX_ASSET_TASK set FIX_USER_ID = '" + userId + "',VERSION = " + newVersion + ",STATUS = "+StatusConstant.IN_PROCESS+",START_FIX_DATE = '"+DateUtil.getCurrentDateStr()+"' where ID = " + id + " and VERSION = " + version);
@@ -185,11 +198,15 @@ public class FixAssetsService {
         boolean result = update == 0;
 
         if(!result){
-            SyUser user = userService.getUser(fixAssetTask.getApplyUserId());
+            SyUser user = userService.getUser(fixVO.getApplyUserId());
+
+
+            log.info("接单信息：{}", FastJson.getJson().toJson(user));
 
             //添加到推送队列
-            weChatPushService.save(user.getWechatUserId(),"您的报修申请(流水号:"+fixAssetTask.getId()+")已被人认领，请耐心等待！");
-            weChatPushService.save(userService.findFixUser("5"),"流水号:"+fixAssetTask.getId()+"的报修申请已被人认领！");
+            String msg = "(流水号:"+fixVO.getId()+",报修物品:"+fixVO.getAssetSubTypeName()+","+fixVO.getAssetName()+",报修原因"+fixVO.getFixReason()+")";
+            weChatPushService.save(user.getWechatUserId(),"您的报修申请已被人认领，请耐心等待！"+msg);
+            weChatPushService.save(userService.findFixUser("5"),"有报修申请已被认领！"+msg);
         }
 
         return result;
@@ -225,6 +242,7 @@ public class FixAssetsService {
         vo.setApplyDate(DateUtil.format(task.getApplyDate(),DateUtil.DEFAULT_PATTERN));
         vo.setVersion(task.getVersion());
         vo.setAssetTypeName(DictCache.mainCategoryMap.get(task.getAssetType()));
+        vo.setApplyUserId(task.getApplyUserId());
 
         if(StringUtils.isNotBlank(task.getAssetType()) && StringUtils.isNotBlank(task.getAssetSubType())){
 
@@ -269,12 +287,24 @@ public class FixAssetsService {
 
             //添加到推送队列(发送给维修人员和领导)
             String userTypes = task.getAssetType()+",5";
-            weChatPushService.save(userService.findFixUser(userTypes),"有新的报修！");
+
+
+            String[] assetSubTypes = StringUtils.split(task.getAssetSubType(),",");
+            StringBuilder sb = new StringBuilder();
+            for(String singleSubType : assetSubTypes){
+                sb.append(DictCache.subCategoryMap.get(singleSubType));
+                sb.append(",");
+            }
+
+            String msg = "(流水号:"+task.getId()+",报修物品:"+sb.toString()+task.getAssetName()+",报修原因："+task.getFixReason()+")";
+            weChatPushService.save(userService.findFixUser(userTypes),"有新的报修！"+msg);
 
         }else{
             task.setId(form.getId());
             task.update();
         }
+
+        log.info("保存新报修信息：{}",FastJson.getJson().toJson(task));
 
         //关联附件
         attachmentService.batchUpdateAttachment(form.getAttachmentIds(), task.getId());

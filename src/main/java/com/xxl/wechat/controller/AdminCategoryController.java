@@ -40,7 +40,7 @@ public class AdminCategoryController extends Controller {
            result = ResponseResult.instance().setSuccessData(flag,"");
 
         }else{
-            result = ResponseResult.instance().setErrorMsg(flag,"该分类已经存在维修单中有关联，不能删除");
+            result = ResponseResult.instance().setErrorMsg(flag,"该分类物品在维修单中有关联，不能删除");
         }
 
         renderJson(result);
@@ -55,6 +55,7 @@ public class AdminCategoryController extends Controller {
 
         categoryService.save(form);
         ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
+        renderJson(result);
     }
 
 }

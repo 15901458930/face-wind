@@ -25,7 +25,19 @@
             <div class="weui-media-box__hd"><img class="weui-media-box__thumb radius" src="#(session.user.avatar)" alt=""></div>
             <div class="weui-media-box__bd">
                 <h4 class="weui-media-box__title user-name">#(session.user.realName)</h4>
-                <p class="user-grade">#(session.user.userType == 2 ? '教师' : '维修人员')</p>
+                <p class="user-grade">
+                    #if(session.user.userType == 2)
+                    教师
+                    #else if(session.user.userType == 3)
+                    后勤中心-维修
+
+                    #else if(session.user.userType == 4)
+                    信息中心维修
+                    #else
+                    领导
+                    #end
+
+                </p>
                 <p class="user-integral">手机:<em class="num">#(session.user.phone)</em></p>
             </div>
         </div>

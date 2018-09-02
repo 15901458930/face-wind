@@ -37,10 +37,6 @@ public class FixAssetsController extends Controller {
     }
 
 
-    public void demo(){
-        render("demo.html");
-    }
-
     public void change(){
         int id = this.getParaToInt(0);
         int status = this.getParaToInt(1);
@@ -82,8 +78,6 @@ public class FixAssetsController extends Controller {
      * 我的报修
      */
     public void list() {
-        String code = this.getPara("code");
-        log.info("测试code:"+code);
 
        SyUser user = (SyUser)getSessionAttr("user");
 
@@ -97,14 +91,13 @@ public class FixAssetsController extends Controller {
     }
 
     public void save(){
-       SyUser user = (SyUser)getSessionAttr("user");
+
+        SyUser user = (SyUser)getSessionAttr("user");
 
         String code = this.getPara("code");
-        log.info("测试code:"+code);
 
         String json = getPara("fix");
 
-        log.info("json>>>{}",json);
         FixForm form = FastJson.getJson().parse(json, FixForm.class);
 
         form.setCurUserId(user.getId());

@@ -53,6 +53,7 @@ public class IndexController extends Controller {
 
         if(userTicketResult.getUserId() == null){
             //如果没有USER_ID则不是企业认证用户
+            log.warn("未授权的用户,即将跳转至no-power-warning.html：{}",userStr);
             render("no-power-warning.html");
         }else{
             //如果是企业内部用户，则通过USER_ID查询该用户是否在用户表中存在
@@ -78,7 +79,13 @@ public class IndexController extends Controller {
                 user = userService.save(userInfoResult);
 
             }
-                //!!!!!!!!!!!!在此存入session
+
+            //防止以后发版本无法更新缓存
+
+            String version = PropKit.get("version") == null ? "" : PropKit.get("version");
+            user.setVersion(version);
+
+            //!!!!!!!!!!!!在此存入session
             setSessionAttr("user",user);
 
             redirect("/index/route");
@@ -88,7 +95,6 @@ public class IndexController extends Controller {
     public void route(){
 
         SyUser user = (SyUser)getSessionAttr("user");
-        log.warn("<<<<<<<<<<<<<USER_TYPE的值为》》》》"+user.getUserType());
         if(user.getUserType() == null){
             render("choose-role.html");
         }else if(user.getUserType() == 2 || user.getUserType() == 5){
@@ -96,7 +102,8 @@ public class IndexController extends Controller {
         }else if(user.getUserType() == 3 || user.getUserType() == 4){
             redirect("/repair/index");
         }else {
-
+            log.warn("不会吧，还有此种类型的用户登录,{}",FastJson.getJson().toJson(user));
+            render("permissed-user-warning.html");
         }
     }
 
