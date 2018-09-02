@@ -14,10 +14,11 @@ layui.use(['table','jquery','layer','form'], function(){
         ,url: url //数据接口
         ,page: true //开启分页
         ,cols: [[ //表头
-            {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'},
-            {field: 'USER_TYPE', title: '', hide:true}
-            ,{field: 'REAL_NAME',  width:'20%',title: '真实姓名'}
-            ,{field: 'PHONE', title: '手机号' ,width:'15%'}
+            {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'}
+            ,{field: 'ASSET_TYPE_NAME', title: '物品分类'}
+            ,{field: 'FIX_REASON', title: '报修原因'}
+            ,{field: 'ASSET_LOCATION',  width:'20%',title: '物品位置'}
+            ,{field: '状态', title: '手机号' ,width:'15%'}
             ,{field: 'USER_TYPE_NAME', title: '用户类型', width:'15%'}
             ,{field: 'CREATE_DATE', title: '创建时间', width:'20%'}
             ,{field: 'DO', title: '用户类型',toolbar: '#user-operation', width:'20%'}
@@ -119,6 +120,9 @@ layui.use(['table','jquery','layer','form'], function(){
         $(selector).find(".phone").text(data.PHONE);
         $(selector).find(".createDate").text(data.CREATE_DATE);
         $(selector).find(".userTypeName").text(data.USER_TYPE_NAME);
+
+
+
     }
 
 
@@ -144,6 +148,7 @@ layui.use(['table','jquery','layer','form'], function(){
 
         });
     }
+
 
     /**
      * 删除

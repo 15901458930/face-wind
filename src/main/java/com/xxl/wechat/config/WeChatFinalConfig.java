@@ -56,6 +56,8 @@ public class WeChatFinalConfig extends  JFinalConfig {
         engine.addSharedFunction("WEB-INF/front/repair/sub-repair-add.html");
         engine.addSharedFunction("WEB-INF/front/share/_tab-bar.html");
 
+
+
         //用于判断是否包含某些功能权限
         //engine.addSharedMethod(com.datong.cms.util.SessionUtil.class);
     }

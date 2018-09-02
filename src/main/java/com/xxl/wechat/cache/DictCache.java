@@ -35,6 +35,8 @@ public class DictCache {
     public static Map<String,String> subCategoryMap = new HashMap<>();
     public static Map<String,String> belongCampusMap = new HashMap<>();
 
+    public static Map<Integer,String> userTypeMap = new HashMap<>();
+
     /**
      * room
      *
@@ -60,6 +62,7 @@ public class DictCache {
         //校区直接写死
         initBelongCampusMapAndList();
 
+        initUserTypeMap();
     }
 
 
@@ -97,5 +100,15 @@ public class DictCache {
 
 
     }
+
+    public  static void  initUserTypeMap() {
+        userTypeMap.put(2,"教师");
+        userTypeMap.put(3,"后勤中心-维修");
+        userTypeMap.put(4,"信息中心-维修");
+        userTypeMap.put(5,"领导");
+
+    }
+
+
 
 }

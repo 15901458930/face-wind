@@ -1,6 +1,7 @@
 package com.xxl.wechat.controller;
 
 import com.jfinal.core.Controller;
+import com.xxl.wechat.entity.ResponseResult;
 import com.xxl.wechat.model.generator.SyUser;
 import com.xxl.wechat.service.UserService;
 import com.xxl.wechat.vo.LayuiResultVO;
@@ -26,5 +27,24 @@ public class AdminUserController extends Controller {
         int limit = (limitStr == null) ? 10 : Integer.parseInt(limitStr);
         LayuiResultVO<SyUser> syUser = userService.findAllUser(curPage,limit,realName,userType);
         renderJson(syUser);
+    }
+
+
+
+
+    public void del(){
+        int id = getParaToInt(0);
+        userService.delete(id);
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
+        renderJson(result);
+    }
+
+    public void change(){
+        int id = getParaToInt(0);
+        int type = getParaToInt(1);
+
+        userService.updateStatus(id,type);
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
+        renderJson(result);
     }
 }

@@ -1,6 +1,7 @@
 package com.xxl.wechat.service;
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
 import com.xxl.wechat.cache.DictCache;
 import com.xxl.wechat.constant.GlobalConstant;
@@ -10,6 +11,7 @@ import com.xxl.wechat.model.generator.FixAssetTask;
 import com.xxl.wechat.model.generator.SyUser;
 import com.xxl.wechat.util.DateUtil;
 import com.xxl.wechat.vo.FixVO;
+import com.xxl.wechat.vo.LayuiResultVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,25 @@ public class FixAssetsService {
 
     static UserService userService = new UserService();
 
+
+    /**
+     * layui后台用
+     * @param page
+     * @param pageSize
+     * @param realName
+     * @param userType
+     * @return
+     */
+    public LayuiResultVO<FixAssetTask> findAllFixAsset(int page, int pageSize, String realName, String userType){
+
+        String sqlExceptSelect = "from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID LEFT JOIN SY_USER U2 ON F.FIX_USER_ID = U2.ID LEFT JOIN SY_MAIN_CATEGORY C ON F.ASSET_TYPE = C.ID  WHERE 1=1 ";
+
+        Page<FixAssetTask> paginate = fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U1.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
+
+        LayuiResultVO<FixAssetTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getList().size(),paginate.getList());
+
+        return vo;
+    }
 
     public List<FixVO> findFixAssets(int userId, int primaryId, int userType, int upOrDown, String keywords){
         StringBuilder sql = new StringBuilder();
