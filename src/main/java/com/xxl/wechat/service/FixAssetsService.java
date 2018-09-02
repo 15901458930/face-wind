@@ -281,4 +281,19 @@ public class FixAssetsService {
 
     }
 
+
+    /**
+     * 返回map
+     * @return
+     */
+    public  boolean isExistsAsstSubType(String id){
+
+
+        String sql = "select * from FIX_ASSET_TASK WHERE ASSET_SUB_TYPE LIKE '%"+id+"%'";
+
+        List<FixAssetTask> list = fixAssetTaskDao.find(sql);
+
+        return list.size() == 0;
+
+    }
 }

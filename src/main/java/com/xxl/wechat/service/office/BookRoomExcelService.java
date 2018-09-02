@@ -30,7 +30,7 @@ public class BookRoomExcelService extends BaseExcelService {
         Sheet s = wb.createSheet();
 
         String[] header = {"序号","流水号","场地", "预订人","预约日期","预约开始时间", "预订结束时间", "使用部门","使用事由","准备器材","是否拍照","是否摄像","特殊要求","负责人","预订人","预订时间"};
-        String[] headerColumn = new String[]{"","ID",  "ROOM_NAME","BOOK_USER_NAME","BOOK_DATE", "BOOK_START_TIME", "BOOK_END_TIME", "DEPART", "USE_REASON", "DEVICE", "NEED_PHOTO", "NEED_CAMERA","SPECIAL_REQUIRE", "RESPONSIBLE_USER", "CREATE_USER_NAME","CREATE_DATE"};
+        String[] headerColumn = new String[]{"","ID",  "ROOM_NAME","BOOK_USER_NAME","BOOK_DATE", "SHORT_START_TIME", "SHORT_END_TIME", "DEPART", "USE_REASON", "DEVICE", "NEED_PHOTO", "NEED_CAMERA","SPECIAL_REQUIRE", "RESPONSIBLE_USER", "CREATE_USER_NAME","CREATE_DATE"};
 
         Row r = s.createRow(0);
 

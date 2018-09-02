@@ -5,7 +5,8 @@ layui.use(['table','jquery','layer','form'], function(){
     var layer = layui.layer;
 
     var name = $("input[name='name']").val();
-    var url = "/admin/category/list?name"+name;
+    var parentId = $("select[name='parentId']").val();
+    var url = "/admin/category/list/"+parentId+"?name"+name;
 
     //第一个实例
     var tabins = table.render({
@@ -13,20 +14,20 @@ layui.use(['table','jquery','layer','form'], function(){
         ,url: url //数据接口
         ,page: true //开启分页
         ,cols: [[ //表头
-            {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'},
-            ,{field: 'NAME',  width:'20%',title: '物品名称'}
-            ,{field: 'SHORT_NAME', title: '物品简称' ,width:'15%'}
-            ,{field: 'MAIN_CATEGORY_NAME',title: '物品类型', width:'15%'}
+            {field: 'ID', title: 'ID', sort: true, fixed: 'left', width:'10%'},
+            ,{field: 'NAME',title: '名称', width:'30%'}
+            ,{field: 'PARENT_NAME',title: '物品类型', width:'20%'}
             ,{field: 'CREATE_DATE', title: '创建时间', width:'20%'}
-            ,{field: 'DO', title: '操作',toolbar: '#user-operation', width:'20%'}
+            ,{field: 'DO', title: '操作',toolbar: '#category-operation', width:'20%'}
         ]],
         loading:true
     });
 
     $("#search-btn").click(function(){
         var name = $("input[name='name']").val();
-        var url = "/admin/user/list?name="+name;
-        tabins.reload({url:url,page:1});
+        var parentId = $("select[name='parentId']").val();
+        var url = "/admin/category/list/"+parentId+"?name="+name;
+        tabins.reload({url:url,page:{curr:1}});
     });
 
     //监听工具条

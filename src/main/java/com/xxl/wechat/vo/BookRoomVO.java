@@ -33,6 +33,26 @@ public class BookRoomVO {
 
     private String createDate;
 
+    private String createUserId;
+    private String createUserName;
+
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
     public String getCreateDate() {
         return createDate;
     }

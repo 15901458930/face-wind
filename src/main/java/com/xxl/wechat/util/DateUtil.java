@@ -35,6 +35,11 @@ public class DateUtil {
 
     public static String format(Date date, String pattern) {
 
+
+        if(date == null){
+           return "";
+        }
+
         return DateFormatUtils.format(date, pattern);
     }
 

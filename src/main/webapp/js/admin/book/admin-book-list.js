@@ -1,11 +1,12 @@
 
 
-layui.use(['table','jquery','layer','form','laydate'], function(){
+layui.use(['table','jquery','layer','form','laydate','laytpl'], function(){
     var form = layui.form;
     var $ = jQuery = layui.$;
     var table = layui.table;
     var layer = layui.layer;
     var laydate = layui.laydate;
+    var laytpl = layui.laytpl;
 
     var startDate = $("input[name='startDate']").val();
     var endDate = $("input[name='endDate']").val();
@@ -21,8 +22,8 @@ layui.use(['table','jquery','layer','form','laydate'], function(){
             {field: 'ID', title: 'ID', width:'5%', fixed: 'left'}
             ,{field: 'ROOM_NAME', title: '场地',width:'10%'}
             ,{field: 'BOOK_DATE', title: '日期',width:'10%'}
-            ,{field: 'BOOK_START_TIME', title: '开始时间',width:'10%',template:'#bookStartTime'}
-            ,{field: 'BOOK_END_TIME',  width:'20%',title: '结束时间',width:'10%',template:'#bookEndTime'}
+            ,{field: 'SHORT_START_TIME', title: '开始时间',width:'10%'}
+            ,{field: 'SHORT_END_TIME',  width:'20%',title: '结束时间',width:'10%'}
             ,{field: 'DEPART', title: '使用部门' ,width:'10%'}
             ,{field: 'USE_REASON', title: '使用事由', width:'10%'}
             ,{field: 'SPECIAL_REQUIRE', title: '特殊要求', width:'10%'}
@@ -98,18 +99,21 @@ layui.use(['table','jquery','layer','form','laydate'], function(){
     function fillData(selector,data){
 
 
-        $(selector).find(".fixId").text(data.id);
-        $(selector).find(".assetSubTypeName").text(data.assetSubTypeName);
-        $(selector).find(".assetTypeName").text(data.assetTypeName);
-        $(selector).find(".assetName").text(data.assetName);
-        $(selector).find(".assetLocation").text(data.assetLocation);
-        $(selector).find(".belongCampusName").text(data.belongCampusName);
-        $(selector).find(".applyDate").text(data.applyDate);
-        $(selector).find(".applyUserName").text(data.applyUserName);
-        $(selector).find(".fixReason").text(data.fixReason);
-        $(selector).find(".status").text(data.statusName);
-        $(selector).find(".fixUserName").text(data.fixUserName || "");
-        $(selector).find(".startFixDate").text(data.startFixDate);
+        $(selector).find(".bookId").text(data.id);
+        $(selector).find(".roomName").text(data.roomName);
+        $(selector).find(".bookDate").text(data.bookDate);
+        $(selector).find(".bookStartTime").text(data.bookStartTime);
+        $(selector).find(".bookEndTime").text(data.bookEndTime);
+
+        $(selector).find(".depart").text(data.depart);
+        $(selector).find(".responsibleUser").text(data.responsibleUser);
+        $(selector).find(".useReason").text(data.useReason);
+        $(selector).find(".device").text(data.device);
+        $(selector).find(".needPhoto").text(data.needPhoto);
+        $(selector).find(".needCamera").text(data.needCamera);
+        $(selector).find(".specialRequire").text(data.specialRequire || "");
+        $(selector).find(".createDate").text(data.createDate);
+        $(selector).find(".createUserName").text(data.createUserName);
 
 
 

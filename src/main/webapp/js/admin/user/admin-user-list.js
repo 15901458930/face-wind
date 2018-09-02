@@ -15,7 +15,7 @@ layui.use(['table','jquery','layer','form'], function(){
         ,page: true //开启分页
         ,cols: [[ //表头
             {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'},
-            {field: 'USER_TYPE', title: '', hide:true}
+            {field: 'USER_TYPE', title: '用户类型', hide:true}
             ,{field: 'REAL_NAME',  width:'20%',title: '真实姓名'}
             ,{field: 'PHONE', title: '手机号' ,width:'15%'}
             ,{field: 'USER_TYPE_NAME', title: '用户类型', width:'15%'}

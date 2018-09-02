@@ -66,8 +66,6 @@ public class BookRoomService {
      */
     public LayuiResultVO<BookRoomTask> findAllBookRooms(int page, int pageSize, String status, String startDate, String endDate){
 
-
-
         Page<BookRoomTask> paginate = list(page,pageSize,status,startDate,endDate);
 
         LayuiResultVO<BookRoomTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getTotalRow(),paginate.getList());
@@ -93,17 +91,23 @@ public class BookRoomService {
         }
         if (StringUtils.isNotBlank(endDate)) {
             endDate += " 23:59:59";
-            sqlExceptSelect += "  and  F.BOOK_START_TIME <= '" + endDate + "'";
+            sqlExceptSelect += "  and  B.BOOK_START_TIME <= '" + endDate + "'";
+        }
+        Page<BookRoomTask> paginate = bookRoomTaskDao.paginate(page, pageSize, "select B.*,U.REAL_NAME AS BOOK_USER_NAME,U2.REAL_NAME AS CREATE_USER_NAME,R.NAME AS ROOM_NAME ", sqlExceptSelect);
+
+        for(BookRoomTask task : paginate.getList()){
+            task.put("SHORT_START_TIME",DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
+            task.put("SHORT_END_TIME",DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
         }
 
-        return bookRoomTaskDao.paginate(page, pageSize, "select B.*,U.REAL_NAME AS BOOK_USER_NAME,U2.REAL_NAME AS CREATE_USER_NAME,R.NAME AS ROOM_NAME ", sqlExceptSelect);
+        return paginate ;
     }
 
 
     
     public BookRoomVO getVO(int id){
 
-        String sql = "select U.REAL_NAME,B.*,S.NAME AS ROOM_NAME from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID WHERE B.ID  = ?" ;
+        String sql = "select U.REAL_NAME,B.*,S.NAME AS ROOM_NAME,U2.REAL_NAME AS CREATE_USER_NAME from BOOK_ROOM_TASK B LEFT JOIN SY_ROOM S ON B.ROOM_ID = S.ID LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID LEFT JOIN SY_USER U2 ON B.CREATE_USER_ID = U2.ID  WHERE B.ID  = ?" ;
 
         BookRoomTask task = bookRoomTaskDao.findFirst(sql,id);
 
@@ -123,7 +127,8 @@ public class BookRoomService {
 
         vo.setBookStartDate(task.getBookStartTime());
         vo.setBookEndDate(task.getBookEndTime());
-
+        vo.setCreateDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
+        vo.setCreateUserName(task.get("CREATE_USER_NAME"));
         vo.setRoomName(task.get("ROOM_NAME"));
         vo.setUserName(task.get("REAL_NAME"));
 

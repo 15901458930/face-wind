@@ -68,52 +68,62 @@
 
         <div class="layui-form-item">
             <label class="layui-form-label">流水号：</label>
-            <div class="layui-form-right-preview fixId"></div>
+            <div class="layui-form-right-preview bookId"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">物品大类：</label>
-            <div class="layui-form-right-preview assetTypeName"></div>
+            <label class="layui-form-label">场地：</label>
+            <div class="layui-form-right-preview roomName"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">物品小类：</label>
-            <div class="layui-form-right-preview assetSubTypeName"></div>
+            <label class="layui-form-label">预订日期：</label>
+            <div class="layui-form-right-preview bookDate"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">其它报修物品：</label>
-            <div class="layui-form-right-preview assetName"></div>
+            <label class="layui-form-label">开始时间：</label>
+            <div class="layui-form-right-preview bookStartTime"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">物品位置：</label>
-            <div class="layui-form-right-preview assetLocation"></div>
+            <label class="layui-form-label">结束时间：</label>
+            <div class="layui-form-right-preview bookEndTime"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">所属校区：</label>
-            <div class="layui-form-right-preview belongCampusName"></div>
+            <label class="layui-form-label">使用部门：</label>
+            <div class="layui-form-right-preview depart"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">报修原因：</label>
-            <div class="layui-form-right-preview fixReason"></div>
+            <label class="layui-form-label">场地负责人：</label>
+            <div class="layui-form-right-preview responsibleUser"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">申请人：</label>
-            <div class="layui-form-right-preview applyUserName"></div>
+            <label class="layui-form-label">使用事由：</label>
+            <div class="layui-form-right-preview useReason"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">申请时间：</label>
-            <div class="layui-form-right-preview applyDate"></div>
+            <label class="layui-form-label">准备器材：</label>
+            <div class="layui-form-right-preview device"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">接单时间：</label>
-            <div class="layui-form-right-preview startFixDate"></div>
+            <label class="layui-form-label">是否照相：</label>
+            <div class="layui-form-right-preview needPhoto"></div>
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label">维修人：</label>
-            <div class="layui-form-right-preview fixUserName"></div>
+            <label class="layui-form-label">是否摄像：</label>
+            <div class="layui-form-right-preview needCamera"></div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">维修状态：</label>
-            <div class="layui-form-right-preview status"></div>
+            <label class="layui-form-label">特殊需求：</label>
+            <div class="layui-form-right-preview specialRequire"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建时间：</label>
+            <div class="layui-form-right-preview createDate"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-form-right-preview createUserName"></div>
         </div>
 
     </form>
@@ -129,51 +139,6 @@
 
 
 <script src="/layui/layui.js"></script>
-
-<script type="text/javascript">
-    //对Date的扩展，将 Date 转化为指定格式的String
-    //月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
-    //年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
-    //例子：
-    //(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
-    //(new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
-    Date.prototype.Format = function(fmt)
-    { //author: meizz
-        var o = {
-            "M+" : this.getMonth()+1,                 //月份
-            "d+" : this.getDate(),                    //日
-            "h+" : this.getHours(),                   //小时
-            "m+" : this.getMinutes(),                 //分
-            "s+" : this.getSeconds(),                 //秒
-            "q+" : Math.floor((this.getMonth()+3)/3), //季度
-            "S"  : this.getMilliseconds()             //毫秒
-        };
-        if(/(y+)/.test(fmt))
-            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-        for(var k in o)
-            if(new RegExp("("+ k +")").test(fmt))
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
-        return fmt;
-    }
-</script>
-
-<script id="bookStartTime" type="text/html">
-    {{#
-    var date = new Date();
-    date.setTime(d.BOOK_START_TIME);
-    return date.Format("hh:mm");
-    }}
-</script>
-
-<script id="bookEndTime" type="text/html">
-    {{#
-    var date = new Date();
-    alert(1234);
-    date.setTime(d.BOOK_END_TIME);
-    return date.Format("hh:mm");
-    }}
-</script>
-
 <script src="/js/admin/book/admin-book-list.js"></script>
 
 
