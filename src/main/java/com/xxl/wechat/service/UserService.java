@@ -72,7 +72,7 @@ public class UserService {
             u.put("USER_TYPE_NAME",DictCache.userTypeMap.get(u.getUserType()));
         }
 
-        LayuiResultVO<SyUser> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getList().size(),paginate.getList());
+        LayuiResultVO<SyUser> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getTotalRow(),paginate.getList());
 
         return vo;
 

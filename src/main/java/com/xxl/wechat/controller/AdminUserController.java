@@ -20,7 +20,7 @@ public class AdminUserController extends Controller {
         String userType = getPara(0);
         String realName = getPara("realName");
 
-        String page = getPara("pageSize");
+        String page = getPara("page");
 
         String limitStr = getPara("limit");
         int curPage = (page == null) ? 1 : Integer.parseInt(page);

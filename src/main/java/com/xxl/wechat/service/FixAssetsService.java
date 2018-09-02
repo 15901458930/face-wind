@@ -37,24 +37,45 @@ public class FixAssetsService {
      * layui后台用
      * @param page
      * @param pageSize
-     * @param realName
-     * @param userType
      * @return
      */
-    public LayuiResultVO<FixAssetTask> findAllFixAsset(int page, int pageSize, String realName, String userType){
+    public LayuiResultVO<FixAssetTask> findAllFixAsset(int page, int pageSize, String status, String startDate,String endDate){
 
-        String sqlExceptSelect = "from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID LEFT JOIN SY_USER U2 ON F.FIX_USER_ID = U2.ID LEFT JOIN SY_MAIN_CATEGORY C ON F.ASSET_TYPE = C.ID  WHERE 1=1 ";
 
-        Page<FixAssetTask> paginate = fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U2.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
 
+        Page<FixAssetTask> paginate = list(page,pageSize,status,startDate,endDate);
 
         for(FixAssetTask task : paginate.getList()){
             task.put("STATUS_NAME",StatusConstant.getStatusMap(task.getStatus()));
         }
 
-        LayuiResultVO<FixAssetTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getList().size(),paginate.getList());
+        LayuiResultVO<FixAssetTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getTotalRow(),paginate.getList());
 
         return vo;
+    }
+
+    /**
+     * layui后台用
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public Page<FixAssetTask> list(int page, int pageSize, String status, String startDate,String endDate) {
+
+        String sqlExceptSelect = "from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID LEFT JOIN SY_USER U2 ON F.FIX_USER_ID = U2.ID LEFT JOIN SY_MAIN_CATEGORY C ON F.ASSET_TYPE = C.ID  WHERE 1=1 ";
+
+        if (StringUtils.isNotBlank(status)) {
+            sqlExceptSelect += "  and  F.STATUS = " + status;
+        }
+        if (StringUtils.isNotBlank(startDate)) {
+            sqlExceptSelect += "  and  F.APPLY_DATE >= '" + startDate + "'";
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            endDate += " 23:59:59";
+            sqlExceptSelect += "  and  F.APPLY_DATE <= '" + endDate + "'";
+        }
+
+        return fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U2.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
     }
 
     public List<FixVO> findFixAssets(int userId, int primaryId, int userType, int upOrDown, String keywords){

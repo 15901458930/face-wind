@@ -1,12 +1,15 @@
 package com.xxl.wechat.service;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.SqlPara;
 import com.xxl.wechat.cache.DictCache;
+import com.xxl.wechat.constant.StatusConstant;
 import com.xxl.wechat.form.BookRoomForm;
 import com.xxl.wechat.model.generator.BookRoomTask;
 import com.xxl.wechat.model.generator.FixAssetTask;
 import com.xxl.wechat.util.DateUtil;
 import com.xxl.wechat.vo.BookRoomVO;
+import com.xxl.wechat.vo.LayuiResultVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +57,49 @@ public class BookRoomService {
         return voList;
     }
 
-    
+
+    /**
+     * layui后台用
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public LayuiResultVO<BookRoomTask> findAllBookRooms(int page, int pageSize, String status, String startDate, String endDate){
+
+
+
+        Page<BookRoomTask> paginate = list(page,pageSize,status,startDate,endDate);
+
+        LayuiResultVO<BookRoomTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getTotalRow(),paginate.getList());
+
+        return vo;
+    }
+
+    /**
+     * layui后台用
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public Page<BookRoomTask> list(int page, int pageSize, String roomId, String startDate, String endDate) {
+
+        String sqlExceptSelect = "from BOOK_ROOM_TASK B LEFT JOIN SY_USER U ON B.BOOK_USER_ID = U.ID LEFT JOIN SY_USER U2 ON B.CREATE_USER_ID = U2.ID LEFT JOIN SY_ROOM R ON B.ROOM_ID = R.ID  WHERE 1=1 ";
+
+        if (StringUtils.isNotBlank(roomId)) {
+            sqlExceptSelect += "  and  B.ROOM_ID = " + roomId;
+        }
+        if (StringUtils.isNotBlank(startDate)) {
+            sqlExceptSelect += "  and  B.BOOK_START_TIME >= '" + startDate + "'";
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            endDate += " 23:59:59";
+            sqlExceptSelect += "  and  F.BOOK_START_TIME <= '" + endDate + "'";
+        }
+
+        return bookRoomTaskDao.paginate(page, pageSize, "select B.*,U.REAL_NAME AS BOOK_USER_NAME,U2.REAL_NAME AS CREATE_USER_NAME,R.NAME AS ROOM_NAME ", sqlExceptSelect);
+    }
+
+
     
     public BookRoomVO getVO(int id){
 

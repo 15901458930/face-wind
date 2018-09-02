@@ -29,7 +29,7 @@ layui.use(['table','jquery','layer','form'], function(){
         var realName = $("input[name='realName']").val();
         var userType = $("select[name='userType']").val();
         var url = "/admin/user/list/"+userType+"?realName="+realName;
-        tabins.reload({url:url,page:1});
+        tabins.reload({url:url,page:{curr:1}});
     });
 
     //监听工具条
