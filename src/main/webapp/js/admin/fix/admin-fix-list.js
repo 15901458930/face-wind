@@ -1,8 +1,9 @@
-layui.use(['table','jquery','layer','form'], function(){
+layui.use(['table','jquery','layer','form','laydate'], function(){
     var form = layui.form;
     var $ = jQuery = layui.$;
     var table = layui.table;
     var layer = layui.layer;
+    var laydate = layui.laydate;
 
     var realName = $("input[name='realName']").val();
     var userType = $("select[name='userType']").val();
@@ -14,17 +15,21 @@ layui.use(['table','jquery','layer','form'], function(){
         ,url: url //数据接口
         ,page: true //开启分页
         ,cols: [[ //表头
-            {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'}
-            ,{field: 'ASSET_TYPE_NAME', title: '物品分类'}
-            ,{field: 'FIX_REASON', title: '报修原因'}
-            ,{field: 'ASSET_LOCATION',  width:'20%',title: '物品位置'}
-            ,{field: '状态', title: '手机号' ,width:'15%'}
-            ,{field: 'USER_TYPE_NAME', title: '用户类型', width:'15%'}
-            ,{field: 'CREATE_DATE', title: '创建时间', width:'20%'}
-            ,{field: 'DO', title: '用户类型',toolbar: '#user-operation', width:'20%'}
+            {field: 'ID', title: 'ID', width:'5%', fixed: 'left'}
+            ,{field: 'ASSET_TYPE_NAME', title: '物品分类',width:'10%'}
+            ,{field: 'FIX_REASON', title: '报修原因',width:'15%'}
+            ,{field: 'ASSET_LOCATION',  width:'20%',title: '物品位置',width:'15%'}
+            ,{field: 'STATUS_NAME', title: '状态' ,width:'15%'}
+            ,{field: 'APPLY_DATE', title: '申请时间', width:'15%'}
+            ,{field: 'APPLY_USER_NAME', title: '申请人', width:'10%'}
+            ,{field: 'DO', title: '操作',toolbar: '#fix-operation',width:'15%'}
         ]],
         loading:true
     });
+
+    laydate.render({ elem: '#startDate'});
+    laydate.render({ elem: '#endDate'});
+
 
     $("#search-btn").click(function(){
         var realName = $("input[name='realName']").val();

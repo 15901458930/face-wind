@@ -108,7 +108,4 @@ public class DictCache {
         userTypeMap.put(5,"领导");
 
     }
-
-
-
 }

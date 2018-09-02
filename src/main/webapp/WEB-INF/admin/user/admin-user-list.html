@@ -25,44 +25,39 @@
 
 <div class="layui-fluid">
 
-    <div class="layui-form" >
-        <form id="user-search-condition">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-            <label class="layui-form-label">真实姓名</label>
-            <div class="layui-input-block">
-                <input name="realName" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input" type="text">
-            </div>
-            </div>
+    <div class="layui-card">
+        <div class="layui-card-header">数据表格的重载</div>
+        <div class="layui-card-body">
+            <div class="layui-form" action="" lay-filter="user-form-filter">
 
-            <div class="layui-inline">
-                <label class="layui-form-label">用户类型</label>
-                <div class="layui-input-block">
-                    <select name="userType" lay-filter="aihao">
-                        <option value=""></option>
-                        <option value="2">教师</option>
-                        <option value="3">后勤中心维修</option>
-                        <option value="4">信息中心维修</option>
-                        <option value="5">领导</option>
-                    </select>
+                <div class="test-table-reload-btn" style="margin-bottom: 10px;">
+
+                    <div class="layui-inline">
+                        <select name="userType" lay-filter="aihao">
+                            <option value="">请选择用户类型</option>
+                            <option value="2">教师</option>
+                            <option value="3">后勤中心维修</option>
+                            <option value="4">信息中心维修</option>
+                            <option value="5">领导</option>
+                        </select>
+
+                    </div>
+                    <div class="layui-inline">
+                        <input name="realName" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input" type="text">
+                    </div>
+                    <button class="layui-btn" id="search-btn" type="button" data-type="reload">搜索</button>
+                    <button class="layui-btn" type="reset" >重置</button>
                 </div>
             </div>
 
-            <div class="layui-inline">
-                <button class="layui-btn" id="search-btn" type="button">查询 </button><button class="layui-btn" type="reset">重置 </button>
-            </div>
+            <table class="layui-table" lay-filter="user-filter" id="user-list"></table>
 
         </div>
-        </form>
-
-
-        <table class="layui-table" lay-filter="user-filter" id="user-list">
-
-        </table>
     </div>
 </div>
 
 <!--编辑弹出层开始-->
+
 <div id="user-edit-window" class="hide">
     <form class="layui-form" action="" lay-filter="user-form-filter">
 
@@ -82,6 +77,7 @@
             <label class="layui-form-label">创建时间：</label>
             <div class="layui-form-right-preview createDate">王鹏</div>
         </div>
+        <
         <div class="layui-form-item">
             <label class="layui-form-label">选择框：</label>
             <div class="layui-input-block">

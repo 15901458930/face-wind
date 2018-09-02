@@ -45,7 +45,12 @@ public class FixAssetsService {
 
         String sqlExceptSelect = "from FIX_ASSET_TASK F LEFT JOIN SY_USER U ON F.APPLY_USER_ID = U.ID LEFT JOIN SY_USER U2 ON F.FIX_USER_ID = U2.ID LEFT JOIN SY_MAIN_CATEGORY C ON F.ASSET_TYPE = C.ID  WHERE 1=1 ";
 
-        Page<FixAssetTask> paginate = fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U1.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
+        Page<FixAssetTask> paginate = fixAssetTaskDao.paginate(page, pageSize, "select F.*,U.REAL_NAME AS APPLY_USER_NAME,U2.REAL_NAME AS FIX_USER_NAME,C.NAME AS ASSET_TYPE_NAME ", sqlExceptSelect);
+
+
+        for(FixAssetTask task : paginate.getList()){
+            task.put("STATUS_NAME",StatusConstant.getStatusMap(task.getStatus()));
+        }
 
         LayuiResultVO<FixAssetTask> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getList().size(),paginate.getList());
 
