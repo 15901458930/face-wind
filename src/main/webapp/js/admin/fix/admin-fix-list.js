@@ -6,11 +6,11 @@ layui.use(['table','jquery','layer','form'], function(){
 
     var realName = $("input[name='realName']").val();
     var userType = $("select[name='userType']").val();
-    var url = "/admin/user/list/"+userType+"?realName"+realName;
+    var url = "/admin/fix/list/"+userType+"?realName"+realName;
 
     //第一个实例
     var tabins = table.render({
-        elem: '#user-list'
+        elem: '#fix-list'
         ,url: url //数据接口
         ,page: true //开启分页
         ,cols: [[ //表头
@@ -29,12 +29,12 @@ layui.use(['table','jquery','layer','form'], function(){
     $("#search-btn").click(function(){
         var realName = $("input[name='realName']").val();
         var userType = $("select[name='userType']").val();
-        var url = "/admin/user/list/"+userType+"?realName="+realName;
+        var url = "/admin/fix/list/"+userType+"?realName="+realName;
         tabins.reload({url:url,page:1});
     });
 
     //监听工具条
-    table.on('tool(user-filter)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+    table.on('tool(fix-filter)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data; //获得当前行数据
         var layEvent = obj.event; //获得 lay-event 对应的值
         var tr = obj.tr; //获得当前行 tr 的DOM对象

@@ -11,6 +11,10 @@ public class AdminRoute extends Routes {
         add("/admin/main", AdminIndexController.class);
         add("/admin/login", AdminLoginController.class);
         add("/admin/user", AdminUserController.class);
+        add("/admin/book", AdminBookController.class);
+        add("/admin/fix", AdminFixController.class);
+        add("/admin/category", AdminCategoryController.class);
+
 
     }
 }
