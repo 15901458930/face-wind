@@ -1,7 +1,9 @@
 package com.xxl.wechat.controller;
 
 import com.jfinal.core.Controller;
+import com.jfinal.json.FastJson;
 import com.xxl.wechat.entity.ResponseResult;
+import com.xxl.wechat.form.FixForm;
 import com.xxl.wechat.model.generator.SySubCategory;
 import com.xxl.wechat.service.CategoryService;
 import com.xxl.wechat.vo.LayuiResultVO;
@@ -42,6 +44,17 @@ public class AdminCategoryController extends Controller {
         }
 
         renderJson(result);
+    }
+
+
+    public void save(){
+        String json = getPara("category");
+
+        //log.info("json>>>{}",json);
+        SySubCategory form = FastJson.getJson().parse(json, SySubCategory.class);
+
+        categoryService.save(form);
+        ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
     }
 
 }

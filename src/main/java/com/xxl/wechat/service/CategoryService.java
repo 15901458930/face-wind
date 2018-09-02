@@ -138,10 +138,23 @@ public class CategoryService {
           SySubCategory sub = subCategoryDao.findById(id);
           subCategoryDao.deleteById(id);
             log.warn("删除SY_SUB_CATEGORY单条数据成功，记录：{}",FastJson.getJson().toJson(sub));
+            return true;
 
       }
       log.warn("删除SY_SUB_CATEGORY表的主键{}失败，FIX_ASSET_TASK中已经存在该子类的数据!");
       return false;
+
+    }
+
+    public void save(SySubCategory cate){
+        if(cate.getId() == null){
+            cate.setCreateDate(DateUtil.getCurrentDate());
+            cate.save();
+        }else{
+            cate.update();
+        }
+
+
 
     }
 
