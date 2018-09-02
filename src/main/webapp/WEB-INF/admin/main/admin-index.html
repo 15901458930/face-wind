@@ -69,12 +69,10 @@
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>李天贵</cite>
+                        <cite>管理员</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
-                        <hr>
+
                         <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
                 </li>
@@ -91,7 +89,7 @@
         <!-- 侧边菜单 -->
         <div class="layui-side layui-side-menu">
             <div class="layui-side-scroll">
-                <div class="layui-logo" lay-href="/manager/user">
+                <div class="layui-logo" lay-href="/admin/user">
                     <span>进修附小管理系统</span>
                 </div>
 
@@ -99,17 +97,17 @@
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
-                            <cite>主页</cite>
+                            <cite>系统管理</cite>
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="layui-this">
-                                <a lay-href="#">用户管理</a>
+                                <a lay-href="/admin/user">用户管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="#">报修管理</a>
+                                <a lay-href="/admin/fix">报修管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="#">会议室管理</a>
+                                <a lay-href="/admin/book">预订场地管理</a>
                             </dd>
                         </dl>
                     </li>
@@ -136,7 +134,8 @@
             </div>
             <div class="layui-tab" lay-unauto lay-allowClose="true" lay-filter="layadmin-layout-tabs">
                 <ul class="layui-tab-title" id="LAY_app_tabsheader">
-                    <li lay-id="home/console.html" lay-attr="home/console.html" class="layui-this"><i class="layui-icon layui-icon-home"></i></li>
+                    <li lay-id="/admin/user" lay-attr="/admin/fix" class="layui-this">
+                        <span>用户管理</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>
                 </ul>
             </div>
         </div>
@@ -157,7 +156,7 @@
 <script src="/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '/js/manager/' //静态资源所在路径
+        base: '/js/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index');
