@@ -44,6 +44,19 @@ public class FixVO {
 
     private String[] attachmentIds;
 
+    /**
+     * 是否有权限删除和编辑
+     */
+    private boolean hasPower;
+
+    public boolean isHasPower() {
+        return hasPower;
+    }
+
+    public void setHasPower(boolean hasPower) {
+        this.hasPower = hasPower;
+    }
+
     public Integer getApplyUserId() {
         return applyUserId;
     }

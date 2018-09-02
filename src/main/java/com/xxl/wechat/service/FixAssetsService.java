@@ -99,7 +99,7 @@ public class FixAssetsService {
 
         List<FixAssetTask> fixAssetTasks = fixAssetTaskDao.find(sql.toString());
 
-        return convert(fixAssetTasks);
+        return convert(fixAssetTasks,userId);
     }
 
 
@@ -123,10 +123,10 @@ public class FixAssetsService {
         sqlPara.addPara(GlobalConstant.DEFAULT_PAGE_SIZE);
         List<FixAssetTask> fixAssetTasks = fixAssetTaskDao.find(sqlPara);
 
-        return convert(fixAssetTasks);
+        return convert(fixAssetTasks,userId);
     }
 
-    private List<FixVO> convert(List<FixAssetTask> list){
+    private List<FixVO> convert(List<FixAssetTask> list,int userId){
         List<FixVO> voList = new ArrayList<>();
 
         if(list == null || list.size() == 0){
@@ -143,6 +143,10 @@ public class FixAssetsService {
             vo.setApplyUserName(task.get("REAL_NAME"));
             vo.setFixReason(task.getFixReason());
             vo.setStatusName(StatusConstant.getStatusMap(task.getStatus()));
+            if(task.getApplyUserId().equals(userId)){
+                //只能删除自己的
+                vo.setHasPower(true);
+            }
             voList.add(vo);
         }
         String sqlIn = StringUtils.chop(sb.toString());

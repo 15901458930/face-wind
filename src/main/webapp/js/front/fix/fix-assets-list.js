@@ -1,3 +1,11 @@
+Handlebars.registerHelper('if_eq', function(v1, v2, opts) {
+    if(v1 == v2)
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
+});
+
+
 var minId = 999999999; //上拉显示历史数据的最小ID
 
 var categoryJson = {};
@@ -99,7 +107,6 @@ function initPushRefresh(){
 
     $(document.body).infinite(1).on("infinite", function() {
 
-
         if(uploadding || minId == -1){
             $(".just-no-more").show();
             return;
@@ -128,9 +135,8 @@ function initPushRefresh(){
                 return;
             }
 
-            //$(".will-be-delete").remove();
             $(".just-waiting").hide();
-            console.log(jsonObj.data);
+
             var source   = $("#fix-list-template").html();
             var template = Handlebars.compile(source);
             var context = jsonObj.data;//数据信息

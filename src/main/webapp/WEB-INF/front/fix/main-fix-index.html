@@ -65,10 +65,12 @@
                         </div>
 
                         </div>
+                        {{#if_eq hasPower true}}
                         <div class="weui-cell__ft">
                             <a class="weui-swiped-btn weui-swiped-btn_warn delete-swipeout update-fix-asset" fixid="{{id}}" href="javascript:">编辑</a>
                             <a class="weui-swiped-btn weui-swiped-btn_default close-swipeout delete-fix-asset"  fixid="{{id}}" href="javascript:">删除</a>
                         </div>
+                        {{/if_eq}}
                     </div>
 
                     {{/each}}

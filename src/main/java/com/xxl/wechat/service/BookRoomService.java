@@ -151,14 +151,16 @@ public class BookRoomService {
         if(StringUtils.isNotBlank(bookDate)){
             //指定查询日期的话，则不用时间限制
             sql.append(" and  BOOK_DATE = '").append(bookDate).append("'");
-            if(StringUtils.isNotBlank(roomId)){
-                sql.append(" and  ROOM_ID = ").append(roomId);
-            }
+
         }else{
             String preDayZeroStr = DateUtil.getPreDayZeroStr();
             //没指定查询日期的话只查询预订时间是最近3天
             sql.append(" and BOOK_START_TIME > '").append(preDayZeroStr).append("'");
         }
+        if(StringUtils.isNotBlank(roomId)){
+            sql.append(" and  ROOM_ID = ").append(roomId);
+        }
+
         sql.append(" order by B.BOOK_START_TIME ASC");
         list  = bookRoomTaskDao.find(sql.toString());
 
