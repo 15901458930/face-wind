@@ -5,8 +5,8 @@ layui.use(['table','jquery','layer','form'], function(){
     var layer = layui.layer;
 
     var realName = $("input[name='realName']").val();
-    var userType = $("select[name='userType']").val();
-    var url = "/admin/user/list/"+userType+"?realName"+realName;
+    var userConditionType = $("select[name='userConditionType']").val();
+    var url = "/admin/user/list/"+userConditionType+"?realName"+realName;
 
     //第一个实例
     var tabins = table.render({
@@ -27,8 +27,8 @@ layui.use(['table','jquery','layer','form'], function(){
 
     $("#search-btn").click(function(){
         var realName = $("input[name='realName']").val();
-        var userType = $("select[name='userType']").val();
-        var url = "/admin/user/list/"+userType+"?realName="+realName;
+        var userConditionType = $("select[name='userConditionType']").val();
+        var url = "/admin/user/list/"+userConditionType+"?realName="+realName;
         tabins.reload({url:url,page:{curr:1}});
     });
 

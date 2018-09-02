@@ -2,6 +2,7 @@ package com.xxl.wechat.config.routes;
 
 import com.jfinal.config.Routes;
 import com.xxl.wechat.controller.*;
+import com.xxl.wechat.interceptor.AdminLoginInterceptor;
 
 public class AdminRoute extends Routes {
 
@@ -14,6 +15,7 @@ public class AdminRoute extends Routes {
         add("/admin/book", AdminBookController.class);
         add("/admin/fix", AdminFixController.class);
         add("/admin/category", AdminCategoryController.class);
+        addInterceptor(new AdminLoginInterceptor());
 
 
     }

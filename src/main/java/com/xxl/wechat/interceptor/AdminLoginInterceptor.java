@@ -3,7 +3,6 @@ package com.xxl.wechat.interceptor;
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
-import com.xxl.wechat.controller.AttachmentController;
 import com.xxl.wechat.model.generator.SyUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,17 +12,15 @@ import org.slf4j.LoggerFactory;
  * @author  wangpeng
  * @since  2018/06/08
  */
-public class ListInterceptor implements Interceptor {
+public class AdminLoginInterceptor implements Interceptor {
 
-    private static Logger log = LoggerFactory.getLogger(ListInterceptor.class);
+    private static Logger log = LoggerFactory.getLogger(AdminLoginInterceptor.class);
 
 
     @Override
     public void intercept(Invocation invocation) {
 
         Controller c = invocation.getController();
-
-        String code =  c.getPara("code");
 
         String uri = c.getRequest().getRequestURI() == null ? "" : c.getRequest().getRequestURI();
         String queryString = c.getRequest().getQueryString() == null ? "" : "?"+c.getRequest().getQueryString();
@@ -32,8 +29,8 @@ public class ListInterceptor implements Interceptor {
 
         SyUser user = c.getSessionAttr("user");
 
-        if(user == null  && (!uri.contains("/login") && !uri.contains("/getCode"))){
-            c.redirect("/login");
+        if(user == null  && (!uri.contains("/admin/login"))){
+            c.redirect("/admin/login");
         }else {
             invocation.invoke();
         }

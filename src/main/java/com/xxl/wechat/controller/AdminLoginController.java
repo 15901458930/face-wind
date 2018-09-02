@@ -21,7 +21,6 @@ public class AdminLoginController extends Controller {
 
         String password = getPara("password");
 
-
         SyUser user = userService.findUserByUserNameAndPassword(userName, password);
 
         if(user != null){
