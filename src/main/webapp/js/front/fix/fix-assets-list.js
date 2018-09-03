@@ -195,6 +195,8 @@ function loadding(){
             $(".top-just-waiting").hide();
             $(".will-be-delete").remove();
 
+            minId = 999999999;//初始化一下，否则多次加载到最后，然后重新加载最新，就无法上翻了
+
             console.log(jsonObj.data);
             var source   = $("#fix-list-template").html();
             var template = Handlebars.compile(source);
