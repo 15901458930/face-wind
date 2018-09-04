@@ -37,6 +37,8 @@ public class LoginController extends Controller {
             user.setAvatar("http://p.qlogo.cn/bizmail/r2LaXyGa7ibchfHtM3KH9ba3hticNWNTibJV8o0I7LmPPCXeMuKoHDddw/");
             user.setRealName("许小丽");
 
+            String version = PropKit.get("version") == null ? "" : PropKit.get("version");
+            user.setVersion(version);
             setSessionAttr("user",user);
             //开发模式下，直接模拟一个用户session
             redirect("/index/route");

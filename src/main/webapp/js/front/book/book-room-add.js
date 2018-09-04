@@ -65,7 +65,7 @@ $(function() {
                         var msg = "";
                         console.log("预订不成功，有冲突");
                         $.each(res.data,function(i,item){
-                            msg += item.userName+" "+item.bookStartDate+" 至 "+item.bookEndDate +"\n </br> "
+                            msg += item.userName+" "+item.bookStartTime+" 至 "+item.bookEndTime +"\n </br> "
                         });
                         $.alert(msg, "提示:预订时间冲突！");
                         return;
