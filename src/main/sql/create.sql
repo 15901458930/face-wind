@@ -1,8 +1,8 @@
 CREATE DATABASE wechat DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-create user 'wechat'@'%' identified by '1234+asdf';
+create user 'wechat'@'%' identified by 'jxfx!@#$';
 grant all privileges on wechat.* to 'wechat'@'%';
 
-/**用户*/
+/**用 //https://www.yuese4.com/embed/3564*/
 DROP TABLE IF EXISTS `SY_USER`;
  CREATE TABLE `SY_USER` (
   `ID` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -39,7 +39,7 @@ CREATE TABLE `FIX_ASSET_TASK` (
   `ASSET_NAME` varchar(256) DEFAULT NULL COMMENT '物品名称',
   `ASSET_LOCATION` varchar(256) DEFAULT NULL COMMENT '物品位置',
   `BELONG_CAMPUS` varchar(1) default  null  COMMENT '所属校区',
-  `FIX_REASON` varchar(2048) DEFAULT NULL COMMENT '维修原因',
+  `FIX_REASON` varchar(1024) DEFAULT NULL COMMENT '维修原因',
   `STATUS` tinyint(4) NOT NULL COMMENT '1.其它 2.已上报领导 3.已联系厂商 4.维修需要很久，慢慢等待  5.没有问题了  6 修理完成',
   `APPLY_DATE` datetime DEFAULT NULL COMMENT '申请时间',
   `START_FIX_DATE` datetime DEFAULT NULL COMMENT '接单时间',
@@ -77,7 +77,7 @@ CREATE TABLE `BOOK_ROOM_TASK` (
   `REMARK` varchar(256) DEFAULT NULL COMMENT '备注',
   `NEED_PHOTO` int DEFAULT NULL COMMENT '是否需要照相',
   `NEED_CAMERA` int DEFAULT NULL COMMENT '是否需要摄像',
-  `SPECIAL_REQUIRE` varchar(512) DEFAULT NULL COMMENT '特殊要求',
+  `SPECIAL_REQUIRE` varchar(1024) DEFAULT NULL COMMENT '特殊要求',
   `STATUS` int DEFAULT  NULL COMMENT '状态',
   `RESPONSIBLE_USER` varchar(256) DEFAULT NULL COMMENT '责任人',
   `CREATE_DATE` datetime NOT NULL comment  '创建时间',
@@ -130,11 +130,6 @@ CREATE TABLE `WECHAT_NOTICE_TASK` (
   `CREATE_DATE` datetime NOT NULL comment  '创建时间'
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='微信推送';
 
-
-
-insert into WECHAT_NOTICE_TASK(ID,USER_ID,SEND_MSG,STATUS,CREATE_DATE) values(1,'WangPeng','您07-28 15的报修发生变化',0,'2018-04-01 18:55:55');
-
-
 insert into SY_MAIN_CATEGORY values(3,'后勤中心','HQZX','','2018-04-01 18:55:55');
 insert into SY_MAIN_CATEGORY values(4,'信息中心','XXZX','','2018-04-01 18:55:55');
 
@@ -154,3 +149,4 @@ insert into SY_ROOM VALUES(3,'报告厅','','2018-04-01 18:55:55');
 insert into SY_ROOM VALUES(4,'风雨操场','','2018-04-01 18:55:55');
 
 INSERT INTO SY_USER(ID,REAL_NAME,STATUS,CREATE_USER_ID,CREATE_DATE) VALUE('10000','王大鹏',1,'10000','2018-04-01 18:55:55');
+insert into WECHAT_NOTICE_TASK(ID,USER_ID,SEND_MSG,STATUS,CREATE_DATE) values(1,'WangPeng','您07-28 15的报修发生变化',0,'2018-04-01 18:55:55');

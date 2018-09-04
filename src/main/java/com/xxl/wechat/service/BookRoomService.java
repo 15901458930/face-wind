@@ -47,6 +47,8 @@ public class BookRoomService {
                 BookRoomVO vo = new BookRoomVO();
                 vo.setId(task.getId());
                 vo.setBookDate(DateUtil.format(task.getCreateDate(),DateUtil.DEFAULT_PATTERN));
+                vo.setBookStartDate(task.getBookStartTime());
+                vo.setBookEndDate(task.getBookEndTime());
                 vo.setBookStartTime(DateUtil.format(task.getBookStartTime(),DateUtil.HH_MM_PATTERN));
                 vo.setBookEndTime(DateUtil.format(task.getBookEndTime(),DateUtil.HH_MM_PATTERN));
                 vo.setRoomName(task.get("ROOM_NAME"));
