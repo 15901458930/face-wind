@@ -95,22 +95,28 @@ layui.use(['table','jquery','layer','form','laydate'], function(){
 
     function fillData(selector,data){
 
+        $(".just-for-delete").remove();
 
-        $(selector).find(".fixId").text(data.id);
-        $(selector).find(".assetSubTypeName").text(data.assetSubTypeName);
-        $(selector).find(".assetTypeName").text(data.assetTypeName);
-        $(selector).find(".assetName").text(data.assetName);
-        $(selector).find(".assetLocation").text(data.assetLocation);
-        $(selector).find(".belongCampusName").text(data.belongCampusName);
-        $(selector).find(".applyDate").text(data.applyDate);
-        $(selector).find(".applyUserName").text(data.applyUserName);
-        $(selector).find(".fixReason").text(data.fixReason);
-        $(selector).find(".status").text(data.statusName);
-        $(selector).find(".fixUserName").text(data.fixUserName || "");
-        $(selector).find(".startFixDate").text(data.startFixDate);
+        var source = $("#fix-detail-template").html();
+
+        var template = Handlebars.compile(source);
+        var html = template(data);
+
+        html = html.replace("just-for-d", "just-for-delete");
+        $("#fix-detail-window").append(html);
 
 
-
+        $(".jok-you-mam").click(function () {
+            var attachmentId = $(this).attr("data-id");
+            var style = "background-image:url(/upload/img/"+attachmentId+".jpeg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;height:100%;width:100%";
+            var index = layer.open({
+                type: 1,
+                content: '<div style="'+style+'"></div>',
+                area: ['300px', '300px'],
+                maxmin: true
+            });
+            layer.full(index);
+        });
     }
 
 
