@@ -177,4 +177,20 @@ public abstract class BaseSyUser<M extends BaseSyUser<M>> extends Model<M> imple
 		return getStr("VERSION");
 	}
 
+	public void setOrderPower(java.lang.String orderPower) {
+		set("ORDER_POWER", orderPower);
+	}
+	
+	public java.lang.String getOrderPower() {
+		return getStr("ORDER_POWER");
+	}
+
+	public void setBookAuthority(java.lang.Integer bookAuthority) {
+		set("BOOK_AUTHORITY", bookAuthority);
+	}
+	
+	public java.lang.Integer getBookAuthority() {
+		return getInt("BOOK_AUTHORITY");
+	}
+
 }

@@ -19,12 +19,14 @@ layui.use(['table','jquery','layer','form'], function(){
         ,page: true //开启分页
         ,cols: [[ //表头
             {field: 'ID', title: 'ID', width:'10%', sort: true, fixed: 'left'},
-            {field: 'USER_TYPE', title: '用户类型', hide:true}
-            ,{field: 'REAL_NAME',  width:'20%',title: '真实姓名'}
+            ,{field: 'USER_TYPE', title: 'hhh', hide:true}
+            ,{field: 'BOOK_AUTHORITY', title: 'ccc', hide:true}
+            ,{field: 'REAL_NAME',  width:'15%',title: '真实姓名'}
             ,{field: 'PHONE', title: '手机号' ,width:'15%'}
             ,{field: 'USER_TYPE_NAME', title: '用户类型', width:'15%'}
-            ,{field: 'CREATE_DATE', title: '创建时间', width:'20%'}
-            ,{field: 'DO', title: '用户类型',toolbar: '#user-operation', width:'20%'}
+            ,{field: 'BOOK_AUTHORITY_NAME', title: '预约场地权限', width:'15%'}
+            ,{field: 'CREATE_DATE', title: '创建时间', width:'10%'}
+            ,{field: 'DO', title: '操作',toolbar: '#user-operation', width:'20%'}
         ]],
         loading:true
     });
@@ -82,7 +84,8 @@ layui.use(['table','jquery','layer','form'], function(){
 
             //表单初始赋值
             form.val('user-form-filter', {
-                "userType":data.USER_TYPE
+                "userType":data.USER_TYPE,
+                "bookAuthority":data.BOOK_AUTHORITY
             });
 
 
@@ -92,17 +95,23 @@ layui.use(['table','jquery','layer','form'], function(){
 
             //监听提交
             form.on('submit(save-user)', function(record){
-                var userType = record.field.userType;
 
+                var userType = record.field.userType;
                 var userTypeName = $("#edit-user-type").find("option:selected").text();
+
+                var bookAuthority =  record.field.bookAuthority;
+                var bookAuthorityName = $("#edit-book-authority").find("option:selected").text();
 
                 var id = data.ID;
 
-                changeStatus(id,userType,function () {
+                changeStatus(id,userType,bookAuthority,function () {
                     layer.msg('修改成功');
                     obj.update({
                         USER_TYPE:userType,
-                        USER_TYPE_NAME:userTypeName
+                        USER_TYPE_NAME:userTypeName,
+                        BOOK_AUTHORITY:bookAuthority,
+                        BOOK_AUTHORITY_NAME:bookAuthorityName
+
                     });
                     layer.close(openEdit)
 
@@ -117,12 +126,12 @@ layui.use(['table','jquery','layer','form'], function(){
 
     function fillData(selector,data){
 
-
         $(selector).find(".userId").text(data.ID);
         $(selector).find(".realName").text(data.REAL_NAME);
         $(selector).find(".phone").text(data.PHONE);
         $(selector).find(".createDate").text(data.CREATE_DATE);
         $(selector).find(".userTypeName").text(data.USER_TYPE_NAME);
+        $(selector).find(".bookAuthority").text(data.BOOK_AUTHORITY_NAME);
     }
 
 
@@ -153,11 +162,11 @@ layui.use(['table','jquery','layer','form'], function(){
      * 删除
      * @param id
      */
-    function changeStatus(id,userType,suc,fail){
+    function changeStatus(id,userType,bookAuthority,suc,fail){
         $.ajax({
             type: "get",
             dataType: 'json',
-            url: "/admin/user/change/"+id+"-"+userType,
+            url: "/admin/user/change/"+id+"-"+userType+"-"+bookAuthority,
             success: function (jsonObj) {
                 if(jsonObj.success===true){
                     suc();//回调，先从数据库删除成功以后再删除列

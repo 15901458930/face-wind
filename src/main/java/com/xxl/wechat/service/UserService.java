@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class UserService {
 
-    private static Logger log = LoggerFactory.getLogger(FixAssetsService.class);
+    private static Logger log = LoggerFactory.getLogger(UserService.class);
 
 
     static SyUser syUserDao = new SyUser().dao();
@@ -70,6 +70,7 @@ public class UserService {
 
         for(SyUser u : paginate.getList()){
             u.put("USER_TYPE_NAME",DictCache.userTypeMap.get(u.getUserType()));
+            u.put("BOOK_AUTHORITY_NAME",u.getBookAuthority() == 1 ? "有":"无");
         }
 
         LayuiResultVO<SyUser> vo = LayuiResultVO.getInstance().assemblySuccess(paginate.getTotalRow(),paginate.getList());
@@ -99,6 +100,20 @@ public class UserService {
         return user;
     }
 
+    public void updateStatus(Integer id,Integer userType,Integer authority){
+
+
+        SyUser user = new SyUser();
+        user.setId(id);
+        user.setUserType(userType);
+        user.setBookAuthority(authority);
+
+        log.info("管理端修改用户信息{}",FastJson.getJson().toJson(user));
+
+        user.update();
+    }
+
+
     public void updateStatus(Integer id,Integer userType){
 
 
@@ -106,12 +121,10 @@ public class UserService {
         user.setId(id);
         user.setUserType(userType);
 
-        log.warn("{}改变状态{}",id,userType);
+        log.info("用户ID：{} 微信端初次关注时选择用户角色为 {}",id,userType);
 
         user.update();
     }
-
-
 
 
     public String findFixUser(String userType){

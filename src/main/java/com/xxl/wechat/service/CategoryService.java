@@ -52,6 +52,7 @@ public class CategoryService {
             sqlExceptSelect += " AND S.MAIN_CATEGORY_ID =  "+parentId;
         }
 
+        sqlExceptSelect += " order by S.ID desc";
         Page<SySubCategory> pagnate = subCategoryDao.paginate(page, pageSize, "select S.*,M.NAME AS PARENT_NAME ",sqlExceptSelect);
 
         return LayuiResultVO.getInstance().assemblySuccess(pagnate.getTotalRow(),pagnate.getList());

@@ -105,7 +105,6 @@ layui.use(['table','jquery','layer','form','laydate'], function(){
         html = html.replace("just-for-d", "just-for-delete");
         $("#fix-detail-window").append(html);
 
-
         $(".jok-you-mam").click(function () {
             var attachmentId = $(this).attr("data-id");
             var style = "background-image:url(/upload/img/"+attachmentId+".jpeg);background-repeat:no-repeat; background-size:100% 100%;-moz-background-size:100% 100%;height:100%;width:100%";

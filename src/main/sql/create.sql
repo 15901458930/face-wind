@@ -149,6 +149,7 @@ insert into SY_ROOM VALUES(3,'报告厅','','2018-04-01 18:55:55');
 insert into SY_ROOM VALUES(4,'风雨操场','','2018-04-01 18:55:55');
 insert into SY_ROOM VALUES(5,'操场','','2018-04-01 18:55:55');
 
+alter table SY_USER add column BOOK_AUTHORITY int(11) not null default 0;
 
 INSERT INTO SY_USER(ID,REAL_NAME,STATUS,CREATE_USER_ID,CREATE_DATE) VALUE('10000','王大鹏',1,'10000','2018-04-01 18:55:55');
 insert into WECHAT_NOTICE_TASK(ID,USER_ID,SEND_MSG,STATUS,CREATE_DATE) values(1,'WangPeng','您07-28 15的报修发生变化',0,'2018-04-01 18:55:55');

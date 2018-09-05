@@ -76,10 +76,9 @@
             <label class="layui-form-label">创建时间：</label>
             <div class="layui-form-right-preview createDate">王鹏</div>
         </div>
-        <
         <div class="layui-form-item">
-            <label class="layui-form-label">选择框：</label>
-            <div class="layui-input-block">
+            <label class="layui-form-label">用户类型：</label>
+            <div class="layui-input-block"  style="width:240px">
                 <select name="userType"  id="edit-user-type" lay-verify="required">
                     <option value="2">教师</option>
                     <option value="3">后勤中心-维修</option>
@@ -88,6 +87,16 @@
                 </select>
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">预约场地权限：</label>
+            <div class="layui-input-block"  style="width:240px">
+                <select name="bookAuthority"  id="edit-book-authority" lay-verify="required">
+                    <option value="1">有</option>
+                    <option value="0">无</option>
+                </select>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" type="button" lay-submit lay-filter="save-user">保存</button>
@@ -120,6 +129,11 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户类型：</label>
             <div class="layui-form-right-preview userTypeName"></div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">预约场地权限：</label>
+            <div class="layui-form-right-preview bookAuthority"></div>
         </div>
     </form>
 </div>

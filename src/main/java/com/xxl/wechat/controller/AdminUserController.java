@@ -46,8 +46,9 @@ public class AdminUserController extends Controller {
     public void change(){
         int id = getParaToInt(0);
         int type = getParaToInt(1);
+        int authority = getParaToInt(2);
 
-        userService.updateStatus(id,type);
+        userService.updateStatus(id,type,authority);
         ResponseResult<String> result = ResponseResult.instance().setSuccessData(true,"");
         renderJson(result);
     }

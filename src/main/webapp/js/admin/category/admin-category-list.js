@@ -84,8 +84,11 @@ layui.use(['table','jquery','layer','form'], function(){
                 "name":obj.data.NAME||""
             });
         }else{
-            $("input[name='name']").val("");
-            $("select[name='mainCategoryId']").val("");
+            form.val('category-form-filter', {
+                "mainCategoryId":"",
+                "name":"",
+                "id":""
+            });
         }
 
 
@@ -104,15 +107,23 @@ layui.use(['table','jquery','layer','form'], function(){
             }
             var objStr = JSON.stringify(obj);
             saveCategory(objStr,function () {
-                layer.msg('修改成功');
-                if(id && obj){
-                    obj.update({
-                        NAME:name,
-                        PARENT_NAME:parentName
-                    });
+                if(!id){
+                    layer.msg('添加成功');
+                    var searchName = $("input[name='searchName']").val();
+                    var parentId = $("select[name='parentId']").val();
+                    var url = "/admin/category/list/"+parentId+"?name="+searchName;
+                    tabins.reload({url:url,page:{curr:1}});
+                    layer.close(openEdit);
+                }else{
+                    layer.msg('修改成功');
+                    if(id && obj){
+                        obj.update({
+                            NAME:name,
+                            PARENT_NAME:parentName
+                        });
+                    }
+                    layer.close(openEdit);
                 }
-                layer.close(openEdit)
-
             },function () {
 
                 layer.msg('修改失败，请稍后重试');
