@@ -4,6 +4,9 @@ layui.use(['table','jquery','layer','form'], function(){
     var table = layui.table;
     var layer = layui.layer;
 
+    //重写ajax请求，session超时能正常跳转到登录页面
+    JqueryAjaxExtention();
+
     var searchName = $("input[name='searchName']").val();
     var parentId = $("select[name='parentId']").val();
     var url = "/admin/category/list/"+parentId+"?name"+searchName;

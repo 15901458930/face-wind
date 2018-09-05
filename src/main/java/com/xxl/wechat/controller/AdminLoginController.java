@@ -11,7 +11,8 @@ public class AdminLoginController extends Controller {
     static UserService userService = new UserService();
 
     public void index(){
-        setAttr("userName","");
+        String message = getPara("message") == null ? "":getPara("message");
+        setAttr("msg",message);
         render("admin-login.html");
     }
 

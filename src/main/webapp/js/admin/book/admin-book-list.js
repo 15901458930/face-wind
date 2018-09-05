@@ -8,6 +8,9 @@ layui.use(['table','jquery','layer','form','laydate','laytpl'], function(){
     var laydate = layui.laydate;
     var laytpl = layui.laytpl;
 
+    //重写ajax请求，session超时能正常跳转到登录页面
+    JqueryAjaxExtention();
+
     var startDate = $("input[name='startDate']").val();
     var endDate = $("input[name='endDate']").val();
     var roomId = $("select[name='roomId']").val();

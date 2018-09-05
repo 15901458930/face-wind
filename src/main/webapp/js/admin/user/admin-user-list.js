@@ -4,6 +4,10 @@ layui.use(['table','jquery','layer','form'], function(){
     var table = layui.table;
     var layer = layui.layer;
 
+    //重写ajax请求，session超时能正常跳转到登录页面
+    JqueryAjaxExtention();
+
+
     var realName = $("input[name='realName']").val();
     var userConditionType = $("select[name='userConditionType']").val();
     var url = "/admin/user/list/"+userConditionType+"?realName"+realName;

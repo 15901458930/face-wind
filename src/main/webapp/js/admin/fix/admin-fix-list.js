@@ -5,6 +5,9 @@ layui.use(['table','jquery','layer','form','laydate'], function(){
     var layer = layui.layer;
     var laydate = layui.laydate;
 
+    //重写ajax请求，session超时能正常跳转到登录页面
+    JqueryAjaxExtention();
+
     var startDate = $("input[name='startDate']").val();
     var endDate = $("input[name='endDate']").val();
     var status = $("select[name='status']").val();
